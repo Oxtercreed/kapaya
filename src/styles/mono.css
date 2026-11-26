@@ -584,11 +584,13 @@ h3 em,
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .pcard__name {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 18.5px;
+  flex: 1 1 60%;
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.1;

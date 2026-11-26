@@ -56,6 +56,13 @@ ink at low alpha. If a value needs to stand out it gets weight, scale or a hairl
   re-skin it token-first, so the flows kept working while the look changed. Change tokens in
   `mono.css` before overriding a component.
 
+### Design files
+
+- `design/SPEC.md` — the one-page system: rule, tokens, type ramp, grid, per-screen structure,
+  and the round-trip workflow with Figma.
+- `design/tokens.dtcg.json` — W3C DTCG token file (importable into Tokens Studio / Figma variables).
+- `design/tokens.css` — the same values as CSS custom properties.
+
 ### Working with a Figma file
 
 `tools/figma-read.mjs` is a dependency-free reader for the Figma REST API. It prints the type

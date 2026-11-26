@@ -1320,3 +1320,8 @@
 .m-hero__caption {
   display: none;
 }
+
+/* the index closes on a single rule, not a double one */
+.m-index__row:last-child {
+  border-bottom: 0;
+}

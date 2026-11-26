@@ -1,0 +1,24 @@
+/* KAPAYA design tokens — mirror of src/styles/mono.css.
+   Paste into a Figma variables plugin (Tokens Studio, Variables Import) or use as CSS. */
+:root {
+  --paper: #fbfaf7;
+  --paper-2: #ffffff;
+  --paper-3: #f1f0eb;
+  --ink: #0b0b0a;
+  --ink-2: #24241f;
+  --ink-soft: #5b5b52;
+  --ink-faint: #97978d;
+  --line: rgba(11, 11, 10, 0.13);
+  --line-strong: rgba(11, 11, 10, 0.45);
+
+  --font-display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
+  --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+
+  --radius: 0px;
+  --hair: 1px solid var(--line);
+
+  --gutter: 56px;      /* 18px under 860px */
+  --max-width: 1560px;
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 104px;
+}
