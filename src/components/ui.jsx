@@ -56,7 +56,11 @@ export function ProductCard({ product, index = 0, compact = false }) {
       style={{ '--d': `${(index % 4) * 45}ms` }}
     >
       <div className="pcard__media">
-        {product.badge && <span className="pcard__badge">{product.badge}</span>}
+        {product.badge ? (
+          <span className="pcard__badge">{product.badge}</span>
+        ) : product.compareAt ? (
+          <span className="pcard__badge">Sale</span>
+        ) : null}
         <button
           className={`pcard__save ${saved ? 'is-on' : ''}`}
           onClick={toggleSave}
@@ -84,7 +88,7 @@ export function ProductCard({ product, index = 0, compact = false }) {
       <div className="pcard__body">
         <div className="pcard__row">
           <h3 className="pcard__name">{product.name}</h3>
-          <Price className="pcard__price" value={product.price} compare={product.compareAt} />
+          <Price className="pcard__price" value={product.price} />
         </div>
         <div className="pcard__meta">
           <span>{product.studio}</span>

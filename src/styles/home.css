@@ -206,9 +206,12 @@
   .hero__content {
     padding-bottom: 38px;
   }
+  .hero__actions {
+    gap: 9px;
+  }
   .hero__actions .btn {
-    flex: 1;
-    min-width: 140px;
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
 
