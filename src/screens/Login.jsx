@@ -209,7 +209,7 @@ export default function Login() {
           </button>
 
           <p className="gate__fine">
-            By continuing you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.
+            By continuing you agree to our <button type="button" className="underline-link" onClick={(e) => e.preventDefault()}>Terms</button> and <button type="button" className="underline-link" onClick={(e) => e.preventDefault()}>Privacy Policy</button>.
             <br />
             Demo store — no real payments are taken.
           </p>

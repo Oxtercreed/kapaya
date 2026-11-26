@@ -8,9 +8,16 @@ built with React + Vite. No backend required — cart, chat, orders and account 
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # production bundle in dist/
+npm run dev      # dev server at http://localhost:5173
+npm run build    # self-contained static build in dist/
 ```
+
+### Offline / no-server version
+
+`npm run build` produces a fully self-contained site: relative asset paths
+(`base: './'`), `images/` rewritten at build time by `build/relative-images.js`,
+and hash-based routing. Unzip `dist/` and double-click `index.html` — it runs
+straight from the filesystem with no server and no network.
 
 ## What's inside
 

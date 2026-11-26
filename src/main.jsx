@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { StoreProvider, useStore, useReveal } from './store'
 import Layout from './components/Layout'
 import Intro from './components/Intro'
@@ -59,9 +60,9 @@ function NotFound() {
       <p className="lede" style={{ margin: '0 auto 26px' }}>
         The page you were looking for isn’t in the studio. Everything we make is a short walk away.
       </p>
-      <a className="btn" href="/shop">
+      <Link className="btn" to="/shop">
         Back to the shop
-      </a>
+      </Link>
     </div>
   )
 }
@@ -111,11 +112,11 @@ function AppRoutes() {
 function Root() {
   return (
     <StoreProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Intro>
           <AppRoutes />
         </Intro>
-      </BrowserRouter>
+      </HashRouter>
     </StoreProvider>
   )
 }
