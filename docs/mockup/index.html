@@ -429,7 +429,7 @@ img{display:block;max-width:100%}
 .promo-btn:hover{background:#EDE9EA}
 .promo-msg{font:500 12.5px/16px Inter,sans-serif;color:#2F7A52;margin-top:10px}
 .btn-pay{width:100%;height:56px;border-radius:28px;margin-top:20px}
-.legal{font:400 13px/19px Inter,sans-serif;color:#656976;margin-top:20px}
+.legal{font:400 13px/19px Inter,sans-serif;color:#656976;margin-top:17px}
 .protect{background:#FAEDEF;border-radius:20px;padding:22px 26px;margin-top:32px}
 .protect-h{font:600 17px/21px Inter,sans-serif;color:#96151F}
 .protect-p{font:400 13px/19px Inter,sans-serif;color:#6B5B5E;margin-top:9px}
@@ -1099,7 +1099,7 @@ const checkout = (state) => {
         <div class="sum-total"><span>Total</span><span>${money(total - state.discount)}</span></div>
         <p class="sum-tax">Tax included</p>
         <button class="btn-red btn-pay" type="submit">Pay ${money(total - state.discount)} securely</button>
-        <p class="legal">By placing your order, you agree to our Terms and acknowledge our Privacy Policy.</p>
+        <p class="legal">By placing your order, you agree to our Terms and<br>acknowledge our Privacy Policy.</p>
       </div>
 
       <div class="protect">
@@ -1357,7 +1357,7 @@ const store = {
     first: 'Alex', last: 'Morgan',
     street: 'Kepler Street 14', city: 'Rotterdam',
     postal: '3011 AA', country: 'Netherlands',
-    card: '4242 4242 4242 4242', exp: '08 / 29', cvc: '123',
+    card: '•••• •••• •••• 4242', exp: '08 / 29', cvc: '•••',
   },
   viewOrder: null,
 };
