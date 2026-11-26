@@ -1228,7 +1228,7 @@ img{display:block;max-width:100%}
 
 /* confirmed / order */
 .done-hero{
-  min-height:268px;border-radius:28px;background:#FDECEE;position:relative;
+  min-height:281px;border-radius:28px;background:#FDECEE;position:relative;
   display:flex;align-items:center;padding:34px 36px 34px 30px;
 }
 .done-tick{
@@ -1237,12 +1237,12 @@ img{display:block;max-width:100%}
 }
 .done-l{flex:1;min-width:0;padding-left:74px}
 .done-eyebrow{font:500 12px/15px Inter,sans-serif;color:#96151F;letter-spacing:.03em}
-.done-h{font:600 40px/48px Inter,sans-serif;letter-spacing:-.025em;margin-top:16px;color:#1A1417}
-.done-p{font:400 14px/22px Inter,sans-serif;color:#5E4E52;margin-top:16px}
-.done-actions{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
-.btn-details{height:48px;padding:0 30px;border-radius:25px;font-size:14px}
+.done-h{font:600 41px/50px Inter,sans-serif;letter-spacing:-.031em;margin-top:14px;color:#1A1417}
+.done-p{font:400 14px/21px Inter,sans-serif;color:#5E4E52;margin-top:13px}
+.done-actions{display:flex;gap:14px;margin-top:23px;flex-wrap:wrap}
+.btn-details{height:48px;padding:0 33px;border-radius:24px;font-size:14px}
 .btn-plain{
-  display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 32px;border-radius:24px;
+  display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 30px;border-radius:24px;
   background:#fff;color:#14171E;font:600 14px/1 Inter,sans-serif;
   transition:background .12s ease;
 }
