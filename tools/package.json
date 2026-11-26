@@ -1,0 +1,14 @@
+{
+  "name": "volta-tools",
+  "private": true,
+  "description": "Headless-Chromium probes for docs/mockup/index.html",
+  "scripts": {
+    "frames": "node frames.cjs",
+    "mobile": "node mobile.cjs",
+    "deep": "node deep.cjs"
+  },
+  "dependencies": {
+    "@achingbrain/nss": "^0.0.1",
+    "puppeteer-core": "^19.11.1"
+  }
+}

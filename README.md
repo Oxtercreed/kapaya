@@ -12,6 +12,8 @@ open it and the whole store works.
 | [`docs/mockup/NOTES-red.md`](docs/mockup/NOTES-red.md) | The measurements it was built from: frame ids, palette, grid, type scale |
 | [`docs/mockup/red/ref/`](docs/mockup/red/ref) | 1:1 crops of the five source frames, for comparison |
 | [`figma-plugin/`](figma-plugin/README.md) | A Figma development plugin that adds nine phone screens to a file as arranged frames |
+| [`tools/`](tools/README.md) | Headless-Chromium probes: shoot the five screens, score them, walk the phone layout |
+| [`HANDOFF.md`](HANDOFF.md) | Everything a new session needs: state, rules, and the work in flight |
 
 The Figma source file is
 [zoygvtfjWN92VUiWAsSMOL](https://www.figma.com/file/zoygvtfjWN92VUiWAsSMOL/Untitled).
@@ -59,6 +61,16 @@ node docs/mockup/build.cjs
 ```
 
 Writes `docs/mockup/index.html`. Nothing else to install.
+
+## Verifying
+
+```bash
+bash tools/fetch-chromium.sh       # once per clone (Chromium, git-ignored)
+cd tools && npm install
+node frames.cjs && node diff.cjs   # 2.52 / 2.52 / 3.25 / 2.14 / 2.88 %
+node mobile.cjs                    # 390 px walk, no overflow
+node deep.cjs                      # seven interaction assertions
+```
 
 The catalogue is the four products the reference frames show — Aurora Buds Pro,
 Vertex H9, Pulse Watch S2, Glide Pro Mouse — so the shop grid is a single row of
