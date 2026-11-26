@@ -77,26 +77,98 @@ const PRODUCTS = [
   {
     id: 'arc', name: 'Arc Desk Lamp', short: 'Arc Desk Lamp', kind: 'Ambient task light', cat: 'Accessories',
     price: 129, rate: '4.7', reviews: 64, tag: 'New arrival',
-    plate: 'card-arc.jpg', hero: 'card-arc.jpg', thumb: 'card-arc.jpg', blurb: 'Light that knows when to stop.', body: 'Warm-to-cool dimming with a diffuser that keeps glare off the desk, not in your eyes.',
+    plate: 'card-arc.jpg', hero: 'card-arc.jpg', thumb: 'thumb-arc.jpg', gallery: 'gal-arc.jpg', blurb: 'Light that knows when to stop.', body: 'Warm-to-cool dimming with a diffuser that keeps glare off the desk, not in your eyes.',
     meta: '2700–5000K · Touch dimmer', colors: ['Silver'],
+    foot: 'A closer look at the light on your desk.', secHead: 'Made for long evenings',
+    bens: [
+      ['01', 'Light that moves with the work', 'A weighted base and a slim arm swing where the page is, then stay put.'],
+      ['02', 'Warm by dinner, cool by deadline', 'One touch slides from 2700K to 5000K without a flicker.'],
+      ['03', 'Glare stays off the desk', 'The diffuser throws light sideways, so reflections never reach your screen.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Warm in the evening, bright enough to actually work under. It looks right on the desk too.'],
+      ['Tomas K.', '5', 'The base is heavier than it looks, so it never drifts. Dimmer is a pleasure.'],
+      ['Priya S.', '4', 'Wish the arm reached a touch higher, but the light itself is excellent.'],
+    ],
+    specs: [
+      ['Category', 'Accessories · Ambient task light'],
+      ['Colour temperature', '2700–5000K, touch dimmer'],
+      ['Finish', 'Silver anodised aluminium'],
+      ['In the box', 'Lamp, 2m braided cable, quick start guide'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
   {
     id: 'hush', name: 'Hush Sleep Buds', short: 'Hush Sleep Buds', kind: 'Sleep earbuds', cat: 'Audio',
     price: 149, rate: '4.6', reviews: 51, tag: 'Bestseller',
-    plate: 'card-hush.jpg', hero: 'card-hush.jpg', thumb: 'card-hush.jpg', blurb: 'Small, soft, silent.', body: 'Side-sleeper friendly, with a masking sound library on board and no lights to wake you.',
+    plate: 'card-hush.jpg', hero: 'card-hush.jpg', thumb: 'thumb-hush.jpg', gallery: 'gal-hush.jpg', blurb: 'Small, soft, silent.', body: 'Side-sleeper friendly, with a masking sound library on board and no lights to wake you.',
     meta: 'Sleep masking · 10-hour battery', colors: ['Silver'],
+    foot: 'A closer look at your next good night.', secHead: 'Made for the way you sleep',
+    bens: [
+      ['01', 'Soft enough to lie on', 'A 4.6g shell that sits flush in the ear, so a pillow does not press it in.'],
+      ['02', 'Masking, not white noise', 'A sound library on board covers traffic, snoring and thin hotel walls.'],
+      ['03', 'Nothing glows at 3am', 'The case light turns off with the lid. Ten hours of play per charge.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Side sleeper, and I genuinely forget they are in. The city noise is gone.'],
+      ['Tomas K.', '5', 'Library of sounds is the point: rain at a low volume beats any noise machine.'],
+      ['Priya S.', '4', 'Ten hours is enough for me. Would like a slightly smaller case.'],
+    ],
+    specs: [
+      ['Category', 'Audio · Sleep earbuds'],
+      ['Battery', '10 hours, 30 with the case'],
+      ['Finish', 'Off-white, soft-touch shell'],
+      ['In the box', 'Buds, charging case, 3 tip sizes, USB-C cable'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
   {
     id: 'ridge', name: 'Ridge Laptop Stand', short: 'Ridge Laptop Stand', kind: 'Aluminium riser', cat: 'Accessories',
     price: 98, rate: '4.8', reviews: 87, tag: 'Work better',
-    plate: 'card-ridge.jpg', hero: 'card-ridge.jpg', thumb: 'card-ridge.jpg', blurb: 'Sit up straight. Stay there.', body: 'One piece of milled aluminium, folding flat for the bag and holding firm on a desk.',
+    plate: 'card-ridge.jpg', hero: 'card-ridge.jpg', thumb: 'thumb-ridge.jpg', gallery: 'gal-ridge.jpg', blurb: 'Sit up straight. Stay there.', body: 'One piece of milled aluminium, folding flat for the bag and holding firm on a desk.',
     meta: 'Folds flat · Fits 13–16"', colors: ['Silver'],
+    foot: 'A closer look at your desk setup.', secHead: 'Made for the way you work',
+    bens: [
+      ['01', 'Your neck, an inch higher', 'Lifts a 13–16" laptop to eye level so you stop folding yourself over it.'],
+      ['02', 'Folds flat for the bag', 'One milled piece, 9mm closed. It lives in the laptop sleeve, not on a shelf.'],
+      ['03', 'Holds firm, stays put', 'Silicone feet grip glass and wood; the deck does not slide while you type.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Took the ache out of my shoulders in a week. Folds down and travels.'],
+      ['Tomas K.', '5', 'Does not wobble, which is more than I can say for the plastic one it replaced.'],
+      ['Priya S.', '4', 'Solid and beautiful. Wish it came in graphite as well.'],
+    ],
+    specs: [
+      ['Category', 'Accessories · Aluminium riser'],
+      ['Fits', '13–16" laptops, up to 2.5kg'],
+      ['Finish', 'Silver anodised aluminium'],
+      ['In the box', 'Stand, travel sleeve, quick start guide'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
   {
     id: 'orbit', name: 'Orbit Tracker', short: 'Orbit Tracker', kind: 'Key and bag finder', cat: 'Accessories',
     price: 39, rate: '4.5', reviews: 203, tag: 'Work better',
-    plate: 'card-orbit.jpg', hero: 'card-orbit.jpg', thumb: 'card-orbit.jpg', blurb: 'Lose less. Every day.', body: 'A year on one battery, a loud speaker and a ring you can trigger from your phone.',
+    plate: 'card-orbit.jpg', hero: 'card-orbit.jpg', thumb: 'thumb-orbit.jpg', gallery: 'gal-orbit.jpg', blurb: 'Lose less. Every day.', body: 'A year on one battery, a loud speaker and a ring you can trigger from your phone.',
     meta: '1-year battery · IP67', colors: ['Graphite'],
+    foot: 'A closer look at the things you misplace.', secHead: 'Made for the things you lose',
+    bens: [
+      ['01', 'A year on one battery', 'No charging shuffle at the door. It simply keeps working.'],
+      ['02', 'Loud enough to find under a seat', 'A 92dB ring you can trigger from your phone, or from the tag back.'],
+      ['03', 'Keys, bag, bike', 'IP67 sealed and 24g, so it takes rain and being sat on.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Found my keys in a coat pocket three rooms away. Worth every cent.'],
+      ['Tomas K.', '5', 'Ring is genuinely loud. Battery has not moved in eight months.'],
+      ['Priya S.', '4', 'One on the bike, one on the dog lead. Would like a loop that opens.'],
+    ],
+    specs: [
+      ['Category', 'Accessories · Key and bag finder'],
+      ['Battery', '1 year, user replaceable'],
+      ['Finish', 'Graphite, soft-touch shell'],
+      ['In the box', '2 trackers, 2 key loops, quick start guide'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
 ];
 
@@ -275,7 +347,7 @@ const product = (state) => {
     <div class="gallery">
       <div class="gallery-plate">${p.gallery ? `<img src="${img(p.gallery)}" alt="${p.name}">` : art(p.art)}</div>
       <div class="gallery-foot">
-        <span class="gallery-note">A closer look at your next favorite sound.</span>
+        <span class="gallery-note">${p.foot || 'A closer look at your next favorite sound.'}</span>
         <span class="gallery-tag">${state.color} finish</span>
       </div>
     </div>
@@ -307,13 +379,13 @@ const product = (state) => {
     </div>
   </div>
 
-  <h2 class="sec-h">Made for the way you listen</h2>
+  <h2 class="sec-h">${p.secHead || 'Made for the way you listen'}</h2>
   <div class="benefits">
-    ${[
+    ${(p.bens || [
       ['01', 'Tune out the noise', 'Active noise cancellation helps you focus on the sound you love.'],
       ['02', 'More listening. Less charging.', 'Up to 30 hours of listening with the included charging case.'],
       ['03', 'Comfort that goes with you', 'A lightweight fit and intuitive touch controls for your everyday routine.'],
-    ].map(([n, h, b]) => `<article class="benefit"><p class="b-n">${n}</p><h3 class="b-h">${h}</h3><p class="b-p">${b}</p></article>`).join('')}
+    ]).map(([n, h, b]) => `<article class="benefit"><p class="b-n">${n}</p><h3 class="b-h">${h}</h3><p class="b-p">${b}</p></article>`).join('')}
   </div>
 
   <div class="tabs">
@@ -327,19 +399,21 @@ const product = (state) => {
   <div class="tabpanel">
     ${state.tab === 'specs'
       ? `<dl class="specs">
-           <div><dt>Category</dt><dd>${p.cat} · ${p.kind}</dd></div>
-           <div><dt>Finish</dt><dd>${p.colors.join(', ')}</dd></div>
-           <div><dt>In the box</dt><dd>Device, USB-C cable, quick start guide</dd></div>
-           <div><dt>Warranty</dt><dd>2 years, VOLTA direct</dd></div>
-           <div><dt>${p.meta.split(' · ')[0]}</dt><dd>Included</dd></div>
+           ${(p.specs || [
+             ['Category', `${p.cat} · ${p.kind}`],
+             ['Finish', p.colors.join(', ')],
+             ['In the box', 'Device, USB-C cable, quick start guide'],
+             ['Warranty', '2 years, VOLTA direct'],
+             [p.meta.split(' · ')[0], 'Included'],
+           ]).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
          </dl>`
       : state.tab === 'reviews'
       ? `<div class="reviews">
            <div class="rev-score"><p class="rev-big">${p.rate}</p><p class="rev-sub">${p.reviews} verified reviews</p></div>
            <div class="rev-list">
-             ${[['Maya R.', '5', 'Exactly what I wanted. The fit is light enough that I forget I have them in.'],
+             ${(p.revs || [['Maya R.', '5', 'Exactly what I wanted. The fit is light enough that I forget I have them in.'],
                 ['Tomas K.', '5', 'Battery genuinely lasts the week. Sound is warm without being muddy.'],
-                ['Priya S.', '4', 'Lovely build. Would like a slightly smaller case, but no real complaints.']]
+                ['Priya S.', '4', 'Lovely build. Would like a slightly smaller case, but no real complaints.']])
                .map(([n, s, t]) => `<div class="rev"><p class="rev-head"><b>${n}</b><span class="star">${'★'.repeat(+s)}</span></p><p class="rev-body">${t}</p></div>`).join('')}
            </div>
          </div>`
@@ -1154,6 +1228,7 @@ img{display:block;max-width:100%}
 
 /* checkout */
 .back{font:400 13px/16px Inter,sans-serif;color:#C92332;display:inline-block}
+.co-head .page-p{margin-top:4px}
 .back:hover{text-decoration:underline;text-underline-offset:3px}
 .co-head{display:flex;align-items:flex-end;gap:24px;margin-top:20px}
 .steps{margin-left:auto;font:400 14px/17px Inter,sans-serif;color:#6B6F79}
@@ -1161,14 +1236,14 @@ img{display:block;max-width:100%}
 .steps-cur{color:#4E5159}
 .co-grid{display:grid;grid-template-columns:minmax(0,824fr) minmax(0,456fr);gap:32px;margin-top:26px;align-items:start}
 .co-main{min-width:0}
-.co-card{background:#fff;border-radius:22px;padding:28px 32px 34px}
+.co-card{background:#fff;border-radius:22px;padding:24px 32px 30px}
 .co-row-h{display:flex;align-items:baseline;gap:16px}
-.co-h{font:600 21px/27px Inter,sans-serif}
-.co-h.mt{margin-top:30px}
+.co-h{font:600 20px/26px Inter,sans-serif}
+.co-h.mt{margin-top:26px}
 .co-signin{margin-left:auto;font:400 13px/16px Inter,sans-serif;color:#3C3F48}
 .link-red{color:#C92332}
 .link-red:hover{text-decoration:underline;text-underline-offset:3px}
-.fld{display:block;margin-top:20px}
+.fld{display:block;margin-top:18px}
 .fld-l{display:block;font:400 11.5px/14px Inter,sans-serif;color:#3C3F48;margin-bottom:8px}
 .fld-i{
   display:block;width:100%;height:50px;border-radius:10px;border:1px solid #DCDCDD;
@@ -1471,13 +1546,13 @@ img{display:block;max-width:100%}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','card-arc.jpg','card-hush.jpg','card-ridge.jpg','card-orbit.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
+for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','card-arc.jpg','card-hush.jpg','card-ridge.jpg','card-orbit.jpg','gal-arc.jpg','gal-hush.jpg','gal-ridge.jpg','gal-orbit.jpg','thumb-arc.jpg','thumb-hush.jpg','thumb-ridge.jpg','thumb-orbit.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
   PICS[n] = img(n);
 }
 
 /* Everything the views read, minus the build-time paths (img() resolves those
    from the embedded PICS map instead). */
-const KEEP = ['id','name','short','kind','cat','price','rate','reviews','tag','colors','plate','art','thumb','blurb','body','meta','hook','note','gallery','hero','crop'];
+const KEEP = ['id','name','short','kind','cat','price','rate','reviews','tag','colors','plate','art','thumb','blurb','body','meta','hook','note','gallery','hero','crop','foot','secHead','bens','revs','specs','tile'];
 const CATALOGUE = PRODUCTS.map((p) =>
   KEEP.reduce((o, k) => (p[k] === undefined ? o : Object.assign(o, { [k]: p[k] })), {}));
 
