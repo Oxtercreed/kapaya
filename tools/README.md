@@ -17,16 +17,14 @@ SwiftShader runtime into git-ignored derived folders.
 | script | what it does |
 |---|---|
 | `node frames.cjs` | loads the app, clicks through all five screens, writes `/tmp/red/fr-0N-*.png` at 1440×1200, prints `errors: none` |
-| `node diff.cjs` | MAE of those shots against `ref/*.png`. After the intentional Shop re-baseline a clean run prints **0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %**. `--figma` scores the raw JPEG crops in `docs/mockup/red/ref` instead (~0.1 pt higher: JPEG noise) |
+| `node diff.cjs` | MAE of those shots against `ref/*.png`. All five references were deliberately re-baselined after the iPhone-only divergence, so a clean run prints **0.0000 % on all five**. `--figma` scores the original raw Figma JPEG crops and reports the intentional design difference: 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 % |
 | `node mobile.cjs` | 390×844 @2x walk through every route; prints `OVERFLOW` if anything is wider than the viewport |
 | `node deep.cjs` | nine interaction assertions — landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
 
-`ref/02-05.png` are lossless fidelity targets from the red frames.
-`ref/01-shop.png` was **deliberately re-baselined** to the new hero after the
-landing-page divergence, so its default regression score is 0.0000 %. The raw
-Figma crop in `docs/mockup/red/ref/01-shop.jpg` still reports the intentional
-design difference (~4.89 % with `--figma`). If an unchanged number moves, either
-the code changed or the environment did.
+All five `ref/*.png` files are now deliberate regression baselines of the
+current iPhone-only design. The original Figma crops in
+`docs/mockup/red/ref/*.jpg` remain for `--figma` divergence checks. If a default
+number moves above 0.0000 %, either the code changed or the environment did.
 
 `lib.cjs` holds the shared launcher (binary path, `--no-sandbox`,
 `LD_LIBRARY_PATH` for the nss shim, `file://` URL, shot directory). Set

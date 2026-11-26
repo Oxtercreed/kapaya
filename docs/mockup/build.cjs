@@ -42,103 +42,139 @@ const font = (w, f) => {
 /* ── catalogue ─────────────────────────────────────────────────────────── */
 const PRODUCTS = [
   {
-    id: 'aurora', name: 'Aurora Buds Pro', short: 'Aurora Buds Pro',
-    kind: 'Wireless earbuds', cat: 'Audio', price: 189,
-    rate: '4.9', reviews: 128, tag: 'Bestseller',
-    plate: 'card1.jpg', crop: true, hero: 'hero.jpg', tile: 'herotile.jpg', thumb: 'bagthumb.jpg', gallery: 'hero.jpg',
-    blurb: 'Big sound. A little more quiet.',
-    body: 'Get lost in your music, not the noise. A comfortable fit, immersive audio, and all-day power for wherever life goes.',
-    hook: 'Small size.<br>Immersive sound.', note: 'Noise cancelling · 30-hour battery',
-    colors: ['Silver', 'Graphite'],
-  },
-  {
-    id: 'vertex', name: 'Vertex H9 Headphones', short: 'Vertex H9 Headphones',
-    kind: 'Over-ear headphones', cat: 'Audio', price: 249,
-    rate: '4.8', reviews: 96, tag: 'Premium sound',
-    plate: 'card2.jpg', crop: true, hero: 'card2.jpg', thumb: 'rec1.jpg', gallery: 'rec1.jpg',
-    blurb: 'Room to think, room to listen.',
-    body: 'Plush over-ear cushions and a headband that disappears after an hour. Tuned for long sessions, not short demos.',
-    meta: 'Adaptive ANC · 40-hour battery',
-    colors: ['Silver', 'Graphite'],
-    foot: 'A closer look at the pair you keep on.',
-    secHead: 'Made for the way you listen',
+    id: 'iphone-16-pro', name: 'iPhone 16 Pro', short: 'iPhone 16 Pro',
+    kind: 'Titanium flagship', cat: 'Pro', price: 1099,
+    rate: '4.9', reviews: 128, tag: 'Latest generation',
+    plate: 'iphone-16-pro-front.webp', hero: 'iphone-16-pro-front.webp',
+    tile: 'iphone-16-pro-front.webp', thumb: 'iphone-16-pro-front.webp',
+    gallery: 'iphone-16-pro-front.webp',
+    blurb: 'The newest era, in titanium.',
+    body: 'A bright edge-to-edge display, a precise titanium frame and the most considered Pro camera system yet. The newest iPhone, without the noise around it.',
+    hook: 'Every generation,<br>considered.', note: 'A18 Pro · Pro camera · Titanium',
+    meta: 'A18 Pro · Titanium',
+    colors: ['Natural Titanium', 'Black Titanium'],
+    foot: 'A closer look at the newest iPhone.',
+    secHead: 'Made for the newest everyday',
     bens: [
-      ['01', 'Silence, on your terms', 'Adaptive cancellation reads the room and leaves the rest of it out.'],
-      ['02', 'Two days between charges', '40 hours of playback, or five hours back in a ten-minute top-up.'],
-      ['03', 'Built to disappear', 'Memory-foam cushions and a 248g frame you stop noticing by nine.'],
+      ['01', 'Titanium, quietly lighter', 'A strong, brushed frame that feels balanced in the hand without asking for attention.'],
+      ['02', 'A display with more room', 'Slim borders, outdoor brightness and true-to-life colour for everything from messages to film.'],
+      ['03', 'A Pro camera, simplified', 'A 48MP main camera and 5× telephoto make the shot you wanted feel effortless.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Wore them through a nine-hour flight and forgot they were on my head.'],
-      ['Tomas K.', '5', 'Cancellation is the real thing: my open-plan office simply goes quiet.'],
-      ['Priya S.', '4', 'Beautiful build. The case is bigger than I expected, but it travels fine.'],
+      ['Maya R.', '5', 'The titanium finish is beautiful in person, and the screen is superb outdoors.'],
+      ['Tomas K.', '5', 'Camera upgrades are obvious without making the phone feel complicated.'],
+      ['Priya S.', '4', 'A clean, fast upgrade. I would like a slightly lighter case, but the phone is excellent.'],
     ],
     specs: [
-      ['Category', 'Audio · Over-ear headphones'],
-      ['Battery', '40 hours playback, USB-C fast charge'],
-      ['Finish', 'Silver or graphite aluminium'],
-      ['In the box', 'Headphones, hard case, USB-C and 3.5mm cables'],
+      ['Category', 'Pro · Titanium flagship'],
+      ['Display', '6.3-inch Super Retina XDR'],
+      ['Chip', 'A18 Pro'],
+      ['Camera', '48MP Fusion · 5× telephoto'],
+      ['Finish', 'Natural Titanium or Black Titanium'],
       ['Warranty', '2 years, VOLTA direct'],
     ],
   },
   {
-    id: 'pulse', name: 'Pulse Watch S2', short: 'Pulse Watch S2',
-    kind: 'Everyday smartwatch', cat: 'Wearables', price: 198,
-    rate: '4.8', reviews: 182, tag: 'New arrival',
-    plate: 'card3.jpg', crop: true, hero: 'card3.jpg', thumb: 'rec2.jpg', gallery: 'rec2.jpg',
-    blurb: 'Your day, on your wrist.',
-    body: 'Sleep, steps and heart rate, quietly tracked. A week of battery and a screen you can actually read outdoors.',
-    meta: '7-day battery · 5 ATM',
-    colors: ['Graphite', 'Silver'],
-    foot: 'A closer look at the watch you stop charging.',
-    secHead: 'Made for the way you move',
+    id: 'iphone-15', name: 'iPhone 15', short: 'iPhone 15',
+    kind: 'Everyday standard', cat: 'Standard', price: 799,
+    rate: '4.8', reviews: 96, tag: 'Clean blue finish',
+    plate: 'iphone-15-blue-back.webp', hero: 'iphone-15-blue-back.webp',
+    tile: 'iphone-15-blue-back.webp', thumb: 'iphone-15-blue-back.webp',
+    gallery: 'iphone-15-blue-back.webp',
+    blurb: 'The everyday iPhone, refined.',
+    body: 'Dynamic Island, a soft blue glass back and USB-C make this the calm centre of the collection. Familiar in the best way, with the details quietly updated.',
+    hook: 'Blue glass.<br>Everyday ease.', note: 'Dynamic Island · USB-C · 48MP main',
+    meta: 'A16 Bionic · USB-C',
+    colors: ['Blue', 'Black'],
+    foot: 'A closer look at the blue finish.',
+    secHead: 'Made for the everyday',
     bens: [
-      ['01', 'A week, not a night', 'Seven days of tracking on one charge, so the charger stays in the drawer.'],
-      ['02', 'Readable in daylight', 'A 1.4" transflective display you can read mid-run without shading it.'],
-      ['03', 'Sleep you can act on', 'Resting heart rate, sleep stages and a nudge when the week gets late.'],
+      ['01', 'Familiar, then better', 'Dynamic Island turns the everyday alerts and timers into something you barely have to think about.'],
+      ['02', 'One cable, everywhere', 'USB-C charges the phone, the bag and the desk without a drawer of adapters.'],
+      ['03', 'A finish with softness', 'Colour-infused blue glass keeps reflections gentle and fingerprints quiet.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Charged it last Sunday and it is still going. Sleep tracking is the part I use.'],
-      ['Tomas K.', '5', 'Screen is genuinely visible outdoors. Swam with it twice, no issues.'],
-      ['Priya S.', '4', 'Light and comfortable overnight. Would like a couple more watch faces.'],
+      ['Maya R.', '5', 'The blue is subtle and the move to USB-C has made travel much simpler.'],
+      ['Tomas K.', '5', 'Exactly the everyday phone I wanted: quick, clean and uncomplicated.'],
+      ['Priya S.', '4', 'Lovely finish and reliable battery. The camera is a real step up from my old phone.'],
     ],
     specs: [
-      ['Category', 'Wearables · Everyday smartwatch'],
-      ['Battery', '7 days typical, 14 in battery-saver'],
-      ['Finish', 'Graphite or silver aluminium, 5 ATM'],
-      ['In the box', 'Watch, silicone strap, magnetic charger'],
+      ['Category', 'Standard · Everyday iPhone'],
+      ['Display', '6.1-inch Super Retina XDR'],
+      ['Chip', 'A16 Bionic'],
+      ['Camera', '48MP main · 2× telephoto'],
+      ['Finish', 'Blue or Black aluminium'],
       ['Warranty', '2 years, VOLTA direct'],
     ],
   },
   {
-    id: 'glide', name: 'Glide Pro Mouse', short: 'Glide Pro Mouse',
-    kind: 'Wireless precision mouse', cat: 'Accessories', price: 66,
-    rate: '4.9', reviews: 120, tag: 'Work better',
-    plate: 'card4.jpg', crop: true, hero: 'card4.jpg', thumb: 'rec3.jpg', gallery: 'rec3.jpg',
-    blurb: 'Point, click, forget it is there.',
-    body: 'A sculpted shell, silent switches and a sensor that tracks on anything. Charges over USB-C in an hour.',
-    meta: 'Silent switches · USB-C',
-    colors: ['Graphite'],
-    foot: 'A closer look at the mouse that gets out of the way.',
-    secHead: 'Made for the way you work',
+    id: 'iphone-14-pro', name: 'iPhone 14 Pro', short: 'iPhone 14 Pro',
+    kind: 'Pro classic', cat: 'Pro', price: 899,
+    rate: '4.8', reviews: 182, tag: 'Pro camera',
+    plate: 'iphone-14-pro-purple.webp', hero: 'iphone-14-pro-purple.webp',
+    tile: 'iphone-14-pro-purple.webp', thumb: 'iphone-14-pro-purple.webp',
+    gallery: 'iphone-14-pro-purple.webp',
+    blurb: 'A Pro chapter worth keeping.',
+    body: 'Deep Purple glass, the first 48MP main camera and an Always-On display. A generation that still reads as unmistakably Pro, presented exactly as it is.',
+    hook: 'Deep Purple.<br>Still Pro.', note: '48MP main · Always-On display',
+    meta: 'A16 Bionic · 48MP main',
+    colors: ['Deep Purple', 'Graphite'],
+    foot: 'A closer look at the Deep Purple finish.',
+    secHead: 'Made for the considered upgrade',
     bens: [
-      ['01', 'Quiet clicks, all day', 'Silent switches take the sound out of a late session without dulling the press.'],
-      ['02', 'Tracks on anything', 'A 4000 DPI sensor that works on glass, denim and a hotel desk.'],
-      ['03', 'Pairs with three devices', 'One button swaps between laptop, desktop and tablet mid-sentence.'],
+      ['01', 'The 48MP turning point', 'Detail-rich photos with a flexible 2× crop that keeps the frame natural.'],
+      ['02', 'Information at a glance', 'An Always-On display keeps time, widgets and notifications quietly visible.'],
+      ['03', 'Deep Purple, properly deep', 'A matte glass finish that shifts from graphite to plum with the light.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Shape fits my hand properly and the clicks are near silent. No regrets.'],
-      ['Tomas K.', '5', 'Switching between two machines with one button is worth the price alone.'],
-      ['Priya S.', '4', 'Excellent everyday mouse. Scroll wheel could be a touch heavier.'],
+      ['Maya R.', '5', 'Deep Purple still looks special, and the 48MP camera remains excellent.'],
+      ['Tomas K.', '5', 'Always-On display is more useful than I expected. Battery has stayed strong.'],
+      ['Priya S.', '4', 'A lovely Pro phone. I prefer this size to the newer models.'],
     ],
     specs: [
-      ['Category', 'Accessories · Wireless precision mouse'],
-      ['Battery', '70 days, USB-C, 1-hour charge'],
-      ['Finish', 'Graphite, soft-touch shell'],
-      ['In the box', 'Mouse, USB-C cable, USB-A receiver'],
+      ['Category', 'Pro · Pro classic'],
+      ['Display', '6.1-inch Super Retina XDR, Always-On'],
+      ['Chip', 'A16 Bionic'],
+      ['Camera', '48MP main · 3× telephoto'],
+      ['Finish', 'Deep Purple or Graphite'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
+  },
+  {
+    id: 'iphone-13', name: 'iPhone 13', short: 'iPhone 13',
+    kind: 'Earlier generation', cat: 'Classic', price: 599,
+    rate: '4.9', reviews: 120, tag: 'Best value',
+    plate: 'iphone-13-midnight.webp', hero: 'iphone-13-midnight.webp',
+    tile: 'iphone-13-midnight.webp', thumb: 'iphone-13-midnight.webp',
+    gallery: 'iphone-13-midnight.webp',
+    blurb: 'Still the one that just works.',
+    body: 'Midnight graphite, the diagonal dual-camera layout and a dependable all-day battery. A clean earlier generation for the person who wants the iPhone, simply.',
+    hook: 'The essential<br>iPhone.', note: 'Dual camera · All-day battery',
+    meta: 'A15 Bionic · Dual camera',
+    colors: ['Midnight', 'Starlight'],
+    foot: 'A closer look at the Midnight finish.',
+    secHead: 'Made for the simple choice',
+    bens: [
+      ['01', 'Nothing extra', 'The core iPhone experience, with no spec-sheet detours and no learning curve.'],
+      ['02', 'A camera you trust', 'Two diagonal lenses and clean computational photography make everyday shots easy.'],
+      ['03', 'A darker classic', 'Midnight graphite keeps the design crisp, understated and easy to live with.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Bought this as a simpler option and it still does everything I need beautifully.'],
+      ['Tomas K.', '5', 'Battery is dependable and the Midnight finish hides daily wear very well.'],
+      ['Priya S.', '4', 'Excellent value. Not the newest camera, but photos are consistently good.'],
+    ],
+    specs: [
+      ['Category', 'Classic · Earlier generation'],
+      ['Display', '6.1-inch Super Retina XDR'],
+      ['Chip', 'A15 Bionic'],
+      ['Camera', '12MP dual camera'],
+      ['Finish', 'Midnight or Starlight aluminium'],
       ['Warranty', '2 years, VOLTA direct'],
     ],
   },
 ];
+
 
 const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 const money = (n) => `$${n.toFixed(2)}`;
@@ -146,9 +182,9 @@ const money = (n) => `$${n.toFixed(2)}`;
 /* ── shared chrome (measured from the frames) ──────────────────────────── */
 const NAV = [
   ['Shop', 'shop', 'store'],
-  ['Audio', 'shop', 'audio'],
-  ['Wearables', 'shop', 'wearables'],
-  ['Accessories', 'shop', 'accessories'],
+  ['Pro', 'shop', 'pro'],
+  ['Standard', 'shop', 'standard'],
+  ['Classic', 'shop', 'classic'],
 ];
 
 const chrome = () => `
@@ -174,7 +210,7 @@ const chrome = () => `
     <div class="hdr-right">
       <form class="search" data-search>
         <svg class="sicon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8A8E99" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-        <input type="search" placeholder="Search products…" aria-label="Search products">
+        <input type="search" placeholder="Search iPhones…" aria-label="Search iPhones">
       </form>
       <a class="orders" data-go="account">My orders</a>
       <a class="bag-pill" data-go="bag"><span data-bagcount>Bag (0)</span></a>
@@ -276,7 +312,7 @@ const home = () => `
     <div class="home-moment-copy">
       <p class="home-kicker">02 / THE FINISH</p>
       <h2 class="home-moment-h">Colour, material,<br>generation.</h2>
-      <p class="home-moment-p">Titanium, aluminium, blue glass and deep graphite. Four distinct chapters of the same unmistakable design language.</p>
+      <p class="home-moment-p">Titanium, aluminium, blue glass, deep purple and midnight graphite. Four distinct chapters of the same unmistakable design language.</p>
       <a class="home-link" data-go="shop">Find your finish <span class="arw">→</span></a>
     </div>
     <div class="home-moment-art home-art-right">
@@ -286,8 +322,8 @@ const home = () => `
 
   <section class="home-moment home-moment-pair full">
     <div class="home-moment-art home-art-pair">
-      <img class="pair-back" src="${img('iphone-15-blue-back.webp')}" alt="">
-      <img class="pair-front" src="${img('iphone-16-pro-front.webp')}" alt="">
+      <img class="pair-back" src="${img('iphone-14-pro-purple.webp')}" alt="">
+      <img class="pair-front" src="${img('iphone-13-midnight.webp')}" alt="">
     </div>
     <div class="home-moment-copy home-copy-right">
       <p class="home-kicker">03 / THE CHOICE</p>
@@ -321,17 +357,17 @@ const shop = (state) => {
 <main class="page">
   ${state.query ? '' : heroBand('shop')}
 
-  <h2 class="sec-h">Find your next everyday essential</h2>
-  <p class="sec-p">Thoughtful design. Tech you’ll actually love.</p>
+  <h2 class="sec-h">Find your next iPhone</h2>
+  <p class="sec-p">Four generations. One clean edit.</p>
 
   <div class="filter-row">
     <div class="chips">
-      ${['all', 'Audio', 'Wearables', 'Accessories'].map((c) => {
+      ${['all', 'Pro', 'Standard', 'Classic'].map((c) => {
         const on = c === 'all' ? state.cat === 'all' : state.cat.toLowerCase() === c.toLowerCase();
-        return `<button class="chip${on ? ' is-on' : ''}" data-filter="${c}">${c === 'all' ? 'All products' : c}</button>`;
+        return `<button class="chip${on ? ' is-on' : ''}" data-filter="${c}">${c === 'all' ? 'All iPhones' : c}</button>`;
       }).join('')}
     </div>
-    <span class="count">${items.length} product${items.length === 1 ? '' : 's'}</span>
+    <span class="count">${items.length} iPhone${items.length === 1 ? '' : 's'}</span>
     <div class="sortwrap">
       <button class="sort" data-sort>Sort: ${state.sortLabel} <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#14171E" stroke-width="1.5"><path d="m1 1 4 4 4-4"/></svg></button>
       <div class="sortmenu" data-sortmenu hidden>
@@ -346,7 +382,7 @@ const shop = (state) => {
   ${items.length ? `<div class="cards">${items.map(card).join('')}</div>`
     : `<div class="empty">
         <p class="empty-h">Nothing matched that.</p>
-        <p class="empty-p">Try a different word, or browse everything we make.</p>
+        <p class="empty-p">Try a generation, or browse all four iPhones.</p>
         <button class="btn-dark sm" data-clear>Show all products</button>
       </div>`}
 
@@ -392,7 +428,7 @@ const product = (state) => {
     <div class="gallery">
       <div class="gallery-plate">${p.gallery ? `<img src="${img(p.gallery)}" alt="${p.name}">` : art(p.art)}</div>
       <div class="gallery-foot">
-        <span class="gallery-note">${p.foot || 'A closer look at your next favorite sound.'}</span>
+        <span class="gallery-note">${p.foot || 'A closer look at your next iPhone.'}</span>
         <span class="gallery-tag">${state.color} finish</span>
       </div>
     </div>
@@ -424,12 +460,12 @@ const product = (state) => {
     </div>
   </div>
 
-  <h2 class="sec-h">${p.secHead || 'Made for the way you listen'}</h2>
+  <h2 class="sec-h">${p.secHead || 'Made for your everyday'}</h2>
   <div class="benefits">
     ${(p.bens || [
-      ['01', 'Tune out the noise', 'Active noise cancellation helps you focus on the sound you love.'],
-      ['02', 'More listening. Less charging.', 'Up to 30 hours of listening with the included charging case.'],
-      ['03', 'Comfort that goes with you', 'A lightweight fit and intuitive touch controls for your everyday routine.'],
+      ['01', 'Familiar from the first tap', 'The essentials are exactly where you expect them, with nothing extra in the way.'],
+      ['02', 'A camera you trust', 'Clean, dependable photos in the light you actually have.'],
+      ['03', 'Made to be kept', 'A considered finish and a battery that suits a full day, not a spec sheet.'],
     ]).map(([n, h, b]) => `<article class="benefit"><p class="b-n">${n}</p><h3 class="b-h">${h}</h3><p class="b-p">${b}</p></article>`).join('')}
   </div>
 
@@ -456,9 +492,9 @@ const product = (state) => {
       ? `<div class="reviews">
            <div class="rev-score"><p class="rev-big">${p.rate}</p><p class="rev-sub">${p.reviews} verified reviews</p></div>
            <div class="rev-list">
-             ${(p.revs || [['Maya R.', '5', 'Exactly what I wanted. The fit is light enough that I forget I have them in.'],
-                ['Tomas K.', '5', 'Battery genuinely lasts the week. Sound is warm without being muddy.'],
-                ['Priya S.', '4', 'Lovely build. Would like a slightly smaller case, but no real complaints.']])
+             ${(p.revs || [['Maya R.', '5', 'Exactly the iPhone I wanted. Clean, quick and easy to live with.'],
+                ['Tomas K.', '5', 'The finish looks even better in person and the battery gets through a full day.'],
+                ['Priya S.', '4', 'Lovely build. I would like a slightly smaller case, but no real complaints.']])
                .map(([n, s, t]) => `<div class="rev"><p class="rev-head"><b>${n}</b><span class="star">${'★'.repeat(+s)}</span></p><p class="rev-body">${t}</p></div>`).join('')}
            </div>
          </div>`
@@ -475,7 +511,8 @@ const bag = (state) => {
   const ship = subtotal >= 100 || subtotal === 0 ? 0 : 9;
   const total = subtotal + ship;
 
-  const also = ['vertex', 'pulse', 'glide'].map(byId);
+  const inBag = lines.map((l) => l.id);
+  const also = PRODUCTS.filter((p) => !inBag.includes(p.id)).slice(0, 3);
 
   return `
 <main class="page">
@@ -492,8 +529,8 @@ const bag = (state) => {
   ${count === 0
     ? `<div class="empty big">
          <p class="empty-h">Your bag is empty.</p>
-         <p class="empty-p">Good tech is a click away — start with the audio.</p>
-         <button class="btn-dark sm" data-go="shop" data-arg="audio">Shop audio <span class="arw">→</span></button>
+         <p class="empty-p">Four iPhone generations are waiting — pick the era that feels like yours.</p>
+         <button class="btn-dark sm" data-go="shop">Shop all iPhones <span class="arw">→</span></button>
        </div>`
     : `<div class="bag-grid">
     <div class="bag-main">
@@ -529,7 +566,7 @@ const bag = (state) => {
       ${subtotal >= 100
         ? `<div class="ship-note">
              <p class="ship-h">You’ve unlocked free shipping</p>
-             <p class="ship-p">Your everyday essentials, delivered at no extra cost.</p>
+             <p class="ship-p">Your next iPhone, delivered at no extra cost.</p>
            </div>`
         : `<div class="ship-note">
              <p class="ship-h">${money(100 - subtotal)} from free shipping</p>
@@ -551,7 +588,7 @@ const bag = (state) => {
   </div>
 
   <h2 class="sec-h narrow">A little more to love</h2>
-  <p class="sec-p">Good company for your everyday setup.</p>
+  <p class="sec-p">Three other generations to consider.</p>
   <div class="also">
     ${also.map((p) => `<article class="also-card">
       <a class="also-plate" data-go="product" data-arg="${p.id}">
@@ -1065,7 +1102,7 @@ img{display:block;max-width:100%}
   position:relative;width:100%;aspect-ratio:280/180;border-radius:12px;overflow:hidden;
   background:#F3F3F3;display:block;
 }
-.card-img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.card-img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease}
 .card-plate:hover .card-img{transform:scale(1.04)}
 .plate-art{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .plate-art svg{width:72%;height:72%;max-height:140px}
@@ -1089,7 +1126,7 @@ img{display:block;max-width:100%}
 /* the card plates are crops of the frame, so the frame's own heart button is
    already in the JPEG. Crop it away, then lay our own control on top. */
 .plate-bg{position:absolute;inset:0;overflow:hidden;border-radius:12px;background:#F3F3F3}
-.plate-bg img{width:100%;height:100%;object-fit:cover}
+.plate-bg img{width:100%;height:100%;object-fit:contain;padding:8px 20px}
 /* paint out the plate's baked-in heart button with the plate's own field colour */
 
 .heart-ico{display:flex}
@@ -1237,7 +1274,7 @@ body.is-home .ftr{display:none}
   width:100%;aspect-ratio:568/427;border-radius:14px;background:#F3F3F3;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
-.gallery-plate img{width:100%;height:100%;object-fit:cover}
+.gallery-plate img{width:100%;height:100%;object-fit:contain;padding:18px}
 .gallery-plate .plate-art svg{width:46%;height:46%;max-height:220px}
 .gallery-plate svg{width:60%;height:60%}
 .gallery-foot{display:flex;align-items:center;justify-content:space-between;padding:0;height:101px;gap:16px}
@@ -1333,7 +1370,7 @@ body.is-home .ftr{display:none}
   width:145px;height:145px;border-radius:14px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.bag-thumb img{width:100%;height:100%;object-fit:cover}
+.bag-thumb img{width:100%;height:100%;object-fit:contain;padding:10px}
 .bag-thumb svg{width:80%;height:80%}
 .bag-name{font:600 20px/24px Inter,sans-serif}
 .bag-name a:hover{color:#C92332}
@@ -1368,7 +1405,7 @@ body.is-home .ftr{display:none}
   position:relative;width:129px;height:152px;border-radius:14px;overflow:hidden;background:#F3F3F3;
   display:flex;align-items:center;justify-content:center;
 }
-.also-plate img{width:100%;height:100%;object-fit:cover}
+.also-plate img{width:100%;height:100%;object-fit:contain;padding:10px}
 .also-plate svg{width:80%;height:80%}
 .also-body{padding-top:6px;display:flex;flex-direction:column}
 .also-name{font:600 16px/21px Inter,sans-serif}
@@ -1431,7 +1468,7 @@ body.is-home .ftr{display:none}
   width:88px;height:86px;border-radius:12px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.ord-thumb img{width:100%;height:100%;object-fit:cover}
+.ord-thumb img{width:100%;height:100%;object-fit:contain;padding:7px}
 .ord-thumb svg{width:80%;height:80%}
 .ord-name{font:600 15px/19px Inter,sans-serif}
 .ord-meta{font:400 13px/17px Inter,sans-serif;color:#7A7E88;margin-top:6px}
@@ -1531,7 +1568,7 @@ body.is-home .ftr{display:none}
   width:56px;height:56px;border-radius:10px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.order-thumb img{width:100%;height:100%;object-fit:cover}
+.order-thumb img{width:100%;height:100%;object-fit:contain;padding:5px}
 .order-thumb svg{width:80%;height:80%}
 .order-name{font:600 14px/18px Inter,sans-serif}
 .order-meta{font:400 12.5px/16px Inter,sans-serif;color:#7A7E88;margin-top:4px}
@@ -1761,7 +1798,7 @@ body.is-home .ftr{display:none}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg','iphone-16-pro-front.webp','iphone-15-blue-back.webp']) {
+for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp']) {
   PICS[n] = img(n);
 }
 
@@ -1887,10 +1924,13 @@ function paint() {
   $('#app').innerHTML = view(state);
   document.body.classList.toggle('is-home', store.route === 'home');
 
+  const catLabel = store.cat === 'all'
+    ? 'Shop'
+    : store.cat.charAt(0).toUpperCase() + store.cat.slice(1);
   const active = store.route === 'home'
     ? ''
     : store.route === 'shop'
-      ? (store.cat === 'all' ? 'Shop' : store.cat)
+      ? catLabel
       : (store.route === 'product' ? store.product.cat : 'Shop');
   $$('.nav-i').forEach((a) => a.classList.toggle('is-current', a.dataset.nav === active));
 
@@ -2105,8 +2145,8 @@ if (!store.orders.length) {
     first: 'Alex', last: 'Morgan', email: 'alex.morgan@example.com',
     street: 'Kepler Street 14', city: 'Rotterdam', postal: '3011 AA', country: 'Netherlands',
     last4: '4242',
-    lines: [{ id: 'vertex', qty: 1, color: 'Silver' }],
-    subtotal: 249, discount: 0, total: 249,
+    lines: [{ id: 'iphone-15', qty: 1, color: 'Blue' }],
+    subtotal: 799, discount: 0, total: 799,
   }];
 }
 
@@ -2119,7 +2159,7 @@ const SHELL = [
   '<head>',
   '<meta charset="utf-8">',
   '<meta name="viewport" content="width=device-width, initial-scale=1">',
-  '<meta name="description" content="VOLTA — an interactive mockup of an everyday-tech storefront.">',
+  '<meta name="description" content="VOLTA — an interactive, iPhone-only storefront mockup.">',
   '<title>VOLTA — good tech, better everyday</title>',
   '<style>',
   [400, 500, 600, 700].map((w) => font(w, `inter-latin-${w}-normal.woff2`)).join('\n'),

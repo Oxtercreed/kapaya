@@ -1,6 +1,6 @@
 # VOLTA
 
-An interactive mockup of VOLTA — an everyday-tech storefront: *good tech, better everyday*.
+An interactive, iPhone-only VOLTA storefront mockup: *good tech, better everyday*.
 
 One self-contained HTML file. No build step to run it, no dependencies, no network:
 open it and the whole store works.
@@ -10,6 +10,7 @@ open it and the whole store works.
 | [`docs/mockup/index.html`](docs/mockup/index.html) | The storefront — every screen, live, with media and Inter inlined |
 | [`docs/mockup/build.cjs`](docs/mockup/build.cjs) | The generator that writes that file (`node docs/mockup/build.cjs`) |
 | [`docs/mockup/NOTES-red.md`](docs/mockup/NOTES-red.md) | The measurements it was built from: frame ids, palette, grid, type scale |
+| [`docs/mockup/assets/`](docs/mockup/assets/README.md) | Clean transparent iPhone cut-outs inlined by the generator |
 | [`docs/mockup/red/ref/`](docs/mockup/red/ref) | 1:1 crops of the five source frames, for comparison |
 | [`figma-plugin/`](figma-plugin/README.md) | A Figma development plugin that adds nine phone screens to a file as arranged frames |
 | [`tools/`](tools/README.md) | Headless-Chromium probes: shoot the five screens, score them, walk the phone layout |
@@ -20,14 +21,17 @@ The Figma source file is
 
 ## What it is
 
-A clickable store, built to the design of the **red** frames in that file
-(`8:2` Shop, `8:92` Product, `8:161` Bag, `8:240` Checkout, `8:342` Confirmed).
-Those five screens are reproduced as measured — same boxes, colours, copy,
-prices and photography — and the rest is built from the same parts so the
-whole thing can actually be used:
+A clickable store that began as a measured reproduction of the **red** frames
+(`8:2` Shop, `8:92` Product, `8:161` Bag, `8:240` Checkout, `8:342` Confirmed),
+then deliberately diverged. The first load is now a majestic footerless landing
+page, the shop sits behind its CTA at `#/shop`, the hero uses edge-bleeding
+cut-outs instead of a white tile, and the catalogue is four iPhone generations.
+The measured desktop card geometry and the bag/checkout/confirmed grid still
+come from the frames:
 
 | Screen | What works |
 |---|---|
+| Home | footerless editorial landing page, full-bleed product moments, shop CTA |
 | Shop | category filter, live search with an empty state, sort menu, save items |
 | Product | colour choice, quantity stepper, add to bag, specs and reviews tabs |
 | Bag | line quantities, remove, save for later, free-shipping threshold, recommendations |
@@ -67,19 +71,20 @@ Writes `docs/mockup/index.html`. Nothing else to install.
 ```bash
 bash tools/fetch-chromium.sh       # once per clone (Chromium, git-ignored)
 cd tools && npm install
-node frames.cjs && node diff.cjs   # 0.00 / 2.52 / 3.25 / 2.14 / 2.88 %
+node frames.cjs && node diff.cjs   # 0.00 / 0.00 / 0.00 / 0.00 / 0.00 %
 node mobile.cjs                    # landing + 390 px walk, no overflow
 node deep.cjs                      # nine interaction assertions
 ```
 
-The catalogue is the four products the reference frames show — Aurora Buds Pro,
-Vertex H9, Pulse Watch S2, Glide Pro Mouse — so the shop grid is a single row of
-four and every count in the UI reads `4 products`, matching the frames. Each of
-the four has its own detail copy (benefit set, specifications, reviews) rather
-than one earbud script reused across a lamp and a mouse.
+The catalogue is now **four iPhones only**: iPhone 16 Pro ($1099), iPhone 15
+($799), iPhone 14 Pro ($899) and iPhone 13 ($599). Categories are Pro, Standard
+and Classic; every product has its own clean cut-out, detail copy, specification
+set and reviews. The red frames' original earbuds/headphones/watch/mouse
+catalogue and its copy are deliberately no longer binding — this is a design
+divergence, documented in `NOTES-red.md` and `HANDOFF.md`.
 
-The first load is now an editorial **landing page** with no footer; the shop is
-behind its CTA at `#/shop`. Its hero uses transparent cut-outs on the hero
-panel itself, with no white tile, and bleeds off the panel edge. This is a
-deliberate divergence from the red Shop frame, so `tools/ref/01-shop.png` has
-been re-baselined on purpose; the other four fidelity targets are unchanged.
+The landing page opens first with no footer. The shop and other store routes use
+hash links, and all five `tools/ref/*.png` regression references were
+re-baselined on purpose after the catalogue change. Use `node diff.cjs --figma`
+to see the intentional difference from the original Figma frames:
+6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %.

@@ -6,11 +6,11 @@
 //                               so these numbers sit ~0.1 pt higher and are
 //                               only good for spot-checks)
 //
-// tools/ref/02-05 are the lossless Figma targets behind
-// 2.52 / 3.25 / 2.14 / 2.88 %. tools/ref/01-shop.png was deliberately
-// re-baselined to the edge-bleeding landing/shop hero, so a clean default run
-// prints 0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %. Use --figma to see the
-// intentional Shop divergence against the original raw JPEG crop.
+// All five tools/ref/*.png files were deliberately re-baselined to the
+// landing/hero + iPhone-only design, so a clean default run prints 0.0000 %
+// on every screen. Use --figma to measure the intentional divergence against
+// the original raw Figma JPEG crops (6.2864 / 5.7210 / 3.4435 / 2.2825 /
+// 3.0409 %).
 const { execSync } = require('child_process');
 const path = require('path');
 const { OUT } = require('./lib.cjs');

@@ -49,14 +49,17 @@ cd tools && npm install           # once per clone
 ```bash
 cd tools
 node frames.cjs                   # shoots the five screens -> /tmp/red/fr-0N-*.png, prints "errors: none"
-node diff.cjs                     # MUST print 2.5169 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %
+node diff.cjs                     # MUST print 0.0000 / 0.0000 / 0.0000 / 0.0000 / 0.0000 %
 node mobile.cjs                   # 390×844 @2x: no OVERFLOW lines, "errors: none"
-node deep.cjs                     # 7 assertions (see §5)
+node deep.cjs                     # 9 assertions (see §5)
 ```
 
-`diff.cjs --figma` scores against the raw JPEG crops instead — those carry JPEG
-luminance noise, so every number is ~0.1 pt higher. **Use the default mode**;
-it is the baseline everyone references.
+`diff.cjs --figma` scores against the original raw Figma JPEG crops. After the
+iPhone-only divergence it reports **6.2864 / 5.7210 / 3.4435 / 2.2825 /
+3.0409 %**; JPEG luminance noise adds roughly 0.1 pt. **Use the default mode**
+for regression: all five `tools/ref/*.png` files were re-baselined on purpose to
+the intentional new design, so a clean run is all zeros. The Figma-era numbers
+in §4 are historical.
 
 `tools/fetch-chromium.sh` now fetches the npm-hosted Chromium 109 build that
 reproduces the baseline on the sandbox's npm-only allowlist; it also unpacks
@@ -84,25 +87,30 @@ splits 1-col) · ≤640 (2-row header, chips wrap).
 48/600 over 58, page titles 40/600 over 48 (confirmed headline 36/600), section
 heads 28/600, summary heads 24/600, nav 15/400, micro labels 11–11.5/500.
 
-**Products (4, and only 4):** Aurora Buds Pro $189 ★4.9·128 "Bestseller" ·
-Vertex H9 Headphones $249 ★4.8·96 "Premium sound" · Pulse Watch S2 $198
-★4.8·182 "New arrival" · Glide Pro Mouse $66 ★4.9·120 "Work better". Address
-Kepler Street 14 / 3011 AA Rotterdam / Netherlands, `alex.morgan@example.com`,
-support `support@volta.example`. Promo `VOLTA10` = 10 %.
+**Products (4, and only 4 iPhones):** iPhone 16 Pro $1099 ★4.9·128
+"Latest generation" (Pro) · iPhone 15 $799 ★4.8·96 "Clean blue finish"
+(Standard) · iPhone 14 Pro $899 ★4.8·182 "Pro camera" (Pro) · iPhone 13
+$599 ★4.9·120 "Best value" (Classic). Clean transparent WebP cut-outs are
+inlined from `docs/mockup/assets/`; no Figma plate crops are used in the store.
+Address Kepler Street 14 / 3011 AA Rotterdam / Netherlands,
+`alex.morgan@example.com`, support `support@volta.example`. Promo `VOLTA10`
+= 10 %.
 
-**State:** `localStorage['volta.state'] = {cart, favs, orders, form}`; prefilled
-card `•••• •••• •••• 4242`, exp `08 / 29`, cvc `•••`. Seed order `VX-47102`
-(OCT 14 2026, Delivered, Vertex H9, $249); a new checkout makes `VX-(88217+n)`,
-`NOV 26, 2026`.
+**State:** `localStorage['volta.state'] = {cart, favs, orders, form}`;
+prefilled card `•••• •••• •••• 4242`, exp `08 / 29`, cvc `•••`. Seed order
+`VX-47102` (OCT 14 2026, Delivered, iPhone 15, $799); a new checkout makes
+`VX-(88217+n)`, `NOV 26, 2026`.
 
-**Copy that is fixed by the frames:** "Good tech. Better everyday." / "Free
-shipping on orders $100+" / "LESS NOISE. MORE YOU." / "Your everyday,
-upgraded." / "Find your next everyday essential" / "A little more to love" /
-"Thanks, Alex. You're all set." / "Good support comes with every order."
+**Frame copy still used:** "Good tech. Better everyday." / "Free shipping on
+orders $100+" / "A little more to love" / "Thanks, Alex. You're all set." /
+"Good support comes with every order." The frames' catalogue copy — including
+"LESS NOISE. MORE YOU.", "Your everyday, upgraded." and "Find your next
+everyday essential" — is **no longer binding**; the landing and iPhone-only
+copy deliberately replaces it. See §7a.
 
 ## 4. Fidelity, where it stands
 
-Baseline, `node tools/diff.cjs`:
+Historical Figma-era baseline, before the deliberate divergence:
 
 | screen | MAE | residual |
 |---|---|---|
@@ -112,10 +120,16 @@ Baseline, `node tools/diff.cjs`:
 | Checkout | 2.1390 % | ~3 px label/input offset in the payment row |
 | Confirmed | 2.8836 % | tracking-grid glyphs |
 
-Session start was 3.40 / 2.56 / 4.43 / 2.83 / 2.85 %. The big move was
-**deleting four invented products** (a lamp, sleep buds, a laptop stand, a
+Session start was 3.40 / 2.56 / 4.43 / 2.83 / 2.85 %. The big historical move
+was **deleting four invented products** (a lamp, sleep buds, a laptop stand, a
 tracker) — the frame says "4 products" in one row, and eight pushed the grid to
 a second row and moved Shop from 2.6 % to 3.4 %.
+
+After the landing/hero and iPhone-catalogue divergence, all five
+`tools/ref/*.png` images were deliberately re-baselined to the new renders.
+`node diff.cjs` now prints 0.0000 % on every screen; `node diff.cjs --figma`
+prints 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %. Those larger numbers are
+the intended design difference, not a regression.
 
 **Known approximations** (documented in `NOTES-red.md`, do not "fix" blindly):
 
@@ -130,15 +144,18 @@ a second row and moved Shop from 2.6 % to 3.4 %.
 
 ## 5. Behaviour that must keep working (`node tools/deep.cjs`)
 
-sort menu opens → cheapest first is "Glide Pro Mouse" · favourite survives a
-reload · search `watch` yields 1 card and keeps focus · Wearables nav reads
-"1 product" · clearing the email then paying shows "Check the highlighted
-fields" · fixing it and paying reaches the confirmed screen · the confirmed CTA
-returns to the shop · `errors: none` throughout.
+landing opens first with the footer hidden and a working shop CTA · sort menu
+opens → cheapest first is "iPhone 13" · favourite survives a reload · search
+`16` yields 1 card and keeps focus · Pro nav reads "2 iPhones" · clearing the
+email then paying shows "Check the highlighted fields" · fixing it and paying
+reaches the confirmed screen · the confirmed CTA returns to the shop ·
+`errors: none` throughout. `mobile.cjs` must print no `OVERFLOW` lines.
 
 ## 6. Decided against — do not retry
 
-- **Do not re-add invented products.** See §4; it costs 0.9 pt on Shop.
+- **Keep the catalogue iPhone-only.** Do not re-add the frame's earbuds,
+  headphones, watch, mouse or any invented products. The four-product grid
+  remains, but the products are four iPhone generations.
 - **Do not diff against `app-0N-*.png`** — wrong cart state. Use `frames.cjs`.
 - **Port 5173 is a dead vite server.** The app is served from
   `docs/mockup/` (see §8).
@@ -164,10 +181,10 @@ returns to the shop · `errors: none` throughout.
 - In-app iframes have no network: **everything must stay inlined base64**.
 - Python patches: always `assert old in s` before writing.
 
-## 7. In flight when this session ended — DO THIS
+## 7. Historical brief — implemented
 
-The user sent this and then stopped the work. Nothing of it has been started;
-the repo is at the last fidelity commit. Reproduced verbatim:
+The following request was in flight when the fidelity work ended. It has now
+been implemented on this branch; reproduced verbatim for context:
 
 > now i would like the following changes, first, i want us to use only iphones
 > images different version but we will only be selling iphones and use super
@@ -236,13 +253,23 @@ Implemented in this branch:
    strip and a closing shop CTA. The shared hero now uses transparent WebP
    cut-outs directly on `#FCE6E9` and overhangs the clipped panel edge; the old
    270 × 240 rounded `herotile.jpg` box is gone.
-2. **Deliberate Shop re-baseline.** Shop moved from 2.5169 % to **4.7872 %**
-   against the lossless Figma target (4.8861 % against the raw JPEG).
-   `tools/ref/01-shop.png` was replaced with the new render on purpose, so the
-   default regression run prints `0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %`.
-   The other four targets remain unchanged.
-3. **Probes.** `frames.cjs` opens `#/shop`; `mobile.cjs` and `deep.cjs` assert
+2. **First deliberate Shop re-baseline.** Shop moved from 2.5169 % to 4.7872 %
+   against the lossless Figma target (4.8861 % against the raw JPEG) after the
+   landing/hero change. `tools/ref/01-shop.png` was replaced with that render
+   on purpose.
+3. **iPhone-only catalogue.** The four products, categories, navigation,
+   search, detail copy, bag recommendations, seeded order, cart fixtures and
+   photography are now four iPhone generations: 16 Pro, 15, 14 Pro and 13.
+   Clean transparent WebP cut-outs are shown with `object-fit:contain` on the
+   existing measured plates. The frames' catalogue copy is explicitly no longer
+   binding.
+4. **Final deliberate re-baseline.** Because the catalogue appears across all
+   five measured screens, all `tools/ref/*.png` files were replaced with the
+   new renders. Default `node diff.cjs` prints 0.0000 % on all five; raw Figma
+   divergence is 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %.
+5. **Probes.** `frames.cjs` opens `#/shop`; `mobile.cjs` and `deep.cjs` assert
    the landing opens first, the footer is hidden, and the CTA reaches the shop.
+   Deep assertions now use iPhone names, search `16`, and the Pro category.
 
 ## 8. Preview
 

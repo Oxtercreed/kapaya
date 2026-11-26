@@ -36,7 +36,7 @@ const { launch, APP } = require('./lib.cjs');
 
   // 4. search filters live and keeps focus
   await p.click('.search input');
-  await p.type('.search input', 'watch');
+  await p.type('.search input', '16');
   await new Promise((r) => setTimeout(r, 250));
   console.log('search cards:', await p.$$eval('.card', (e) => e.length), '| focused:', await p.evaluate(() => document.activeElement.matches('.search input')));
 
@@ -44,13 +44,13 @@ const { launch, APP } = require('./lib.cjs');
   await p.evaluate(() => { document.querySelector('.search input').value = ''; });
   await p.click('[data-clear]');
   await new Promise((r) => setTimeout(r, 200));
-  await p.click('.nav-i[data-arg="wearables"]');
+  await p.click('.nav-i[data-arg="pro"]');
   await new Promise((r) => setTimeout(r, 200));
-  console.log('wearables count:', await p.$eval('.count', (e) => e.textContent));
+  console.log('pro count:', await p.$eval('.count', (e) => e.textContent));
 
   // 6. checkout validation
   await p.evaluate(() => {
-    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'aurora', qty: 1, color: 'Silver' }], favs: [], orders: [] }));
+    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }], favs: [], orders: [] }));
   });
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 250));

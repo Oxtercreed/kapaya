@@ -39,7 +39,7 @@ const fs = require('fs');
   await overflowing('product');
 
   await p.evaluate(() => {
-    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'aurora', qty: 1, color: 'Silver' }, { id: 'vertex', qty: 1, color: 'Midnight' }], favs: [], orders: [] }));
+    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }, { id: 'iphone-15', qty: 1, color: 'Blue' }], favs: [], orders: [] }));
   });
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 300));
