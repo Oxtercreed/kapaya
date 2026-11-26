@@ -366,8 +366,8 @@ const checkout = () => `
   ${T(391, 927, '', `<span style="display:inline-block;width:12px;height:12px;border-radius:6px;border:1.6px solid #6E7178"></span>`)}
   ${T(412, 926, 'font:500 14px/16px Inter;color:' + C.ink, 'VOLTA wallet')}
   ${FLD(93, 968, 408, 'Card number', '•••• •••• •••• 4242')}
-  ${FLD(542, 968, 197, 'Expiry date', '08 / 29')}
-  ${FLD(730, 968, 123, 'Security code', '•••')}
+  ${FLD(501, 968, 200, 'Expiry date', '08 / 29')}
+  ${FLD(739, 968, 116, 'Security code', '•••')}
 
   <div style="${at(920, 290, 456, 555, `background:${C.white};border-radius:22px`)}"></div>
   ${T(948, 318, 'font:600 24px/31px Inter;color:' + C.ink, 'Your order')}
@@ -389,8 +389,8 @@ const checkout = () => `
   ${T(949, 690, 'font:600 21px/26px Inter;color:' + C.ink, 'Total')}
   ${T(1199, 688, 'font:600 30px/34px Inter;color:' + C.ink, '$189.00', 'width:150px;text-align:right')}
   ${T(949, 734, 'font:400 12.5px/15px Inter;color:' + C.body, 'Tax included')}
-  <div style="${at(948, 761, 400, 48, `background:${C.accent};border-radius:24px`)}"></div>
-  ${T(948, 777, 'font:600 15px/16px Inter;color:#fff', 'Pay $189.00 securely', 'width:400px;text-align:center')}
+  <div style="${at(948, 769, 400, 48, `background:${C.accent};border-radius:24px`)}"></div>
+  ${T(948, 785, 'font:600 15px/16px Inter;color:#fff', 'Pay $189.00 securely', 'width:400px;text-align:center')}
   ${T(950, 866, 'font:400 13.5px/20px Inter;color:' + C.body, 'By placing your order, you agree to our Terms<br>and acknowledge our Privacy Policy.')}
 
   <div style="${at(920, 935, 456, 119, `background:${C.tintRow};border-radius:20px`)}"></div>
