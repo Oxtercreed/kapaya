@@ -93,7 +93,7 @@ pay) and screenshotted at 1440 × 1200, then diffed against `red/ref/`:
 | screen | MAE vs reference |
 |---|---|
 | Shop | 2.6 % |
-| Product details | 2.6 % |
+| Product details | 2.5 % |
 | Shopping bag | 3.3 % |
 | Checkout | 2.1 % |
 | Order confirmed | 2.9 % |
