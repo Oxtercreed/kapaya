@@ -32,10 +32,7 @@ desaturated on a near-white sweep so the violet stays the only colour in the roo
 The Figma file only defines desktop, so the phone layouts, Home, Account, Chat, Login and the
 loading animation are extensions of the same system rather than new inventions.
 
-## Rebuilding
+## Editing
 
-The deck is generated from the PNG/JPG screens in `shots/`:
-
-```bash
-python3 tools/build/mockup-deck.py     # from the repo root
-```
+`index.html` is a single self-contained file — no build step. To swap a screen, replace the
+matching file in `shots/` and re-inline it as a base64 `data:` URI in the `src` of that frame.

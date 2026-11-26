@@ -1,15 +1,6 @@
-node_modules
-dist
 .DS_Store
-*.local
-.vite
-kapaya-store-build.zip
-
-# figma personal access token (tools/figma-read.mjs)
 .env
-
-# working screenshots (regenerate with the harness)
-docs/shots/
+*.local
 
 # derived figma plugin assets (rebuild with figma-plugin/volta-mobile/build.cjs)
 figma-plugin/volta-mobile/img/*.b64
