@@ -4,3 +4,6 @@
 
 # derived figma plugin assets (rebuild with figma-plugin/volta-mobile/build.cjs)
 figma-plugin/volta-mobile/img/*.b64
+
+# self-contained deck: fonts are inlined into index.html by build.cjs
+docs/mockup/.fonts/

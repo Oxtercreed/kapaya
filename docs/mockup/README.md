@@ -1,38 +1,51 @@
-# VOLTA — storefront design
+# VOLTA — red screens mockup
 
-A design deliverable for an everyday-tech storefront. One violet-and-white system, drawn
-desktop-first, extended down to the phone.
+A design mockup of the five **red** screens from the Figma file, replicated at
+1:1 against the source frames: same 1440 × 1200 boxes, same colours, same
+copy, same prices, same photography.
 
-## View it
+**Open `index.html`** — that is the whole deliverable. It is a single
+self-contained page: Inter is inlined as base64 woff2 and the product images
+are inlined as base64 JPEG, so it renders identically with no build step, no
+server and no network.
 
-Open **`index.html`** in this folder. It is fully self-contained (images inlined), so it works
-offline and from `file://` — no server, no build step.
+```
+docs/mockup/
+├── index.html          the deck — five frames, desktop size, scales down to fit
+├── build.cjs           regenerates index.html  (node build.cjs)
+├── NOTES-red.md        the source frames, palette, grid and type scale
+├── .fonts/             Inter woff2 files that get inlined
+└── red/
+    ├── img/            product photography cropped from the Figma render
+    └── ref/            1:1 crops of the five Figma frames, for comparison
+```
 
-## What's in it
+## What is in it
 
-| Section | Contents |
-|---|---|
-| Cover | Brand line, scope, screen count |
-| Foundations | 7 colour tokens, 6 type steps — all taken from the Figma file |
-| Desktop · 1440 | Loading, Login, Home, Shop, Product details, Shopping bag, Checkout, Order confirmed, Account, Chat |
-| Mobile · 390 | The same nine screens at phone width |
-| Hand-off | What I'd add to the Figma file next |
+| # | screen | frame id |
+|---|---|---|
+| 01 | Shop — hero, category filter, four products, service strip | `8:2` |
+| 02 | Product details — gallery, colour + quantity, benefits, tabs | `8:92` |
+| 03 | Shopping bag — line item, free-shipping note, order summary | `8:161` |
+| 04 | Checkout — contact, address, payment, live order summary | `8:240` |
+| 05 | Order confirmed — receipt, tracking timeline, delivery details | `8:342` |
 
-`shots/` holds the raw screen images if you want to drop any of them into Figma or a deck.
+Each screen is the desktop frame exactly as drawn in Figma. The page scales the
+whole 1440 px canvas down when the window is narrower than it, so nothing
+reflows or clips — it behaves like a design deck rather than a responsive site.
 
-## The design, in a paragraph
+## Notes
 
-Field `#F8F8FC`, ink `#14171E`, body `#656976`, one accent `#7155E8` with two tints
-(`#EAE4FC` feature, `#EDE8FD` promo on `#493987` ink) and a single hairline `#E5E3EC`.
-Inter throughout: 28/700 wordmark, 40/600 product titles, 28/600 section heads, 15/400 nav,
-11/500 micro caps. 64 px page margins on a 1312 px content width, radii 28 / 22 / 18 / 12,
-product cards 304 × 326 in a four-up grid on 32 px gutters. Product photography is
-desaturated on a near-white sweep so the violet stays the only colour in the room.
+* The frames were reproduced by measuring a 1:1 render, not by reinterpreting
+  the design. Anything not in the file — extra screens, a mobile layout,
+  a palette shift — was deliberately left out.
+* All type is Inter, as in the file.
+* The product photos are crops of the Figma render at native size; the original
+  image fills sit behind signed URLs that could not be downloaded here, so
+  these are the sharpest copies available.
+* `red/ref/` holds the source frames so the reproduction can be diffed at any
+  time.
 
-The Figma file only defines desktop, so the phone layouts, Home, Account, Chat, Login and the
-loading animation are extensions of the same system rather than new inventions.
-
-## Editing
-
-`index.html` is a single self-contained file — no build step. To swap a screen, replace the
-matching file in `shots/` and re-inline it as a base64 `data:` URI in the `src` of that frame.
+To change anything, edit `build.cjs` and run `node build.cjs` — the frames are
+laid out with absolute coordinates in source order, so the numbers map straight
+onto the Figma layer positions.
