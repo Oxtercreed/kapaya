@@ -10,3 +10,6 @@ kapaya-store-build.zip
 
 # working screenshots (regenerate with the harness)
 docs/shots/
+
+# derived figma plugin assets (rebuild with figma-plugin/volta-mobile/build.cjs)
+figma-plugin/volta-mobile/img/*.b64
