@@ -5,13 +5,17 @@ const { launch, APP, OUT } = require('./lib.cjs');
 const path = require('path');
 const fs = require('fs');
 
+// The app opens on the editorial landing page; the measured store screens live
+// behind the shop CTA at #/shop.
+const SHOP = APP + '#/shop';
+
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
   const b = await launch({ defaultViewport: { width: 1440, height: 1200, deviceScaleFactor: 1 } });
   const p = await b.newPage();
   const errs = []; p.on('pageerror', (e) => errs.push(e.message));
   const open = async () => {
-    await p.goto(APP, { waitUntil: 'networkidle0' });
+    await p.goto(SHOP, { waitUntil: 'networkidle0' });
     await p.evaluate(() => localStorage.clear());
     await p.reload({ waitUntil: 'networkidle0' });
     await p.evaluate(() => document.fonts.ready);

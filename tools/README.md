@@ -17,14 +17,16 @@ SwiftShader runtime into git-ignored derived folders.
 | script | what it does |
 |---|---|
 | `node frames.cjs` | loads the app, clicks through all five screens, writes `/tmp/red/fr-0N-*.png` at 1440×1200, prints `errors: none` |
-| `node diff.cjs` | MAE of those shots against `ref/*.png`. A clean run prints **2.5169 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %**. `--figma` scores the raw JPEG crops in `docs/mockup/red/ref` instead (~0.1 pt higher: JPEG noise) |
+| `node diff.cjs` | MAE of those shots against `ref/*.png`. After the intentional Shop re-baseline a clean run prints **0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %**. `--figma` scores the raw JPEG crops in `docs/mockup/red/ref` instead (~0.1 pt higher: JPEG noise) |
 | `node mobile.cjs` | 390×844 @2x walk through every route; prints `OVERFLOW` if anything is wider than the viewport |
-| `node deep.cjs` | seven interaction assertions — sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
+| `node deep.cjs` | nine interaction assertions — landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
 
-`ref/*.png` are lossless captures of the render behind the numbers in
-`docs/mockup/NOTES-red.md`. They are a **regression** baseline: if a number
-moves, either the code changed or the environment did. They are not a design
-target — the design target is `docs/mockup/red/ref/*.jpg`.
+`ref/02-05.png` are lossless fidelity targets from the red frames.
+`ref/01-shop.png` was **deliberately re-baselined** to the new hero after the
+landing-page divergence, so its default regression score is 0.0000 %. The raw
+Figma crop in `docs/mockup/red/ref/01-shop.jpg` still reports the intentional
+design difference (~4.89 % with `--figma`). If an unchanged number moves, either
+the code changed or the environment did.
 
 `lib.cjs` holds the shared launcher (binary path, `--no-sandbox`,
 `LD_LIBRARY_PATH` for the nss shim, `file://` URL, shot directory). Set

@@ -226,6 +226,24 @@ now, so if a number regresses, re-baseline `tools/ref/01-shop.png` deliberately
 (and note it) instead of hunting a phantom regression. The other four screens
 should stay at their numbers unless their products changed.
 
+## 7a. Divergence log
+
+Implemented in this branch:
+
+1. **Landing + hero.** `store.route = 'home'` on first load, hash routes
+   (`#/shop`, `#/product/<id>`, etc.), a conditional footer hidden on home, and
+   an editorial landing page with three full-bleed product moments, a value
+   strip and a closing shop CTA. The shared hero now uses transparent WebP
+   cut-outs directly on `#FCE6E9` and overhangs the clipped panel edge; the old
+   270 × 240 rounded `herotile.jpg` box is gone.
+2. **Deliberate Shop re-baseline.** Shop moved from 2.5169 % to **4.7872 %**
+   against the lossless Figma target (4.8861 % against the raw JPEG).
+   `tools/ref/01-shop.png` was replaced with the new render on purpose, so the
+   default regression run prints `0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %`.
+   The other four targets remain unchanged.
+3. **Probes.** `frames.cjs` opens `#/shop`; `mobile.cjs` and `deep.cjs` assert
+   the landing opens first, the footer is hidden, and the CTA reaches the shop.
+
 ## 8. Preview
 
 The app is a static file, so the live preview is just a server over
@@ -241,9 +259,10 @@ be running on 8080 from the previous session — check before starting another.
 
 ## 9. Git
 
-Branch **`arena/232a3895-kapaya`** (branched from `main` at `e820cb3`). Work
-only on this branch, push only to it. `main` is the initial commit and is not
-to be merged into.
+This session's branch is **`arena/f802f442-kapaya`**, branched from `08bce96`
+on `arena/232a3895-kapaya`. Work only on the current branch, push only to it.
+`main` is the initial commit and is not to be merged into; older branch
+references above are historical.
 
 Recent history: `4b23632` product rating-label width · `948f563` checkout field
 rhythm · `1829653` confirmed grid · `9da8039` fidelity notes · `ee6ccac` bag

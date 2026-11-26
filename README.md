@@ -67,9 +67,9 @@ Writes `docs/mockup/index.html`. Nothing else to install.
 ```bash
 bash tools/fetch-chromium.sh       # once per clone (Chromium, git-ignored)
 cd tools && npm install
-node frames.cjs && node diff.cjs   # 2.52 / 2.52 / 3.25 / 2.14 / 2.88 %
-node mobile.cjs                    # 390 px walk, no overflow
-node deep.cjs                      # seven interaction assertions
+node frames.cjs && node diff.cjs   # 0.00 / 2.52 / 3.25 / 2.14 / 2.88 %
+node mobile.cjs                    # landing + 390 px walk, no overflow
+node deep.cjs                      # nine interaction assertions
 ```
 
 The catalogue is the four products the reference frames show — Aurora Buds Pro,
@@ -77,3 +77,9 @@ Vertex H9, Pulse Watch S2, Glide Pro Mouse — so the shop grid is a single row 
 four and every count in the UI reads `4 products`, matching the frames. Each of
 the four has its own detail copy (benefit set, specifications, reviews) rather
 than one earbud script reused across a lamp and a mouse.
+
+The first load is now an editorial **landing page** with no footer; the shop is
+behind its CTA at `#/shop`. Its hero uses transparent cut-outs on the hero
+panel itself, with no white tile, and bleeds off the panel edge. This is a
+deliberate divergence from the red Shop frame, so `tools/ref/01-shop.png` has
+been re-baselined on purpose; the other four fidelity targets are unchanged.

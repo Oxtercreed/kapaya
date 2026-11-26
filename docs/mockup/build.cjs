@@ -3,17 +3,18 @@
  * Builds docs/mockup/index.html — an interactive mockup of the VOLTA store.
  *
  * One screen at a time, real navigation between them, cart/quantity/filter/
- * search state that actually works. The visual design is the RED frame set in
- * the Figma file (zoygvtfjWN92VUiWAsSMOL — 8:2, 8:92, 8:161, 8:240, 8:342),
- * reproduced from measurements of a 1:1 render: same palette, same type scale,
- * same 64/1312 grid, same 824+32+456 split. See NOTES-red.md.
+ * search state that actually works. The store screens come from the RED frame
+ * set in the Figma file (zoygvtfjWN92VUiWAsSMOL — 8:2, 8:92, 8:161, 8:240,
+ * 8:342), reproduced from measurements of a 1:1 render: same palette, same
+ * type scale, same 64/1312 grid, same 824+32+456 split. The landing page and
+ * edge-bleeding hero are a deliberate divergence. See NOTES-red.md.
  *
- * Screens in the file:  Shop, Product, Bag, Checkout, Confirmed.
+ * Screens in the file:  Home (landing), Shop, Product, Bag, Checkout, Confirmed.
  * Screens added to make it navigable (same system, no new visual language):
  *  Account (My orders), Order detail, Help, and the search/filter empty state.
  *
  * Output is one self-contained HTML file: Inter inlined as base64 woff2, the
- * product photography inlined as base64 JPEG. No build step, no network.
+ * product photography inlined as base64 WebP/JPEG. No build step, no network.
  */
 
 const fs = require('fs');
@@ -21,10 +22,16 @@ const path = require('path');
 
 const ROOT = __dirname;
 const IMG = path.join(ROOT, 'red', 'img');
+const ASSETS = path.join(ROOT, 'assets');
 const FONTS = path.join(ROOT, '.fonts');
 
 const b64 = (p, mime) => `data:${mime};base64,${fs.readFileSync(p).toString('base64')}`;
-const img = (n) => b64(path.join(IMG, n), 'image/jpeg');
+const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp' };
+const img = (n) => {
+  const ext = path.extname(n).toLowerCase();
+  const dir = ext === '.jpg' || ext === '.jpeg' ? IMG : ASSETS;
+  return b64(path.join(dir, n), MIME[ext] || 'application/octet-stream');
+};
 const font = (w, f) => {
   const p = path.join(FONTS, f);
   return fs.existsSync(p)
@@ -150,7 +157,7 @@ const chrome = () => `
   <span>Free shipping on orders $100+</span>
 </div>
 <header class="hdr">
-  <a class="mark" data-go="shop">VOLTA</a>
+  <a class="mark" data-go="home">VOLTA</a>
   <span class="hdr-tools">
     <button class="hdr-ico" data-go="account" aria-label="My orders">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14171E" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.7-3.7 3.6-5.6 7-5.6s6.3 1.9 7 5.6"/></svg>
@@ -213,29 +220,106 @@ const plate = (p, cls = '') =>
 
 /* ══ screens ═════════════════════════════════════════════════════════════ */
 
+/* The hero artwork is a transparent cut-out living on the panel itself. No
+   image plate, no radius, no second background: it overhangs the clipped edge. */
+const heroBand = (variant) => {
+  const isHome = variant === 'home';
+  const from = money(Math.min.apply(null, PRODUCTS.map((p) => p.price)));
+  return `
+<section class="hero${isHome ? ' hero-home' : ''}">
+  <div class="hero-l">
+    <p class="eyebrow">ONE ICON. EVERY GENERATION.</p>
+    <h1 class="hero-h">Only iPhone.<br>Every era.</h1>
+    <p class="hero-p">Four generations, one clean edit. Find the one that fits your everyday.</p>
+    <a class="btn-dark" data-go="shop">${isHome ? 'Enter the shop' : 'Shop the collection'} <span class="arw">→</span></a>
+  </div>
+  <div class="hero-m">
+    <p class="eyebrow">THE COLLECTION</p>
+    <h2 class="hero-mh">Every generation,<br>considered.</h2>
+    <p class="hero-price">From ${from}</p>
+    <p class="hero-note">Curated iPhones · Nothing else</p>
+  </div>
+  <a class="hero-art" data-go="shop" aria-label="Shop the iPhone collection">
+    <img class="hero-phone hero-phone-back" src="${img('iphone-15-blue-back.webp')}" alt="">
+    <img class="hero-phone hero-phone-front" src="${img('iphone-16-pro-front.webp')}" alt="">
+  </a>
+</section>`;
+};
+
+/* Landing page — editorial, route-first, and deliberately footerless. */
+const home = () => `
+<main class="home">
+  ${heroBand('home')}
+
+  <section class="home-intro">
+    <div>
+      <p class="eyebrow">A SINGLE OBSESSION</p>
+      <h2 class="home-intro-h">Good tech, distilled<br>to one icon.</h2>
+      <p class="home-intro-p">VOLTA now does one thing: the iPhone. From the newest Pro to the generation that still feels just right, every device is presented without noise.</p>
+    </div>
+    <span class="home-intro-index">01 — 04</span>
+  </section>
+
+  <section class="home-moment home-moment-dark full">
+    <div class="home-moment-art home-art-left">
+      <img src="${img('iphone-16-pro-front.webp')}" alt="">
+    </div>
+    <div class="home-moment-copy home-copy-right">
+      <p class="home-kicker">01 / THE DISPLAY</p>
+      <h2 class="home-moment-h">A screen that<br>gets out of the way.</h2>
+      <p class="home-moment-p">Edge-to-edge glass, true-to-life colour and the quiet confidence of a display that simply disappears into whatever you are doing.</p>
+      <a class="home-link" data-go="shop">Explore the collection <span class="arw">→</span></a>
+    </div>
+  </section>
+
+  <section class="home-moment home-moment-blush full">
+    <div class="home-moment-copy">
+      <p class="home-kicker">02 / THE FINISH</p>
+      <h2 class="home-moment-h">Colour, material,<br>generation.</h2>
+      <p class="home-moment-p">Titanium, aluminium, blue glass and deep graphite. Four distinct chapters of the same unmistakable design language.</p>
+      <a class="home-link" data-go="shop">Find your finish <span class="arw">→</span></a>
+    </div>
+    <div class="home-moment-art home-art-right">
+      <img src="${img('iphone-15-blue-back.webp')}" alt="">
+    </div>
+  </section>
+
+  <section class="home-moment home-moment-pair full">
+    <div class="home-moment-art home-art-pair">
+      <img class="pair-back" src="${img('iphone-15-blue-back.webp')}" alt="">
+      <img class="pair-front" src="${img('iphone-16-pro-front.webp')}" alt="">
+    </div>
+    <div class="home-moment-copy home-copy-right">
+      <p class="home-kicker">03 / THE CHOICE</p>
+      <h2 class="home-moment-h">One family.<br>Your era.</h2>
+      <p class="home-moment-p">Choose the camera, finish and generation that match your everyday. No accessory aisles, no spec-sheet maze — just the phone.</p>
+      <a class="home-link" data-go="shop">Compare the edit <span class="arw">→</span></a>
+    </div>
+  </section>
+
+  <section class="home-values" aria-label="Why VOLTA">
+    <article class="home-value"><span class="home-value-n">01</span><h3>Only iPhones</h3><p>Four generations, edited with intent.</p></article>
+    <article class="home-value"><span class="home-value-n">02</span><h3>Clean presentation</h3><p>Every phone shown without the visual noise.</p></article>
+    <article class="home-value"><span class="home-value-n">03</span><h3>Free over $100</h3><p>Standard delivery, always included.</p></article>
+    <article class="home-value"><span class="home-value-n">04</span><h3>30-day returns</h3><p>Time to live with your choice.</p></article>
+  </section>
+
+  <section class="home-close">
+    <div>
+      <p class="eyebrow">READY WHEN YOU ARE</p>
+      <h2>Find the iPhone<br>that feels like yours.</h2>
+      <p>Four generations. One considered edit. The shop is just beyond this door.</p>
+    </div>
+    <a class="home-close-cta" data-go="shop">Enter the shop <span class="arw">→</span></a>
+  </section>
+</main>`;
+
 /* Shop — hero, filters, grid, service strip  (frame 8:2) */
 const shop = (state) => {
   const items = state.results;
-  const hero = byId('aurora');
   return `
 <main class="page">
-  ${state.query ? '' : `<section class="hero">
-    <div class="hero-l">
-      <p class="eyebrow">LESS NOISE. MORE YOU.</p>
-      <h1 class="hero-h">Your everyday,<br>upgraded.</h1>
-      <p class="hero-p">Discover audio that makes room for what matters.</p>
-      <a class="btn-dark" data-go="shop" data-arg="audio">Shop audio <span class="arw">→</span></a>
-    </div>
-    <div class="hero-m">
-      <p class="eyebrow">AURORA BUDS PRO</p>
-      <h2 class="hero-mh">${hero.hook}</h2>
-      <p class="hero-price">${money(hero.price)}</p>
-      <p class="hero-note">${hero.note}</p>
-    </div>
-    <a class="hero-r" data-go="product" data-arg="aurora" aria-label="Aurora Buds Pro">
-      <img class="hero-shot" src="${img('herotile.jpg')}" alt="Aurora Buds Pro">
-    </a>
-  </section>`}
+  ${state.query ? '' : heroBand('shop')}
 
   <h2 class="sec-h">Find your next everyday essential</h2>
   <p class="sec-p">Thoughtful design. Tech you’ll actually love.</p>
@@ -902,12 +986,12 @@ img{display:block;max-width:100%}
 .page{flex:1 0 auto;width:100%;max-width:1440px;margin:0 auto;padding:33px 64px 88px}
 @media (max-width:1440px){.hdr{padding:0 64px}}
 
-/* hero */
+/* hero — cut-outs sit directly on the panel and bleed past its clipped edge */
 .hero{
   height:318px;border-radius:28px;background:#FCE6E9;
   display:flex;align-items:center;position:relative;overflow:hidden;
 }
-.hero-l{padding-left:36px;width:540px;padding-top:4px}
+.hero-l{padding-left:36px;width:540px;padding-top:4px;position:relative;z-index:2}
 .eyebrow{font:600 12px/1.2 Inter,sans-serif;color:#96151F}
 .hero-h{font:600 48px/58px Inter,sans-serif;letter-spacing:-.022em;margin-top:14px}
 .hero-p{font:400 16px/19px Inter,sans-serif;color:#6B5F62;margin-top:28px}
@@ -918,13 +1002,27 @@ img{display:block;max-width:100%}
 }
 .btn-dark:hover{background:#22262F}
 .btn-dark.sm{height:44px;padding:0 24px}
-.hero-m{position:absolute;left:571px;top:0;width:430px;height:100%;display:flex;flex-direction:column;justify-content:center}
+.hero-m{
+  position:absolute;left:571px;top:0;width:318px;height:100%;
+  display:flex;flex-direction:column;justify-content:center;z-index:2;
+}
 .hero-mh{font:500 26px/30px Inter,sans-serif;letter-spacing:-.015em;margin-top:12px}
 .hero-price{font:600 22px/27px Inter,sans-serif;margin-top:22px}
 .hero-note{font:400 13px/16px Inter,sans-serif;color:#6B5F62;margin-top:24px}
-.hero-r{position:absolute;left:940px;top:18px;display:block}
-.hero-shot{width:270px;height:240px;border-radius:18px;object-fit:cover;transition:transform .3s ease}
-.hero-r:hover .hero-shot{transform:scale(1.02)}
+.hero-art{
+  position:absolute;right:-44px;top:-22px;width:430px;height:362px;
+  display:block;z-index:1;background:none;border-radius:0;
+}
+.hero-phone{
+  position:absolute;display:block;width:auto;max-width:none;height:100%;
+  object-fit:contain;border-radius:0;background:none;
+  filter:drop-shadow(0 24px 26px rgba(90,55,62,.18));
+  transition:transform .35s ease;
+}
+.hero-phone-back{height:312px;left:22px;top:30px;transform:rotate(-10deg)}
+.hero-phone-front{height:352px;right:2px;top:-8px;transform:rotate(7deg)}
+.hero-art:hover .hero-phone-back{transform:translateY(-8px) rotate(-12deg)}
+.hero-art:hover .hero-phone-front{transform:translateY(-10px) rotate(9deg)}
 
 /* section heads */
 .sec-h{font:600 28px/32px Inter,sans-serif;letter-spacing:-.006em;margin-top:39px}
@@ -1022,6 +1120,7 @@ img{display:block;max-width:100%}
 
 /* footer */
 .ftr{flex:0 0 108px;height:108px;background:#fff;border-top:1px solid #E8E6E7;margin-top:auto}
+body.is-home .ftr{display:none}
 .ftr-in{
   max-width:1440px;margin:0 auto;height:100%;padding:0 64px;
   display:flex;align-items:center;
@@ -1033,6 +1132,97 @@ img{display:block;max-width:100%}
 .ftr-l{font:400 14px/1 Inter,sans-serif}
 .ftr-l:hover{color:#C92332}
 .ftr-copy{font:400 12px/1 Inter,sans-serif;color:#656976}
+
+/* ── landing ───────────────────────────────────────────────────────────── */
+.home{
+  flex:1 0 auto;width:100%;max-width:1440px;margin:0 auto;
+  padding:28px 64px 0;overflow:hidden;
+}
+.hero-home{
+  height:520px;border-radius:32px;align-items:flex-start;
+  background:#FCE6E9;
+}
+.hero-home:after{
+  content:'VOLTA';position:absolute;right:42px;top:42px;
+  font:700 190px/1 Inter,sans-serif;letter-spacing:-.06em;
+  color:rgba(150,21,31,.07);z-index:0;pointer-events:none;
+}
+.hero-home .hero-l{width:690px;padding-left:64px;padding-top:34px}
+.hero-home .hero-h{font:600 72px/78px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
+.hero-home .hero-p{max-width:430px;font:400 17px/24px Inter,sans-serif;margin-top:24px}
+.hero-home .btn-dark{margin-top:26px;height:50px;padding:0 30px;border-radius:25px}
+.hero-home .hero-m{display:none}
+.hero-home .hero-art{right:-70px;top:-24px;width:610px;height:570px}
+.hero-home .hero-phone-back{height:500px;left:40px;top:34px;transform:rotate(-13deg)}
+.hero-home .hero-phone-front{height:555px;right:-22px;top:-18px;transform:rotate(9deg)}
+.home-intro{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:64px;
+  padding:96px 0 76px;position:relative;
+}
+.home-intro-h{font:600 52px/58px Inter,sans-serif;letter-spacing:-.035em;margin-top:20px}
+.home-intro-p{
+  max-width:520px;font:400 16px/25px Inter,sans-serif;color:#656976;margin-top:24px;
+}
+.home-intro-index{font:500 12px/1 Inter,sans-serif;color:#C92332;letter-spacing:.08em;white-space:nowrap}
+.home-moment{
+  position:relative;min-height:470px;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;overflow:hidden;border-radius:28px;
+}
+.home-moment.full{width:calc(100% + 128px);margin-left:-64px;border-radius:0}
+.home-moment-dark{background:#14171E;color:#fff}
+.home-moment-blush{background:#FCE6E9}
+.home-moment-pair{background:#D8F2E7}
+.home-moment-copy{position:relative;z-index:2;padding:64px;max-width:610px}
+.home-copy-right{grid-column:2}
+.home-kicker{font:600 11.5px/1 Inter,sans-serif;color:#C92332;letter-spacing:.08em}
+.home-moment-dark .home-kicker{color:#FDECEE}
+.home-moment-h{font:600 48px/54px Inter,sans-serif;letter-spacing:-.035em;margin-top:24px}
+.home-moment-p{font:400 16px/25px Inter,sans-serif;color:#656976;margin-top:24px;max-width:450px}
+.home-moment-dark .home-moment-p{color:#C9CBD1}
+.home-link{
+  display:inline-flex;align-items:center;gap:10px;margin-top:34px;
+  border-bottom:1px solid currentColor;padding-bottom:5px;
+  font:600 14px/1 Inter,sans-serif;color:#C92332;
+}
+.home-moment-dark .home-link{color:#fff}
+.home-link:hover{color:#96151F}
+.home-moment-dark .home-link:hover{color:#FDECEE}
+.home-moment-art{position:absolute;pointer-events:none;z-index:1}
+.home-moment-art img{
+  display:block;max-width:none;width:auto;height:auto;
+  filter:drop-shadow(0 30px 36px rgba(20,23,30,.22));
+}
+.home-art-left{left:-62px;bottom:-118px;width:380px}
+.home-art-left img{height:570px;transform:rotate(-9deg)}
+.home-art-right{right:-48px;bottom:-112px;width:360px}
+.home-art-right img{height:560px;transform:rotate(10deg)}
+.home-art-pair{left:8%;bottom:-90px;width:520px;height:530px}
+.home-art-pair img{position:absolute;height:520px}
+.home-art-pair .pair-back{left:20px;top:18px;transform:rotate(-12deg)}
+.home-art-pair .pair-front{right:20px;top:-8px;transform:rotate(10deg)}
+.home-values{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+  background:#E8E6E7;margin:0 0 0;
+}
+.home-value{background:#FAF9F9;padding:42px 32px 46px;min-height:190px}
+.home-value-n{font:600 11.5px/1 Inter,sans-serif;color:#C92332;letter-spacing:.08em}
+.home-value h3{font:600 20px/25px Inter,sans-serif;letter-spacing:-.015em;margin-top:26px}
+.home-value p{font:400 13.5px/20px Inter,sans-serif;color:#656976;margin-top:12px}
+.home-close{
+  min-height:390px;border-radius:32px 32px 0 0;background:#C92332;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:48px;
+  padding:72px 64px;margin-top:0;
+}
+.home-close .eyebrow{color:#fff}
+.home-close h2{font:600 56px/62px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
+.home-close p:last-child{font:400 15px/23px Inter,sans-serif;color:#FDECEE;margin-top:22px;max-width:430px}
+.home-close-cta{
+  display:inline-flex;align-items:center;gap:14px;height:58px;padding:0 34px;
+  border-radius:29px;background:#fff;color:#14171E;
+  font:600 15px/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .12s ease,background .12s ease;
+}
+.home-close-cta:hover{transform:translateY(-2px);background:#F5F3F3}
 
 /* breadcrumb */
 .crumb{font:400 13px/16px Inter,sans-serif;color:#6B6F79;display:flex;align-items:center}
@@ -1384,11 +1574,12 @@ img{display:block;max-width:100%}
   .hdr-row{flex-wrap:wrap;gap:6px}
   .page{padding:24px 28px 64px}
   .ftr-in{padding:0 28px}
-  .hero{height:auto;flex-direction:column;align-items:flex-start;padding:28px 24px;gap:26px}
-  .hero-l{padding-left:0;padding-top:0;width:auto}
-  .hero-m{position:static;width:auto;height:auto;display:block;padding-left:0}
-  .hero-r{position:static;margin:0;padding:0;width:100%}
-  .hero-shot{width:100%;height:220px}
+  .hero{min-height:560px;height:auto;flex-direction:column;align-items:flex-start;padding:28px 24px;gap:20px}
+  .hero-l{padding-left:0;padding-top:0;width:min(100%,520px)}
+  .hero-m{position:relative;left:auto;top:auto;width:auto;height:auto;display:block;padding-left:0}
+  .hero-art{right:-90px;top:auto;bottom:-70px;width:430px;height:430px}
+  .hero-phone-back{height:370px;left:10px;top:24px}
+  .hero-phone-front{height:420px;right:0;top:-8px}
   .hero-h{font-size:38px;line-height:46px}
   .hero-p{margin-top:16px}
   .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -1453,9 +1644,11 @@ img{display:block;max-width:100%}
   .count{order:3;margin-left:0;width:auto}
   .sortwrap{order:2;margin-left:auto}
   .sort{height:42px;padding:0 18px;font-size:13.5px}
-  .hero{padding:24px 22px;gap:22px;border-radius:22px}
+  .hero{min-height:510px;padding:24px 22px;gap:18px;border-radius:22px}
   .hero-h{font-size:30px;line-height:38px}
-  .hero-shot{height:190px}
+  .hero-art{right:-120px;bottom:-60px;width:340px;height:360px}
+  .hero-phone-back{height:310px;left:0;top:22px}
+  .hero-phone-front{height:355px;right:0;top:-8px}
   .eyebrow{font-size:11px}
   .sec-h{font-size:23px;line-height:29px;margin-top:34px}
   .hero-h{font-size:32px;line-height:40px}
@@ -1495,6 +1688,67 @@ img{display:block;max-width:100%}
   .tabpanel,.tab-p{font-size:13.5px}
 }
 
+@media (max-width:960px){
+  .home{padding:20px 28px 0}
+  .hero-home{min-height:620px;align-items:flex-start;padding:36px 30px}
+  .hero-home:after{font-size:130px;right:22px;top:34px}
+  .hero-home .hero-l{width:min(100%,580px);padding-left:0;padding-top:18px}
+  .hero-home .hero-h{font-size:52px;line-height:58px}
+  .hero-home .hero-art{right:-115px;top:auto;bottom:-90px;width:500px;height:500px}
+  .hero-home .hero-phone-back{height:430px;left:20px;top:30px}
+  .hero-home .hero-phone-front{height:490px;right:0;top:-8px}
+  .home-intro{padding:72px 0 56px;gap:32px}
+  .home-intro-h{font-size:42px;line-height:48px}
+  .home-moment.full{width:calc(100% + 56px);margin-left:-28px}
+  .home-moment{min-height:420px;grid-template-columns:1fr}
+  .home-moment-copy,.home-copy-right{grid-column:1;padding:44px 30px;max-width:560px}
+  .home-moment-h{font-size:38px;line-height:44px}
+  .home-art-left{left:-100px;bottom:-120px;width:300px}
+  .home-art-left img{height:470px}
+  .home-art-right{right:-110px;bottom:-120px;width:300px}
+  .home-art-right img{height:470px}
+  .home-art-pair{left:-80px;bottom:-110px;width:420px;height:450px;opacity:.8}
+  .home-art-pair img{height:440px}
+  .home-values{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-close{min-height:340px;padding:56px 30px;gap:32px}
+  .home-close h2{font-size:44px;line-height:50px}
+}
+@media (max-width:640px){
+  .home{padding:16px 18px 0}
+  body.is-home{overflow-x:hidden}
+  .hero-home{min-height:560px;padding:28px 22px;border-radius:22px}
+  .hero-home:after{font-size:86px;right:14px;top:28px}
+  .hero-home .hero-l{width:100%;padding-top:12px}
+  .hero-home .hero-h{font-size:40px;line-height:46px;letter-spacing:-.035em}
+  .hero-home .hero-p{font-size:15px;line-height:22px;max-width:330px;margin-top:18px}
+  .hero-home .btn-dark{margin-top:20px}
+  .hero-home .hero-art{right:-145px;bottom:-90px;width:390px;height:420px}
+  .hero-home .hero-phone-back{height:365px;left:10px;top:28px}
+  .hero-home .hero-phone-front{height:415px;right:0;top:-8px}
+  .home-intro{padding:58px 0 44px;display:block}
+  .home-intro-h{font-size:34px;line-height:40px}
+  .home-intro-p{font-size:14px;line-height:22px}
+  .home-intro-index{display:none}
+  .home-moment.full{width:calc(100% + 36px);margin-left:-18px}
+  .home-moment{min-height:440px}
+  .home-moment-copy,.home-copy-right{padding:34px 22px}
+  .home-moment-h{font-size:32px;line-height:38px}
+  .home-moment-p{font-size:14px;line-height:22px;max-width:330px}
+  .home-link{margin-top:26px}
+  .home-art-left{left:-130px;bottom:-120px;width:250px}
+  .home-art-left img{height:400px}
+  .home-art-right{right:-130px;bottom:-120px;width:250px}
+  .home-art-right img{height:400px}
+  .home-art-pair{left:-150px;bottom:-120px;width:360px;height:400px;opacity:.55}
+  .home-art-pair img{height:390px}
+  .home-values{grid-template-columns:1fr}
+  .home-value{min-height:150px;padding:30px 24px 34px}
+  .home-close{min-height:420px;flex-direction:column;align-items:flex-start;justify-content:center;padding:48px 22px;border-radius:24px 24px 0 0}
+  .home-close h2{font-size:36px;line-height:42px}
+  .home-close p:last-child{font-size:14px;line-height:21px}
+  .home-close-cta{height:52px;padding:0 26px}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -1507,7 +1761,7 @@ img{display:block;max-width:100%}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
+for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg','iphone-16-pro-front.webp','iphone-15-blue-back.webp']) {
   PICS[n] = img(n);
 }
 
@@ -1532,6 +1786,8 @@ const HELPERS = [
   named('heartSvg', heartSvg),
   named('card', card),
   named('fld', fld),
+  named('heroBand', heroBand),
+  named('home', home),
   named('shop', shop),
   named('product', product),
   named('bag', bag),
@@ -1540,15 +1796,22 @@ const HELPERS = [
   named('account', account),
   named('orderDetail', orderDetail),
   named('help', help),
-  'const VIEWS = { shop, product, bag, checkout, confirmed, account, order: orderDetail, help };',
+  'const VIEWS = { home, shop, product, bag, checkout, confirmed, account, order: orderDetail, help };',
 ].join('\n');
 
 const RUNTIME = String.raw`
+const initialParts = location.hash.replace(/^#\/?/, '').split('/');
+const initialRoute = initialParts[0] === 'orders' ? 'order' : initialParts[0];
+const initialArg = initialParts[1] || null;
+const initialProduct = byId(initialArg) || PRODUCTS[0];
+let expectedHash = location.hash || '#/home';
+
 const store = {
-  route: 'shop', arg: null,
+  route: VIEWS[initialRoute] ? initialRoute : 'home', arg: null,
   cart: [], favs: [], orders: [],
-  cat: 'all', sort: 'featured', query: '',
-  product: PRODUCTS[0], qty: 1, color: PRODUCTS[0].colors[0], tab: 'overview',
+  cat: initialRoute === 'shop' && initialArg && !['all', 'store'].includes(initialArg) ? initialArg : 'all',
+  sort: 'featured', query: '',
+  product: initialProduct, qty: 1, color: initialProduct.colors[0], tab: 'overview',
   promo: '', promoMsg: '', discount: 0,
   form: {
     email: 'alex.morgan@example.com',
@@ -1622,10 +1885,13 @@ function paint() {
     order: store.viewOrder || store.orders[0] || null,
   });
   $('#app').innerHTML = view(state);
+  document.body.classList.toggle('is-home', store.route === 'home');
 
-  const active = store.route === 'shop'
-    ? (store.cat === 'all' ? 'Shop' : store.cat)
-    : (store.route === 'product' ? store.product.cat : 'Shop');
+  const active = store.route === 'home'
+    ? ''
+    : store.route === 'shop'
+      ? (store.cat === 'all' ? 'Shop' : store.cat)
+      : (store.route === 'product' ? store.product.cat : 'Shop');
   $$('.nav-i').forEach((a) => a.classList.toggle('is-current', a.dataset.nav === active));
 
   $$('[data-bagcount]').forEach((el) => {
@@ -1637,18 +1903,45 @@ function paint() {
   if (si && document.activeElement !== si) si.value = store.query;
 }
 
-function go(route, arg) {
+function setStoreRoute(route, arg) {
   store.route = route;
   store.arg = arg || null;
-  if (route === 'shop') store.cat = arg || 'all';
+  if (route === 'shop') {
+    store.cat = !arg || arg === 'all' || arg === 'store' ? 'all' : arg;
+  }
   if (route === 'product') {
     const p = byId(arg) || PRODUCTS[0];
     store.product = p; store.qty = 1; store.color = p.colors[0]; store.tab = 'overview';
   }
   if (route === 'account') store.viewOrder = null;
+}
+
+function routeHash(route, arg) {
+  const key = route === 'order' ? 'orders' : route;
+  if (route === 'product') return '#/product/' + (store.product ? store.product.id : arg || '');
+  if (route === 'shop' && arg && !['all', 'store'].includes(arg)) return '#/shop/' + arg;
+  return '#/' + key;
+}
+
+function go(route, arg) {
+  setStoreRoute(route, arg);
+  const hash = routeHash(route, arg);
+  expectedHash = hash;
+  if (location.hash !== hash) location.hash = hash;
   paint();
   window.scrollTo(0, 0);
 }
+
+window.addEventListener('hashchange', () => {
+  if (location.hash === expectedHash) return;
+  expectedHash = location.hash;
+  const parts = location.hash.replace(/^#\/?/, '').split('/');
+  const route = parts[0] === 'orders' ? 'order' : parts[0];
+  if (!VIEWS[route]) return;
+  setStoreRoute(route, parts[1] || null);
+  paint();
+  window.scrollTo(0, 0);
+});
 
 document.addEventListener('click', (e) => {
   const t = e.target.closest('[data-go],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
@@ -1728,7 +2021,11 @@ document.addEventListener('click', (e) => {
 document.addEventListener('input', (e) => {
   if (e.target.matches('[data-search] input')) {
     store.query = e.target.value.trim();
-    if (store.route !== 'shop') store.route = 'shop';
+    if (store.route !== 'shop') {
+      expectedHash = '#/shop';
+      store.route = 'shop';
+      if (location.hash !== expectedHash) location.hash = expectedHash;
+    }
     const pos = e.target.selectionStart;
     paint();
     const again = $('.search input');
@@ -1746,7 +2043,7 @@ document.addEventListener('submit', (e) => {
   if (e.target.matches('[data-search]')) {
     e.preventDefault();
     const i = $('.search input');
-    if (i) { store.query = i.value.trim(); store.route = 'shop'; paint(); }
+    if (i) { store.query = i.value.trim(); go('shop', store.cat); }
     return;
   }
   if (!e.target.matches('[data-checkout]')) return;

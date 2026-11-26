@@ -19,6 +19,17 @@ const fs = require('fs');
     if (w.doc > w.win + 1) console.log('OVERFLOW', label, w.doc, '>', w.win);
   };
 
+  // First load is the landing page. It has no footer and its CTA opens the shop.
+  await shot('00-home');
+  await overflowing('home');
+  const landing = await p.evaluate(() => ({
+    home: !!document.querySelector('.home'),
+    footerHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+  }));
+  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden);
+  await p.click('.home [data-go="shop"]');
+  await new Promise((r) => setTimeout(r, 300));
+
   await shot('01-shop');
   await overflowing('shop');
 

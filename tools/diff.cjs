@@ -6,9 +6,11 @@
 //                               so these numbers sit ~0.1 pt higher and are
 //                               only good for spot-checks)
 //
-// tools/ref/*.png are lossless PNGs of the exact render that scored
-// 2.52 / 2.52 / 3.25 / 2.14 / 2.88 %, so a clean run must print those numbers
-// back.  If it does not, the markup or the environment drifted.
+// tools/ref/02-05 are the lossless Figma targets behind
+// 2.52 / 3.25 / 2.14 / 2.88 %. tools/ref/01-shop.png was deliberately
+// re-baselined to the edge-bleeding landing/shop hero, so a clean default run
+// prints 0.0000 / 2.5178 / 3.2505 / 2.1390 / 2.8836 %. Use --figma to see the
+// intentional Shop divergence against the original raw JPEG crop.
 const { execSync } = require('child_process');
 const path = require('path');
 const { OUT } = require('./lib.cjs');

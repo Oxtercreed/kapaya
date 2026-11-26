@@ -103,6 +103,17 @@ is deliberately the frame's four products: an earlier build added four more
 invented ones, which pushed the shop into a second row and moved the Shop frame
 from 2.6 % to 3.4 %.
 
+## Deliberate divergence: landing + hero
+
+The first load is now a footerless editorial landing page, and the Shop hero
+uses transparent iPhone cut-outs directly on `#FCE6E9`, bleeding past the
+panel's clipped edge instead of sitting in a 270 × 240 rounded tile. This is no
+longer a fidelity target: Shop is **4.8861 %** against the raw Figma JPEG
+(4.7872 % against the lossless crop) after the change. `tools/ref/01-shop.png`
+was re-baselined to the intentional new render; the unchanged Product, Bag,
+Checkout and Confirmed references still print 2.5178 / 3.2505 / 2.1390 /
+2.8836 %.
+
 ## Known approximations
 
 - The frame's card plates are crops that still contain their own badge and heart
