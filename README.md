@@ -62,6 +62,8 @@ ink at low alpha. If a value needs to stand out it gets weight, scale or a hairl
   and the round-trip workflow with Figma.
 - `design/tokens.dtcg.json` — W3C DTCG token file (importable into Tokens Studio / Figma variables).
 - `design/tokens.css` — the same values as CSS custom properties.
+- `design/FIGMA-SETUP.md` — where to create a Figma file, how to share it, and how to build it
+  so the node read comes back accurate (page-per-screen, real text layers, auto layout).
 
 ### Working with a Figma file
 
