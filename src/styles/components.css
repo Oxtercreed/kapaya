@@ -305,7 +305,7 @@
 .searchbox:focus-within {
   border-color: var(--ink-soft);
   background: var(--white);
-  box-shadow: 0 0 0 3px rgba(180, 85, 45, 0.08);
+  box-shadow: none;
 }
 .searchbox input {
   flex: 1;
@@ -361,7 +361,7 @@
 }
 .total-row.is-muted {
   font-size: 12.5px;
-  color: var(--ok);
+  color: var(--ink);
 }
 
 /* ---------- misc bits ---------- */
@@ -383,7 +383,7 @@
 .tick-list svg {
   flex: none;
   margin-top: 3px;
-  color: var(--olive);
+  color: var(--ink-2);
 }
 
 .divider {

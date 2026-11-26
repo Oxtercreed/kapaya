@@ -118,8 +118,8 @@
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--clay-deep);
-  background: rgba(180, 85, 45, 0.1);
+  color: var(--ink-2);
+  background: var(--paper-3);
   padding: 4px 9px;
   border-radius: var(--r-pill);
 }
@@ -420,7 +420,7 @@
 }
 .review__verified {
   font-size: 10.5px;
-  color: var(--ok);
+  color: var(--ink);
   display: inline-flex;
   gap: 5px;
   align-items: center;

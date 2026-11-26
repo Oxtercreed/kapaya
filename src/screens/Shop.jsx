@@ -283,15 +283,34 @@ export default function Shop() {
                 </Link>{' '}
                 / {qParam ? 'Search' : 'Shop'}
               </p>
-              <h1>{qParam ? `“${qParam}”` : filters.category ? categoryName(filters.category) : 'Everything, by hand'}</h1>
+              <h1>
+                {qParam ? (
+                  <>
+                    <em>“{qParam}”</em>
+                  </>
+                ) : filters.category ? (
+                  <>
+                    {categoryName(filters.category).split(' ')[0]}
+                    <br />
+                    <em>collection.</em>
+                  </>
+                ) : (
+                  <>
+                    Everything,
+                    <br />
+                    <em>by hand.</em>
+                  </>
+                )}
+              </h1>
             </div>
             <div className="shop-head__meta">
               <div className="shop-head__count">
-                {filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'}
+                {String(filtered.length).padStart(2, '0')} {filtered.length === 1 ? 'piece' : 'pieces'}
               </div>
-              <div className="faint" style={{ fontSize: 11.5 }}>
+              <div>
                 {qParam ? 'Matching your search' : 'In the studio right now'}
               </div>
+              <div className="shop-head__folio">Catalogue No. 07 — Dar es Salaam</div>
             </div>
           </div>
 

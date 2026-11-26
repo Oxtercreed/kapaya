@@ -64,7 +64,7 @@
   line-height: 1.25;
 }
 .cline__name:hover {
-  color: var(--clay-deep);
+  color: var(--ink-2);
 }
 .cline__opts {
   font-size: 12px;
@@ -83,7 +83,7 @@
 }
 .cline__stock {
   font-size: 11px;
-  color: var(--ok);
+  color: var(--ink-2);
   display: inline-flex;
   gap: 5px;
   align-items: center;
@@ -103,8 +103,8 @@
   transition: 0.2s;
 }
 .cline__remove:hover {
-  color: var(--clay-deep);
-  border-color: var(--clay-deep);
+  color: var(--ink-2);
+  border-color: var(--ink-2);
 }
 .cline__price {
   text-align: right;
@@ -155,10 +155,10 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;
-  background: rgba(107, 112, 85, 0.12);
+  background: var(--paper-3);
   border-radius: var(--r-sm);
   font-size: 12.5px;
-  color: var(--olive);
+  color: var(--ink-2);
   margin-bottom: 12px;
 }
 .promo-applied button {
@@ -185,7 +185,7 @@
   align-items: center;
 }
 .summary__perks svg {
-  color: var(--olive);
+  color: var(--ink-2);
   flex: none;
 }
 
@@ -202,7 +202,7 @@
 }
 .ship-meter__fill {
   height: 100%;
-  background: var(--olive);
+  background: var(--ink);
   border-radius: 99px;
   transition: width 0.6s var(--ease);
 }
@@ -272,8 +272,8 @@
   color: var(--paper-2);
 }
 .step.is-done .step__n {
-  background: var(--olive);
-  border-color: var(--olive);
+  background: var(--ink);
+  border-color: var(--ink-2);
   color: #fff;
 }
 .step.is-done {
@@ -339,7 +339,7 @@
   height: 74px;
   border-radius: 50%;
   background: rgba(107, 112, 85, 0.14);
-  color: var(--olive);
+  color: var(--ink-2);
   display: grid;
   place-items: center;
   margin: 0 auto 18px;
@@ -552,23 +552,23 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 10.5px;
+  border-radius: 0;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 .order__status--processing {
-  background: rgba(168, 118, 42, 0.14);
-  color: var(--warn);
+  background: var(--paper-3);
+  color: var(--ink-2);
 }
 .order__status--transit {
-  background: rgba(180, 85, 45, 0.12);
-  color: var(--clay-deep);
+  background: var(--ink);
+  color: var(--paper);
 }
 .order__status--delivered {
-  background: rgba(107, 112, 85, 0.15);
-  color: var(--olive);
+  background: var(--paper-3);
+  color: var(--ink-2);
 }
 .order__body {
   padding: 16px;

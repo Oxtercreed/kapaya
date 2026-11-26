@@ -32,6 +32,8 @@ import './styles/plp.css'
 import './styles/product.css'
 import './styles/cart.css'
 import './styles/chat.css'
+import './styles/mono.css'
+import './styles/mono-pages.css'
 
 /* Keeps scroll-reveal observers fresh on every navigation */
 function RevealBridge() {

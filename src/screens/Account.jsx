@@ -277,7 +277,7 @@ export function Orders() {
       <div className="acct__head">
         <div>
           <h1>Orders</h1>
-          <p>Everything you’ve brought home from the studio.</p>
+          <p className="page-sub">Everything you’ve brought home from the studio.</p>
         </div>
         <div className="segmented">
           {[

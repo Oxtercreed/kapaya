@@ -102,7 +102,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #6f8f5f;
+  background: var(--ink);
   border: 2px solid var(--paper);
   z-index: 3;
 }
@@ -162,7 +162,7 @@
 .chat-list__foot svg {
   flex: none;
   margin-top: 2px;
-  color: var(--olive);
+  color: var(--ink-2);
 }
 
 /* -------- conversation -------- */
@@ -195,7 +195,7 @@
 }
 .chat-head__status {
   font-size: 11px;
-  color: var(--olive);
+  color: var(--ink-2);
   display: flex;
   gap: 5px;
   align-items: center;
@@ -205,7 +205,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #6f8f5f;
+  background: var(--ink);
   display: block;
 }
 .chat-head__tools {
@@ -306,7 +306,7 @@
   padding-inline: 4px;
 }
 .msg__meta .ticks {
-  color: var(--olive);
+  color: var(--ink-2);
   font-size: 10px;
 }
 .msg__product {
@@ -417,7 +417,7 @@
 }
 .chat-compose__box:focus-within {
   border-color: var(--ink-soft);
-  box-shadow: 0 0 0 3px rgba(180, 85, 45, 0.08);
+  box-shadow: none;
 }
 .chat-compose textarea {
   flex: 1;
@@ -546,7 +546,7 @@
   border-bottom: 1px solid var(--line);
 }
 .chat-info__quick a:hover {
-  color: var(--clay-deep);
+  color: var(--ink-2);
 }
 
 @media (max-width: 1100px) {

@@ -21,6 +21,18 @@ function relativiseImages() {
       if (!code.includes('/images/')) return null
       return { code: code.replace(IMAGE_REWRITE, '$1images/'), map: null }
     },
+    // CSS is inlined into a JS chunk, so also rewrite url(/images/...) and
+    // background url(/images/...) string literals inside every emitted chunk.
+    renderChunk(code) {
+      if (!isBuild) return null
+      if (!code.includes('/images/')) return null
+      return {
+        code: code
+          .replace(/url\(\/images\//g, 'url(images/')
+          .replace(/(['"`])\/images\//g, '$1images/'),
+        map: null,
+      }
+    },
     generateBundle(_options, bundle) {
       for (const file of Object.values(bundle)) {
         if (file.type !== 'asset' || !file.fileName.endsWith('.css')) continue

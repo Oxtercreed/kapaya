@@ -4,3 +4,6 @@ dist
 *.local
 .vite
 kapaya-store-build.zip
+
+# figma personal access token (tools/figma-read.mjs)
+.env

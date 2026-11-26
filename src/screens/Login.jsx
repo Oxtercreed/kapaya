@@ -70,40 +70,60 @@ export default function Login() {
 
   return (
     <div className="gate">
-      <aside className="gate__visual">
-        <img src="/images/hero-salon.jpg" alt="A sunlit living room with handmade ceramics" />
-        <div className="gate__visual-inner">
-          <span className="wordmark">KAPAYA</span>
-          <div>
-            <span className="gate__pill">
-              <IconCheck size={12} /> Free delivery over TZS 500,000
+      <aside className="m-gate-visual">
+        <div className="m-gate-visual__inner">
+          <div className="m-gate-visual__top">
+            <span className="wordmark" style={{ color: 'var(--paper)' }}>
+              KAPAYA
             </span>
-            <p className="gate__quote" style={{ marginTop: 18 }}>
-              “The objects we keep should get better with time.”
-            </p>
-            <p className="gate__quote-by">Kapaya Studio — Dar es Salaam</p>
+            <span className="eyebrow" style={{ color: 'rgba(251,250,247,0.55)' }}>
+              Est. 2014
+            </span>
+          </div>
+          <h2 className="m-gate-visual__quote">
+            “The objects we keep
+            <br />
+            should <em>get better</em>
+            <br />
+            with time.”
+          </h2>
+          <div className="m-gate-visual__foot">
+            <span>Kapaya Studio — Dar es Salaam</span>
+            <span>Catalogue No. 07</span>
           </div>
         </div>
       </aside>
 
       <section className="gate__form-side">
-        <div className="gate__form-wrap">
+        <div className="gate__form-wrap m-gate__form">
           <div className="gate__mobile-brand">
             <span className="wordmark">KAPAYA</span>
             <span className="tiny-meta">Dar es Salaam</span>
           </div>
 
-          <p className="eyebrow gate__eyebrow">
-            <span className="dot" /> {mode === 'signin' ? 'Welcome back' : 'Karibu sana'}
-          </p>
-          <h1>{mode === 'signin' ? 'Sign in to your studio.' : 'Make the studio yours.'}</h1>
+          <span className="m-gate__folio">{mode === 'signin' ? 'I' : 'II'} — {mode === 'signin' ? 'Welcome back' : 'Karibu sana'}</span>
+          <h1 className="m-gate__title">
+            {mode === 'signin' ? (
+              <>
+                Sign in to
+                <br />
+                <em>your studio.</em>
+              </>
+            ) : (
+              <>
+                Make the
+                <br />
+                <em>studio yours.</em>
+              </>
+            )}
+          </h1>
           <p className="gate__sub">
             {mode === 'signin'
               ? 'Your saved pieces, orders and notes from the maker — all in one quiet place.'
               : 'Save the pieces you love, follow makers, and get first look at new batches.'}
           </p>
 
-          <div className="gate__socials">
+          <div className="gate__socials m-gate__socials">
             <button className="social-btn" onClick={() => social('Google')} disabled={busy}>
               <IconGoogle /> Continue with Google
             </button>
