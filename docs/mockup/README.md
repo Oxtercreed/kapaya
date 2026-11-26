@@ -37,7 +37,9 @@ docs/mockup/
 
 State lives in `localStorage` (`volta.state`), so bag, saved items, form values
 and orders survive a reload. The catalogue is four iPhone generations — 16 Pro,
-15, 14 Pro and 13 — with Pro, Standard and Classic categories.
+15, 14 Pro and 13 — with Pro, Standard and Classic categories. On phones the
+cards collapse to a compact two-column image + name + price invitation with no
+card buttons; desktop keeps the measured card.
 
 ## Design origin
 

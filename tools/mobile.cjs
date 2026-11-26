@@ -32,6 +32,18 @@ const fs = require('fs');
 
   await shot('01-shop');
   await overflowing('shop');
+  const cardState = await p.evaluate(() => {
+    const card = document.querySelector('.card');
+    const cards = document.querySelector('.cards');
+    const hidden = ['.card-link', '.heart', '.card-kind', '.card-rate', '.badge']
+      .every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none');
+    return {
+      height: Math.round(card.getBoundingClientRect().height),
+      columns: getComputedStyle(cards).gridTemplateColumns.split(' ').length,
+      trimmed: hidden,
+    };
+  });
+  console.log('mobile cards:', cardState.height + 'px', '| columns:', cardState.columns, '| trimmed:', cardState.trimmed);
 
   await p.evaluate(() => document.querySelector('.cards .card-plate, .card-plate').click());
   await new Promise((r) => setTimeout(r, 300));

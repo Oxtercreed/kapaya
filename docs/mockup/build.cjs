@@ -1674,16 +1674,25 @@ body.is-home .ftr{display:none}
   .search{width:auto;flex:1;min-width:0;height:42px}
   .orders{display:none}
   .bag-pill{height:42px;min-width:0;padding:0 18px;font-size:13px}
-  .cards{grid-template-columns:1fr}
+  /* phones: image + name + price, two compact invitations per row */
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+  .card{padding:8px 8px 12px;border-radius:14px}
+  .card-plate{aspect-ratio:1/1;border-radius:10px}
+  .plate-bg img{padding:8px 14px}
+  .card-kind,.card-rate,.card-link,.badge,.heart{display:none}
+  .card-name{font:600 14px/18px Inter,sans-serif;letter-spacing:-.004em;margin-top:8px}
+  .card-foot{margin-top:8px;padding-top:0}
+  .card-price{font:600 14px/17px Inter,sans-serif}
   .chip{height:42px;padding:0 18px;font-size:13.5px;white-space:nowrap}
   .filter-row{flex-wrap:wrap;gap:12px;margin-top:18px}
   .chips{flex-wrap:wrap;gap:10px;width:100%}
   .count{order:3;margin-left:0;width:auto}
   .sortwrap{order:2;margin-left:auto}
   .sort{height:42px;padding:0 18px;font-size:13.5px}
-  .hero{min-height:510px;padding:24px 22px;gap:18px;border-radius:22px}
+  .hero{min-height:430px;padding:24px 22px;gap:18px;border-radius:22px}
+  .hero-m{display:none}
   .hero-h{font-size:30px;line-height:38px}
-  .hero-art{right:-120px;bottom:-60px;width:340px;height:360px}
+  .hero-art{right:-130px;bottom:-70px;width:340px;height:360px}
   .hero-phone-back{height:310px;left:0;top:22px}
   .hero-phone-front{height:355px;right:0;top:-8px}
   .eyebrow{font-size:11px}

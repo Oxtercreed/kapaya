@@ -45,7 +45,9 @@ survive a reload — and a checkout adds a real order you can open from **My ord
 
 Layout is responsive: 1440 px desktop to a 390 px phone, with the same tokens
 throughout. On phones the header folds to a wordmark, an account icon, a search
-row, a scrolling nav and a bag pill.
+row, a scrolling nav and a bag pill; product cards become compact two-column
+invitations with only image, name and price, and no card buttons. The measured
+desktop card remains unchanged.
 
 ## The system, in a paragraph
 

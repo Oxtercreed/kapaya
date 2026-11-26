@@ -116,6 +116,10 @@ Standard and Classic. The frames' catalogue copy (including "LESS NOISE. MORE
 YOU.", "Your everyday, upgraded." and "Find your next everyday essential") is
 explicitly no longer binding.
 
+On phones (`≤640`) the catalogue cards are deliberately smaller: a two-column
+grid of image + name + price only, with badges, ratings, hearts and "View
+product" links hidden. The desktop card remains the measured 304 × 326 plate.
+
 This is not a fidelity target. After both deliberate changes, raw Figma JPEG
 MAE is **6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %**. All five
 `tools/ref/*.png` regression references were replaced with the intentional new

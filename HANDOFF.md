@@ -149,7 +149,9 @@ opens → cheapest first is "iPhone 13" · favourite survives a reload · search
 `16` yields 1 card and keeps focus · Pro nav reads "2 iPhones" · clearing the
 email then paying shows "Check the highlighted fields" · fixing it and paying
 reaches the confirmed screen · the confirmed CTA returns to the shop ·
-`errors: none` throughout. `mobile.cjs` must print no `OVERFLOW` lines.
+`errors: none` throughout. `mobile.cjs` must print no `OVERFLOW` lines and
+must report two compact card columns with the extra card information and card
+buttons hidden.
 
 ## 6. Decided against — do not retry
 
@@ -270,6 +272,12 @@ Implemented in this branch:
 5. **Probes.** `frames.cjs` opens `#/shop`; `mobile.cjs` and `deep.cjs` assert
    the landing opens first, the footer is hidden, and the CTA reaches the shop.
    Deep assertions now use iPhone names, search `16`, and the Pro category.
+6. **Compact phone cards.** In the `≤640` block only, cards become a two-column
+   grid of roughly 226 px invitations showing image + name + price. Badges,
+   ratings, kind, hearts and "View product" links are hidden; the plate itself
+   remains clickable. The measured desktop card is untouched, so no desktop
+   reference needed another re-baseline. The mobile hero note is hidden on
+   phones so the cut-out does not collide with the copy.
 
 ## 8. Preview
 
