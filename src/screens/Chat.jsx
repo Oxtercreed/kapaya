@@ -20,20 +20,20 @@ import {
 } from '../components/Icons'
 
 const THREADS = [
-  { id: 'studio', name: 'Kapaya Studio', role: 'Zawadi · studio team', av: 'KP', cls: 'thread__av--studio', online: true },
+  { id: 'studio', name: 'VOLTA', role: 'Zawadi · VOLTA team', av: 'VT', cls: 'thread__av--studio', online: true },
   { id: 'care', name: 'Care & repairs', role: 'Neema · aftercare', av: 'CR', cls: 'thread__av--care' },
   { id: 'shipping', name: 'Delivery · Dar', role: 'Courier desk', av: 'DD', cls: 'thread__av--shipping' },
 ]
 
 const REPLIES = [
-  { match: /size|dimension|big|small|tall/i, text: 'Happy to help with sizing — the Sona comes in 24, 34 and 46 cm. For a console I’d go 46 cm; for a dining table, 34 cm reads best.' },
-  { match: /deliver|ship|courier|when|arrive/i, text: 'Within Dar, order before 12:00 and we’ll bring it today. Standard delivery to the rest of Tanzania and Kenya is 2–4 working days, free over TZS 500,000.' },
-  { match: /price|cost|discount|offer|promo/i, text: 'Prices are as listed and include VAT. First orders get 10% with KARIBU10 — I can apply it to this thread if you’d like.' },
-  { match: /stock|available|left|in stock/i, text: 'The chalk tall Sona has 6 left in the studio, and we fire another batch in two weeks. I can hold one for 48 hours if that helps.' },
-  { match: /care|wash|clean|dishwasher/i, text: 'Stoneware is best hand washed with warm water. The linen throw can go on a cold gentle cycle — it only gets softer.' },
-  { match: /return|exchange|refund/i, text: 'You have 14 days to return anything that doesn’t settle into the room. Just keep it in its original condition and we’ll arrange collection.' },
-  { match: /hello|hi|hey|karibu|jambo/i, text: 'Karibu! Lovely to hear from you. What are you furnishing — or is this a gift?' },
-  { match: /thanks|thank|asante/i, text: 'Asante sana. I’ll be here if anything else comes up — and I’ll send a note when it ships.' },
+  { match: /size|dimension|big|small|tall/i, text: 'Happy to help — the Pulse S2 comes in 41 mm and 45 mm. The 41 mm suits a narrower wrist; the 45 mm reads better if you like a bigger face.' },
+  { match: /deliver|ship|courier|when|arrive/i, text: 'Express is next working day for $12, standard is 3–5 days and free over $100. We ship to Tanzania, Kenya, Uganda, Rwanda and the UK.' },
+  { match: /price|cost|discount|offer|promo/i, text: 'Prices are as listed and include tax. First orders get 10% with VOLTA10 — I can apply it for you if you’d like.' },
+  { match: /stock|available|left|in stock/i, text: 'Cloud White Aurora has 24 left, Carbon H9 has 11. I can hold one for 48 hours if that helps.' },
+  { match: /care|wash|clean|dishwasher/i, text: 'Wipe the buds’ case with a dry cloth and clean the mesh with the brush in the box. The cushions on the H9 are replaceable — we keep pads in stock.' },
+  { match: /return|exchange|refund/i, text: 'You have 30 days, opened or not. Start a return from your account and we’ll email a prepaid label. Faults are covered for two years.' },
+  { match: /hello|hi|hey|karibu|jambo/i, text: 'Hi! Good to hear from you. What are you setting up — a desk, a commute, or a gift?' },
+  { match: /thanks|thank|asante/i, text: 'Any time. I’ll be here if anything else comes up — and I’ll send a note when it ships.' },
 ]
 
 const H = 3600_000
@@ -41,20 +41,20 @@ const D = 24 * H
 
 const ARCHIVE = {
   care: [
-    { from: 'owner', text: 'The linen throw arrived — thank you! Do I wash it before first use?', ts: 3 * D + 4 * H },
-    { from: 'me', text: 'No need. Cold gentle cycle when it needs it, line dry, and it only softens.', ts: 3 * D + 3.2 * H },
-    { from: 'owner', text: 'Perfect. The fringe is my favourite part.', ts: 3 * D + 2.4 * H },
+    { from: 'owner', text: 'The H9 arrived — thank you! Do the pads come off for cleaning?', ts: 3 * D + 4 * H },
+    { from: 'me', text: 'They twist off quarter-turn. Wipe with a damp cloth, air dry, twist back on.', ts: 3 * D + 3.2 * H },
+    { from: 'owner', text: 'Perfect. Wearing them now, honestly forgot they were on.', ts: 3 * D + 2.4 * H },
   ],
   shipping: [
     { from: 'owner', text: 'Any idea when the courier will reach Mikocheni?', ts: 8 * D + 5 * H },
-    { from: 'me', text: 'Order KP-24816 left the studio at 09:20 — with you before 15:00 today.', ts: 8 * D + 4.3 * H },
+    { from: 'me', text: 'Order VT-48216 left the studio at 09:20 — with you before 15:00 today.', ts: 8 * D + 4.3 * H },
   ],
 }
 
 const CANNED = [
-  'Is the tall Sona in stock?',
-  'How long is delivery to Dar?',
-  'Can you help me choose a size?',
+  'Is the Aurora in stock?',
+  'How long is delivery?',
+  'Which watch size should I get?',
   'What’s the return policy?',
 ]
 
@@ -68,7 +68,7 @@ export default function Chat() {
   const timers = useRef([])
 
   useEffect(() => {
-    document.title = 'Chat with the studio · KAPAYA'
+    document.title = 'Chat with us · VOLTA'
     dispatch({ type: 'readThread' })
     return () => timers.current.forEach(clearTimeout)
   }, [])
@@ -119,7 +119,7 @@ export default function Chat() {
 
   const previews = useMemo(
     () => ({
-      studio: lastOwner?.text ?? 'Karibu — how can we help?',
+      studio: lastOwner?.text ?? 'Hi — how can we help?',
       care: 'Care notes for stoneware & linen',
       shipping: 'Your order KP-24816 is with the courier',
     }),
@@ -132,12 +132,12 @@ export default function Chat() {
         <div className="split-head">
           <div>
             <p className="eyebrow">
-              <span className="dot" /> Direct to the studio
+              <span className="dot" /> Direct to VOLTA
             </p>
             <h1 style={{ fontSize: 'clamp(30px, 4.4vw, 54px)' }}>A conversation, not a bot.</h1>
           </div>
           <p className="lede" style={{ maxWidth: '34ch', fontSize: 13.5 }}>
-            Zawadi and the team answer from the studio in {BRAND.city}. Weekdays, usually within the hour.
+            Zawadi and the team answer from {BRAND.city}. Weekdays, usually within the hour.
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useStore, formatTZS } from '../store'
+import { useStore, formatTZS, formatUSD } from '../store'
 import { PROMOS, deliveryOptions, products } from '../data/catalog'
 import { Qty, Empty, TotalRow, Sheet, ProductCard } from '../components/ui'
 import {
@@ -17,7 +17,7 @@ import {
   IconLock,
 } from '../components/Icons'
 
-const FREE_OVER = 500000
+const FREE_OVER = 100
 
 export default function Cart() {
   const { state, dispatch, cart, toast, authed, setAuthed } = useStore()
@@ -28,7 +28,7 @@ export default function Cart() {
   const [step, setStep] = useState(1)
 
   useEffect(() => {
-    document.title = 'Your bag · KAPAYA'
+    document.title = 'Your bag · VOLTA'
   }, [])
 
   const delivery = deliveryOptions.find((d) => d.id === state.delivery) ?? deliveryOptions[1]
@@ -41,7 +41,7 @@ export default function Cart() {
     if (!code) return
     const promo = PROMOS[code]
     if (!promo) {
-      toast('That code isn’t recognised — try KARIBU10', { tone: 'warn' })
+      toast('That code isn’t recognised — try VOLTA10', { tone: 'warn' })
       return
     }
     dispatch({ type: 'promo', promo })
@@ -52,14 +52,14 @@ export default function Cart() {
   const placeOrder = () => {
     const address = state.addresses.find((a) => a.default) ?? state.addresses[0]
     const order = {
-      id: `KP-${Math.floor(25000 + Math.random() * 9000)}`,
+      id: `VT-${Math.floor(25000 + Math.random() * 9000)}`,
       placed: new Date().toISOString().slice(0, 10),
       status: 'Processing',
       items: cart.lines.map((l) => ({ slug: l.slug, qty: l.qty, size: l.size, color: l.color })),
       delivery: delivery.name,
       address: `${address.label} — ${address.line1}, ${address.city}`,
       total,
-      tracking: `KPX-${Math.floor(1000000 + Math.random() * 8999999)}`,
+      tracking: `VTX-${Math.floor(1000000 + Math.random() * 8999999)}`,
       eta: delivery.id === 'pickup' ? 'Ready for pickup in 2 hours' : 'Arriving in 2–4 working days',
     }
     dispatch({ type: 'addOrder', order })
@@ -87,8 +87,8 @@ export default function Cart() {
         <div className="cart-empty">
           <div>
             <p className="lede" style={{ marginTop: 16 }}>
-              Nothing here yet — which means the whole studio is still waiting for you. Most people start with a
-              vessel or a throw.
+              Nothing here yet — which means the whole shop is still waiting for you. Most people start with
+              the Aurora Buds or a desk mat.
             </p>
             <div className="row gap-8 wrap" style={{ marginTop: 24 }}>
               <Link to="/shop" className="btn">
@@ -100,10 +100,10 @@ export default function Cart() {
             </div>
             <div className="row gap-16 wrap" style={{ marginTop: 32, fontSize: 12, color: 'var(--ink-soft)' }}>
               <span className="row gap-8">
-                <IconTruck size={15} /> Free over TZS 500,000
+                <IconTruck size={15} /> Free over $100
               </span>
               <span className="row gap-8">
-                <IconLeaf size={15} /> Handmade
+                <IconLeaf size={15} /> Recycled
               </span>
               <span className="row gap-8">
                 <IconShield size={15} /> Secure
@@ -111,7 +111,7 @@ export default function Cart() {
             </div>
           </div>
           <div className="cart-empty__visual">
-            <img src="/images/vase-sona.jpg" alt="Sona vessel" />
+            <img src="/images/v-buds.jpg" alt="Aurora Buds Pro" />
           </div>
         </div>
 
@@ -175,16 +175,14 @@ export default function Cart() {
                   <span className="cline__stock">
                     <IconCheck size={11} /> In stock
                   </span>
+                  <div className="cline__price mono">
+                    {formatTZS(l.total)}
+                    {l.qty > 1 && <small>{formatTZS(l.unit)} each</small>}
+                  </div>
                   <div className="cline__controls">
                     <Qty small value={l.qty} onChange={(q) => dispatch({ type: 'setQty', key: l.key, qty: q })} />
-                    <button className="cline__remove" onClick={() => {
-                      dispatch({ type: 'remove', key: l.key })
-                      toast(`${l.product.name} removed`, { duration: 2500 })
-                    }}>
-                      Remove
-                    </button>
                     <button
-                      className="cline__remove"
+                      className="cline__link"
                       onClick={() => {
                         dispatch({ type: 'toggleSave', slug: l.slug })
                         toast('Moved to saved pieces', { action: { label: 'View saved', to: '/account/saved' } })
@@ -192,11 +190,17 @@ export default function Cart() {
                     >
                       Save for later
                     </button>
+                    <button
+                      className="cline__link cline__link--quiet"
+                      aria-label={`Remove ${l.product.name}`}
+                      onClick={() => {
+                        dispatch({ type: 'remove', key: l.key })
+                        toast(`${l.product.name} removed`, { duration: 2500 })
+                      }}
+                    >
+                      Remove
+                    </button>
                   </div>
-                </div>
-                <div className="cline__price mono">
-                  {formatTZS(l.total)}
-                  {l.qty > 1 && <small>{formatTZS(l.unit)} each</small>}
                 </div>
               </div>
             ))}
@@ -258,7 +262,7 @@ export default function Cart() {
                   Apply
                 </button>
               </div>
-              <p className="summary__note">Try KARIBU10 for 10% off your first order.</p>
+              <p className="summary__note">Try VOLTA10 for 10% off your first order.</p>
             </>
           )}
 
@@ -269,16 +273,16 @@ export default function Cart() {
             <TotalRow label="Total" value={total} strong />
           </div>
 
-          <button className="btn btn--block" style={{ marginTop: 18 }} onClick={() => setCheckout(true)}>
-            <IconLock size={14} /> Checkout
-          </button>
+          <Link to="/checkout" className="btn btn--block" style={{ marginTop: 18 }}>
+            <IconLock size={14} /> Checkout · {formatUSD(total)}
+          </Link>
 
           <div className="summary__perks">
             <div>
               <IconShield size={13} /> Secure checkout · cards & mobile money
             </div>
             <div>
-              <IconTruck size={13} /> Same-day in Dar before 12:00
+              <IconTruck size={13} /> Express, next working day
             </div>
             <div>
               <IconLeaf size={13} /> Plastic-free packaging

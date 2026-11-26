@@ -7,3 +7,6 @@ kapaya-store-build.zip
 
 # figma personal access token (tools/figma-read.mjs)
 .env
+
+# working screenshots (regenerate with the harness)
+docs/shots/

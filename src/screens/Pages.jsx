@@ -9,54 +9,54 @@ import { IconArrowRight, IconCheck, IconLeaf, IconSparkle, IconArrowLeft } from 
    ============================================================ */
 const COLLECTIONS = [
   {
-    slug: 'table',
+    slug: 'commute',
     kicker: 'Collection 01',
-    title: 'Table, slowly set',
-    body: 'Everyday stoneware and handloomed linen for the table you actually eat at — not the one in the photograph.',
-    image: '/images/bowl-ember.jpg',
-    category: 'ceramics',
+    title: 'The commute kit',
+    body: 'Aurora buds and the H9 over-ears, plus a cable that survives a bag. Everything you need for the 07:40 and the way home.',
+    image: '/images/v-buds.jpg',
+    category: 'audio',
   },
   {
-    slug: 'ground',
+    slug: 'desk',
     kicker: 'Collection 02',
-    title: 'Highland wool',
-    body: 'Hand-knotted rugs and woven throws in undyed highland wool, made to soften with a decade of feet.',
-    image: '/images/rug-dune.jpg',
-    category: 'textiles',
+    title: 'The quiet desk',
+    body: 'A mat, a lamp, a mouse that does not click. The desk you stop noticing around the second week.',
+    image: '/images/v-desk.jpg',
+    category: 'desk',
   },
   {
-    slug: 'evening',
+    slug: 'wrist',
     kicker: 'Collection 03',
-    title: 'Warm the evening',
-    body: 'Rattan pendant light and hand-poured candles — the two things that turn a room warm around seven.',
-    image: '/images/pendant-halcyon.jpg',
-    category: 'lighting',
+    title: 'On the wrist',
+    body: 'The Pulse S2 and the Loop band: nine and fourteen days of battery, no subscription, no noise.',
+    image: '/images/v-watch.jpg',
+    category: 'wearables',
   },
   {
-    slug: 'seat',
+    slug: 'travel',
     kicker: 'Collection 04',
-    title: 'A place to sit',
-    body: 'Solid oak and mvule seating, joined without screws, built in Arusha in batches of six.',
-    image: '/images/chair-obi.jpg',
-    category: 'furniture',
+    title: 'Bag, packed',
+    body: 'One charge pad, one braided cable, one speaker that goes on a bike frame. The kit that lives in your bag.',
+    image: '/images/v-charger.jpg',
+    category: 'power',
   },
 ]
 
 export function Collections() {
   useEffect(() => {
-    document.title = 'Collections · KAPAYA'
+    document.title = 'Collections · VOLTA'
   }, [])
   return (
     <div>
       <div className="shell">
         <div className="page-head">
           <p className="eyebrow">
-            <span className="dot" /> Four slow collections
+            <span className="dot" /> Four ways in
           </p>
-          <h1>Rooms, assembled with patience.</h1>
+          <h1>Kit, assembled with intent.</h1>
           <p className="lede mt-16">
-            We don’t design seasons. We build collections around a single idea — the table, the floor, the hour
-            after sunset — and let them grow as makers bring new pieces.
+            We don’t do seasons. We build small collections around a single job — the commute, the desk, the
+            wrist, the bag — and only add a product when it beats what we already ship.
           </p>
         </div>
       </div>
@@ -80,7 +80,7 @@ export function Collections() {
                   <Link to={`/shop?category=${c.category}`} className="btn btn--sm">
                     Shop {categories.find((x) => x.slug === c.category)?.name} <IconArrowRight size={14} />
                   </Link>
-                  <span className="tiny-meta">{byCategory(c.category).length} pieces</span>
+                  <span className="tiny-meta">{byCategory(c.category).length} products</span>
                 </div>
               </div>
             </article>
@@ -90,7 +90,7 @@ export function Collections() {
 
       <section className="section">
         <div className="shell">
-          <SectionHead kicker="Every piece" title="In the studio right now" action={<Link to="/shop" className="link-arrow">Shop all <IconArrowRight size={15} /></Link>} />
+          <SectionHead kicker="Everything" title="In stock right now" action={<Link to="/shop" className="link-arrow">Shop all <IconArrowRight size={15} /></Link>} />
           <div className="plp-grid">
             {products.slice(0, 8).map((p, i) => (
               <ProductCard key={p.slug} product={p} index={i} />
@@ -107,62 +107,62 @@ export function Collections() {
    ============================================================ */
 const MAKERS = [
   {
-    name: 'Amani Mwinyi',
-    studio: 'Kibanda Clay Studio',
-    place: 'Dar es Salaam, Tanzania',
-    craft: 'Stoneware · wheel-thrown',
-    image: '/images/vase-sona.jpg',
-    body: 'Amani digs his own clay from a riverbank twenty minutes south of the studio, ages it for a month, then throws on a kick wheel his father built. He mixes his glaze from kiln ash and fires twice.',
-    quote: 'If the hand shows, it is honest.',
+    name: 'VOLTA Audio',
+    studio: 'VOLTA Audio',
+    place: 'Tuned in Dar es Salaam',
+    craft: 'Audio · earbuds, headphones, speakers',
+    image: '/images/v-headphones.jpg',
+    body: 'Six weeks of field recordings — a bus engine, a market, an office fan — went into the Aurora and H9 tuning. Vocals sit forward, bass stays rounded, and nothing is boosted to sound impressive in a shop.',
+    quote: 'Tune it for the room people actually sit in.',
     years: 'Since 2014',
   },
   {
-    name: 'Zawadi Weave Studio',
-    studio: 'Zawadi Weave Studio',
-    place: 'Nairobi, Kenya',
-    craft: 'Linen & cotton · handloom',
-    image: '/images/throw-terra.jpg',
-    body: 'Three weavers, one floor loom, four throws a day. The stripe is measured by eye, which is why the rhythm shifts a little piece to piece — and why Nala prefers it that way.',
-    quote: 'We are not making many. We are making well.',
+    name: 'VOLTA Wear',
+    studio: 'VOLTA Wear',
+    place: 'Field tested in Kigali',
+    craft: 'Wearables · watches and bands',
+    image: '/images/v-watch.jpg',
+    body: 'The brief for Pulse was nine days or it does not ship. That single constraint decided the screen — a dim always-on strip — and the fact that health data stays on the watch until you export it.',
+    quote: 'Nine days is the number that makes people keep wearing it.',
     years: 'Since 2017',
   },
   {
-    name: 'Yusuf Bakari',
-    studio: 'Halcyon Rattan',
-    place: 'Stone Town, Zanzibar',
-    craft: 'Rattan & cane · lighting',
-    image: '/images/pendant-halcyon.jpg',
-    body: 'Yusuf learned cane weaving from his father in the alleys behind the Darajani market. Each dome is steam-bent over a wooden form and takes two days to shape.',
-    quote: 'Light should look like it came through leaves.',
+    name: 'VOLTA Works',
+    studio: 'VOLTA Works',
+    place: 'Studio tested in Dar',
+    craft: 'Desk · keyboards, mice, stands, lamps',
+    image: '/images/v-desk.jpg',
+    body: 'Everything on the desk is designed to be quiet: silent switches, a diffused lamp with no visible LED dots, a mat coarse enough for a sensor and soft enough to roll into a bag.',
+    quote: 'If we can hear it across the room, it goes back.',
     years: 'Since 2012',
   },
   {
-    name: 'Mlango Woodwork',
-    studio: 'Mlango Woodwork',
-    place: 'Arusha, Tanzania',
-    craft: 'Solid timber · joinery',
-    image: '/images/chair-obi.jpg',
-    body: 'A four-person workshop that dry-fits every frame before glue-up. They work mostly in mvule reclaimed from old furniture and oak imported in small quantities.',
-    quote: 'A joint you can see is a joint you can trust.',
+    name: 'VOLTA Power',
+    studio: 'VOLTA Power',
+    place: 'Designed in Dar es Salaam',
+    craft: 'Power · pads, cables, adapters',
+    image: '/images/v-charger.jpg',
+    body: 'Orbit is heavy on purpose, and Strand puts a soft silicone boot exactly where every cable we owned used to fail — the ten millimetres behind the plug.',
+    quote: 'The failure point is a design decision.',
     years: 'Since 2019',
   },
 ]
 
 export function Makers() {
   useEffect(() => {
-    document.title = 'Our makers · KAPAYA'
+    document.title = 'About VOLTA'
   }, [])
   return (
     <div>
       <div className="shell">
         <div className="page-head">
           <p className="eyebrow">
-            <span className="dot" /> Independent workshops
+            <span className="dot" /> Four teams, one standard
           </p>
-          <h1>The hands behind every piece.</h1>
+          <h1>The teams behind every product.</h1>
           <p className="lede mt-16">
-            We work with four workshops across Tanzania and Kenya. We name the maker on every listing, pay on
-            delivery, and never ask for exclusivity — these studios are better for having other customers.
+            VOLTA is a small hardware studio in Dar es Salaam. Four teams — Audio, Wear, Works and Power — design
+            and test everything here, and nothing ships until they would all keep it themselves.
           </p>
         </div>
       </div>
@@ -198,7 +198,7 @@ export function Makers() {
                 “{m.quote}”
               </blockquote>
               <Link to="/shop" className="link-arrow" style={{ alignSelf: 'flex-start', marginTop: 20 }}>
-                Shop the studio <IconArrowRight size={15} />
+                Shop the range <IconArrowRight size={15} />
               </Link>
             </div>
           </section>
@@ -210,19 +210,19 @@ export function Makers() {
           <div className="row between wrap gap-16">
             <div>
               <p className="eyebrow">
-                <span className="dot" /> Our terms
+                <span className="dot" /> Our promises
               </p>
-              <h2 style={{ fontSize: 'clamp(22px, 2.6vw, 32px)', marginTop: 8 }}>Fair work, named makers, no middle men.</h2>
+              <h2 style={{ fontSize: 'clamp(22px, 2.6vw, 32px)', marginTop: 8 }}>Two-year warranty. Thirty-day returns. No subscriptions.</h2>
             </div>
             <div className="tick-list" style={{ maxWidth: 360 }}>
               <li>
-                <IconCheck size={15} /> Makers are paid in full at delivery, not on consignment.
+                <IconCheck size={15} /> Every product carries a two-year warranty.
               </li>
               <li>
-                <IconCheck size={15} /> Lead times are set by the workshop, never shortened for us.
+                <IconCheck size={15} /> Returns are free for thirty days, opened or not.
               </li>
               <li>
-                <IconCheck size={15} /> Each listing names the maker and the studio.
+                <IconCheck size={15} /> No subscription, no account required to use the hardware.
               </li>
             </div>
           </div>
@@ -237,18 +237,19 @@ export function Makers() {
    ============================================================ */
 export function Journal() {
   useEffect(() => {
-    document.title = 'Journal · KAPAYA'
+    document.title = 'Journal · VOLTA'
   }, [])
   return (
     <div>
       <div className="shell">
         <div className="page-head">
           <p className="eyebrow">
-            <span className="dot" /> Studio journal
+            <span className="dot" /> Journal
           </p>
-          <h1>Notes on making and keeping.</h1>
+          <h1>Notes on designing quiet tech.</h1>
           <p className="lede mt-16">
-            Long-form, unhurried writing about the materials, the workshops, and the rooms our pieces end up in.
+            How we tune, what we cut, and the arguments we had about a hinge. Unhurried writing from the people
+            who design the products.
           </p>
         </div>
       </div>
@@ -281,47 +282,47 @@ export function Journal() {
 }
 
 const ARTICLES = {
-  'quiet-rooms': {
-    kicker: 'In the studio',
-    title: 'The quiet architecture of a Dar living room',
-    read: '6 min read',
-    image: '/images/hero-salon.jpg',
-    body: [
-      'There is a particular hour in Dar es Salaam, somewhere around half past four, when the light comes in low and turns every plaster wall the colour of milk tea. It is the hour our customers photograph most. It is also the reason so many of our pieces are chosen by how they behave at that hour rather than how they look at noon.',
-      'A quiet room is rarely the result of buying fewer things. It is the result of buying things that agree with one another — not in colour, exactly, but in temperature. Raw clay and washed linen sit at the same temperature. Polished chrome does not.',
-      'We have a rule in the studio: if you cannot imagine the object with a small flaw and still want it, it is probably not for you. Hand-thrown stoneware always has a flaw. The rib of a vessel is never perfectly even, because the hand is not perfectly even.',
-      'The best rooms we have been shown are almost never finished. There is one good chair, a rug that has known three homes, and a shelf of things that were given rather than bought. The pieces arrive slowly, and the room learns to hold them.',
-      'So: buy less, and buy the thing you can live with when it is chipped. The room will follow.',
-    ],
-    quote: 'A quiet room is not an empty room. It is a room where nothing is arguing.',
-  },
-  'clay-and-ash': {
-    kicker: 'Makers',
-    title: 'Amani, and the clay he digs himself',
-    read: '4 min read',
-    image: '/images/vase-sona.jpg',
-    body: [
-      'Twenty minutes south of the studio, past the last of the concrete, there is a riverbank where Amani Mwinyi fills two buckets most Wednesday mornings. The clay there is gray-green when wet and fires to a warm oatmeal. He has been taking it from the same bend for eleven years.',
-      'The clay rests for a month in a covered pit behind the workshop before it is touched. Then it is wedged by hand, thrown on a kick wheel, and left to dry slowly under damp cloth. A Sona vessel takes roughly four days before it ever sees the kiln.',
-      'The ribs are carved while the clay is still soft, using a piece of broken gourd. This is the part that cannot be taught quickly. Too early and the wall collapses; too late and the surface tears.',
-      'The glaze is the quiet innovation. Amani mixes ash from the studio’s own kiln with a small amount of feldspar and limestone, producing a matte chalk surface that pools in the ribs and never quite repeats.',
-      'He fires twice. The second firing is short and hot, and it is where a batch either comes good or does not. Roughly one in eight is rejected — those become seconds, sold from a shelf near the door.',
-    ],
-    quote: 'The kiln decides. I only prepare the argument.',
-  },
-  'weaving-time': {
-    kicker: 'Process',
-    title: 'Why a handloom cannot be hurried',
+  'quiet-desk': {
+    kicker: 'Setup',
+    title: 'The quiet desk: four things worth owning',
     read: '5 min read',
-    image: '/images/throw-terra.jpg',
+    image: '/images/v-desk.jpg',
     body: [
-      'A floor loom is a patient instrument. It rewards the weaver who stops to fix a single crossed thread, and punishes the one who does not — three metres later, in the form of a line that will never sit flat.',
-      'In the Nairobi studio, three weavers share one loom. They work in two-hour rotations, because the work is harder on the shoulders than it looks and because, as Nala puts it, “the loom tells you when it is time.”',
-      'A single Terra throw takes about five hours of actual weaving, plus a morning to warp and an afternoon to knot the fringe. That sounds quick. It is not, because the loom is idle much of the week, and because the yarn has to be washed and dried before it can be woven at all.',
-      'The linen is European, imported in small quantities because East African flax is not yet produced at the weight we need. The cotton in the napkins is local. We are honest about which is which on every listing.',
-      'The result is a cloth that is not uniform. The stripe drifts by a few millimetres across the width. After twenty washes it softens into something closer to skin than textile. That drift is the signature of the hand that made it.',
+      'A desk is not a place you decorate. It is the surface you put your hands on for eight hours, and almost everything on it is noise you have stopped hearing. The goal is not fewer things. It is fewer things that ask for attention.',
+      'Start with the surface itself. A woven mat does two jobs at once: it gives the mouse sensor something to read, and it takes the hard click out of the desk. Ours is 2 mm and coarse on purpose — fine weaves feel lovely and track badly.',
+      'Then light. A lamp with visible LED dots is a lamp you will eventually hate, because the dots are exactly where your eye lands. Three layers of acrylic diffuser cost more than a plastic lens and remove the pattern completely. Warm to cool on a slider, not three preset buttons.',
+      'Then the mouse. The quietest thing we ever shipped was not a speaker. It was a switch. Fortifying the click down to about 40 dB changes how a shared room feels at 7 pm, when someone is still working and someone else is reading.',
+      'Last, the keyboard — and only if you type for a living. A gasket mount and a layer of silicone between plate and body is the difference between a typing sound with a ring to it and one without. Everything else about a keyboard is taste.',
     ],
-    quote: 'You cannot rush a loom. You can only keep it company.',
+    quote: 'A good desk disappears. A great one disappears and you never notice it left.',
+  },
+  'tuning-aurora': {
+    kicker: 'Inside VOLTA',
+    title: 'How we tune a bud against a bus engine',
+    read: '4 min read',
+    image: '/images/v-buds.jpg',
+    body: [
+      'Most earbuds are tuned on a test bench against a target curve. That is useful for comparing two products in a spreadsheet and almost useless for deciding whether you will enjoy the 07:40 commute.',
+      'So we recorded one. Six weeks of field recordings from Dar — the Daladala engine note, a market at eleven, an office air-conditioner, a fan at three in the morning — and then we listened to prototypes against those recordings instead of pink noise.',
+      'Two decisions came out of it. Vocals sit forward, because the thing you actually lose on a bus is the middle, not the bass. And the bass stays rounded rather than loud: a boosted low end reads as impressive for thirty seconds and as fatigue for the next hour.',
+      'Cancellation was the harder argument. Aggressive ANC is easy to demonstrate and unpleasant to wear — the pressure some buds put on your ears is the algorithm fighting the room. We set it to remove the low rumble of air conditioning and left the rest alone.',
+      'The result is a bud that does not win a demo. It wins the fourth hour, which is the only hour that matters.',
+    ],
+    quote: 'We tuned it so you stop noticing it before the second song.',
+  },
+  'nine-days': {
+    kicker: 'Wearables',
+    title: 'Why nine days is the number that matters',
+    read: '6 min read',
+    image: '/images/v-watch.jpg',
+    body: [
+      'A battery specification is not a number. It is a design decision that has already been made for you, and every other decision follows from it.',
+      'Once we committed to nine days on the Pulse S2, the screen had to become a dim always-on strip rather than a bright panel that wakes. The processor had to sleep more than it ran. The health tracking had to sample on a schedule instead of continuously. Each of those looks like a compromise in a specification table.',
+      'In the hand, they are the opposite. A watch you charge weekly is a watch you wear. A watch you charge nightly is a watch you leave in a drawer by Thursday, and no amount of animated rings will bring it back.',
+      'Nine days also let us keep the data on the device. Continuous upload is what a short battery forces on you — if the watch has to survive a day, it must offload. With a week and a half, we could simply store it and export only when you ask.',
+      'The trade-off is honest: no animated complications, no third-party app store, no cellular. Everyone who tested it for a month said the same thing, unprompted — they stopped checking their wrist in bed by the second week. We took that as the win.',
+    ],
+    quote: 'Nine days is not a spec. It is the reason the watch stays on your wrist.',
   },
 }
 
@@ -353,7 +354,7 @@ export function Article() {
           <span className="dot" /> {a.kicker} · {a.read}
         </p>
         <h1>{a.title}</h1>
-        <p className="tiny-meta">By the Kapaya Studio · {BRAND.city}</p>
+        <p className="tiny-meta">By the VOLTA studio · {BRAND.city}</p>
         <figure className="article__figure">
           <img src={a.image} alt="" style={{ borderRadius: 'var(--r-md)', width: '100%' }} />
           <figcaption>Photographed in the studio, {BRAND.city}.</figcaption>
@@ -369,7 +370,7 @@ export function Article() {
         </div>
         <div className="divider" />
         <div className="row between wrap gap-12">
-          <span className="tiny-meta">Published by Kapaya Studio</span>
+          <span className="tiny-meta">Published by VOLTA Labs</span>
           <Link to="/shop" className="btn btn--sm">
             Shop the pieces <IconArrowRight size={14} />
           </Link>

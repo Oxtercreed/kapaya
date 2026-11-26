@@ -20,7 +20,7 @@ export default function Login() {
   const emailRef = useRef(null)
 
   useEffect(() => {
-    document.title = 'Sign in · KAPAYA'
+    document.title = 'Sign in · VOLTA'
   }, [])
 
   const set = (k) => (e) => {
@@ -48,7 +48,7 @@ export default function Login() {
         dispatch({ type: 'updateUser', patch: { email: values.email } })
       }
       setAuthed(true)
-      toast(mode === 'signup' ? 'Your account is ready — karibu!' : `Karibu back, ${state.user.firstName}.`)
+      toast(mode === 'signup' ? 'Your account is ready — welcome!' : `Welcome back, ${state.user.firstName}.`)
       nav('/', { replace: true })
     }, 720)
   }
@@ -65,7 +65,7 @@ export default function Login() {
   const guest = () => {
     setAuthed(true)
     nav('/', { replace: true })
-    toast('Browsing as a guest — your bag is saved on this device.', { duration: 4200 })
+    toast('Browsing as a guest — your bag is saved on this device.', { duration: 2200 })
   }
 
   return (
@@ -74,22 +74,28 @@ export default function Login() {
         <div className="m-gate-visual__inner">
           <div className="m-gate-visual__top">
             <span className="wordmark" style={{ color: 'var(--paper)' }}>
-              KAPAYA
+              VOLTA
             </span>
             <span className="eyebrow" style={{ color: 'rgba(251,250,247,0.55)' }}>
               Est. 2014
             </span>
           </div>
+          <div className="m-gate-hero">
+            <img src="/images/v-headphones.jpg" alt="Vertex H9 headphones" />
+            <div className="m-gate-hero__card">
+              <span className="m-gate-hero__kicker">Now in the studio</span>
+              <strong>Vertex H9 Headphones</strong>
+              <span className="m-gate-hero__price">$329.00 · 40 h playback</span>
+            </div>
+          </div>
           <h2 className="m-gate-visual__quote">
-            “The objects we keep
+            Good tech.
             <br />
-            should <em>get better</em>
-            <br />
-            with time.”
+            <em>Better</em> everyday.
           </h2>
           <div className="m-gate-visual__foot">
-            <span>Kapaya Studio — Dar es Salaam</span>
-            <span>Catalogue No. 07</span>
+            <span>VOLTA — Dar es Salaam</span>
+            <span>Free shipping over $100</span>
           </div>
         </div>
       </aside>
@@ -97,30 +103,30 @@ export default function Login() {
       <section className="gate__form-side">
         <div className="gate__form-wrap m-gate__form">
           <div className="gate__mobile-brand">
-            <span className="wordmark">KAPAYA</span>
+            <span className="wordmark">VOLTA</span>
             <span className="tiny-meta">Dar es Salaam</span>
           </div>
 
-          <span className="m-gate__folio">{mode === 'signin' ? 'I' : 'II'} — {mode === 'signin' ? 'Welcome back' : 'Karibu sana'}</span>
+          <span className="m-gate__folio">{mode === 'signin' ? 'I' : 'II'} — {mode === 'signin' ? 'Welcome back' : 'Create account'}</span>
           <h1 className="m-gate__title">
             {mode === 'signin' ? (
               <>
-                Sign in to
+                Welcome
                 <br />
-                <em>your studio.</em>
+                <em>back.</em>
               </>
             ) : (
               <>
-                Make the
+                Create your
                 <br />
-                <em>studio yours.</em>
+                <em>account.</em>
               </>
             )}
           </h1>
           <p className="gate__sub">
             {mode === 'signin'
-              ? 'Your saved pieces, orders and notes from the maker — all in one quiet place.'
-              : 'Save the pieces you love, follow makers, and get first look at new batches.'}
+              ? 'Your orders, saved products and messages with the studio — all in one place.'
+              : 'Save what you love, track orders, and get first look at new drops.'}
           </p>
 
           <div className="gate__socials m-gate__socials">
@@ -201,7 +207,7 @@ export default function Login() {
             </div>
 
             <button className="btn btn--block" type="submit" disabled={busy} style={{ marginTop: 6 }}>
-              {busy ? 'Opening the studio…' : mode === 'signin' ? 'Sign in' : 'Create account'}
+              {busy ? 'Opening VOLTA…' : mode === 'signin' ? 'Sign in' : 'Create account'}
               {!busy && <IconArrowRight size={16} />}
             </button>
           </form>
@@ -209,7 +215,7 @@ export default function Login() {
           <div className="gate__switch">
             {mode === 'signin' ? (
               <>
-                New to Kapaya?{' '}
+                New to VOLTA?{' '}
                 <button onClick={() => setMode('signup')} type="button">
                   Create an account
                 </button>

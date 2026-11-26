@@ -10,28 +10,28 @@ const initialMessages = [
   {
     id: 'm1',
     from: 'owner',
-    text: 'Karibu, Amani! It’s Zawadi here — I look after the studio. How can I help today?',
+    text: 'Hi Amani — Zawadi here from the VOLTA studio. Anything you want a closer look at?',
     ts: now() - 1000 * 60 * 62,
     read: true,
   },
   {
     id: 'm2',
     from: 'me',
-    text: 'Hi Zawadi! I’m deciding between the medium and tall Sona Vessel for a hallway console.',
+    text: 'Hi Zawadi! I’m deciding between the Aurora Buds Pro and the Vertex H9 for the office.',
     ts: now() - 1000 * 60 * 58,
     read: true,
   },
   {
     id: 'm3',
     from: 'owner',
-    text: 'Lovely choice. On a console I’d go tall — 46cm gives the arrangement some presence. The medium reads better on a dining table.',
+    text: 'Two very different jobs. For a shared office the H9 is the better pick — no ear fatigue at hour six. Aurora wins on a commute.', 
     ts: now() - 1000 * 60 * 56,
     read: true,
   },
   {
     id: 'm4',
     from: 'owner',
-    text: 'Here’s the chalk one in the studio this morning.',
+    text: 'Here’s the Aurora in the studio this morning — the case is softer than it looks.',
     ts: now() - 1000 * 60 * 55,
     read: true,
     attachments: [{ slug: 'sona-vessel' }],
@@ -39,7 +39,7 @@ const initialMessages = [
   {
     id: 'm5',
     from: 'me',
-    text: 'That glaze is gorgeous. Do you have the tall in stock?',
+    text: 'That settles it. Do you have the H9 in Carbon, or is it backordered?',
     ts: now() - 1000 * 60 * 12,
     read: true,
   },
@@ -52,13 +52,13 @@ const freshState = () => ({
     email: 'amani.hassan@gmail.com',
     phone: '+255 754 118 902',
     since: 'March 2024',
-    tier: 'Studio Circle',
+    tier: 'VOLTA Circle',
     points: 1840,
   },
   cart: [
-    { key: 'terra-linen-throw||Rust', slug: 'terra-linen-throw', qty: 1, size: null, color: 'Rust' },
+    { key: 'aurora-buds-pro|||Cloud White', slug: 'aurora-buds-pro', qty: 1, size: null, color: 'Cloud White' },
   ],
-  saved: ['halcyon-pendant', 'obi-lounge-chair'],
+  saved: ['vertex-h9-headphones', 'pulse-watch-s2'],
   orders: seedOrders,
   addresses: seedAddresses,
   cards: [
@@ -66,7 +66,7 @@ const freshState = () => ({
   ],
   messages: initialMessages,
   notifications: seedNotifications,
-  recentSearches: ['stoneware vase', 'linen throw'],
+  recentSearches: ['wireless earbuds', 'desk mat'],
   promo: null,
   delivery: 'standard',
 })
@@ -258,8 +258,13 @@ export const useStore = () => {
 
 /* ---------- helpers ---------- */
 
-export const formatTZS = (n) =>
-  `TZS ${Math.round(n).toLocaleString('en-US')}`
+export const formatUSD = (n) => {
+  const v = Math.round(n * 100) / 100
+  return `$${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+}
+
+/* Historical alias — the rest of the tree still imports this name. */
+export const formatTZS = formatUSD
 
 export const shortPrice = (n) => `${(n / 1000).toFixed(0)}k`
 

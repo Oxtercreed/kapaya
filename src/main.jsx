@@ -10,6 +10,8 @@ import Home from './screens/Home'
 import Shop from './screens/Shop'
 import Product from './screens/Product'
 import Cart from './screens/Cart'
+import Checkout from './screens/Checkout'
+import OrderConfirmed from './screens/OrderConfirmed'
 import Chat from './screens/Chat'
 import {
   AccountLayout,
@@ -32,8 +34,8 @@ import './styles/plp.css'
 import './styles/product.css'
 import './styles/cart.css'
 import './styles/chat.css'
-import './styles/mono.css'
-import './styles/mono-pages.css'
+import './styles/volta.css'
+import './styles/volta-pages.css'
 
 /* Keeps scroll-reveal observers fresh on every navigation */
 function RevealBridge() {
@@ -88,6 +90,8 @@ function AppRoutes() {
           <Route path="shop" element={<Shop />} />
           <Route path="product/:slug" element={<Product />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="order/:id" element={<OrderConfirmed />} />
           <Route path="chat" element={<Chat />} />
           <Route path="collections" element={<Collections />} />
           <Route path="makers" element={<Makers />} />

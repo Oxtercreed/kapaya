@@ -25,23 +25,23 @@ const SORTS = [
 ]
 
 const PRICE_MIN = 0
-const PRICE_MAX = 2500000
-const PRICE_STEP = 50000
+const PRICE_MAX = 400
+const PRICE_STEP = 10
 
 const MATERIALS = [
-  { id: 'stoneware', label: 'Stoneware & clay', match: /stoneware|terracotta|clay/i },
-  { id: 'linen', label: 'Linen & cotton', match: /linen|cotton/i },
-  { id: 'wool', label: 'Wool', match: /wool/i },
-  { id: 'rattan', label: 'Rattan & cane', match: /rattan|cane/i },
-  { id: 'wood', label: 'Solid timber', match: /oak|mvule|timber/i },
-  { id: 'stone', label: 'Stone', match: /travertine/i },
+  { id: 'aluminium', label: 'Aluminium', match: /aluminium|alumina/i },
+  { id: 'fabric', label: 'Fabric & weave', match: /fabric|weave|nylon|polyester|knit/i },
+  { id: 'silicone', label: 'Silicone & rubber', match: /silicone|rubber|fluoroelastomer/i },
+  { id: 'leather', label: 'Leather', match: /leather|protein/i },
+  { id: 'glass', label: 'Glass & crystal', match: /glass|sapphire/i },
 ]
 
 const TAGS = [
-  { id: 'handmade', label: 'Handmade' },
+  { id: 'bestseller', label: 'Bestseller' },
+  { id: 'audio', label: 'Audio' },
   { id: 'new', label: 'New in' },
   { id: 'sale', label: 'On sale' },
-  { id: 'made-to-order', label: 'Made to order' },
+  { id: 'desk', label: 'Desk' },
 ]
 
 function PriceRange({ value, onChange }) {
@@ -134,7 +134,7 @@ function FiltersPanel({ filters, setFilters, counts }) {
       </div>
 
       <div className="fgroup" style={{ marginTop: 26 }}>
-        <p className="fgroup__title">Material</p>
+        <p className="fgroup__title">Finish</p>
         {MATERIALS.map((m) => (
           <button
             key={m.id}
@@ -158,7 +158,7 @@ function FiltersPanel({ filters, setFilters, counts }) {
       </div>
 
       <div className="fgroup" style={{ marginTop: 26 }}>
-        <p className="fgroup__title">Maker</p>
+        <p className="fgroup__title">Designed by</p>
         {[...new Set(products.map((p) => p.studio))].map((s) => (
           <button key={s} className={`fopt ${filters.makers.includes(s) ? 'is-on' : ''}`} onClick={() => toggle('makers', s)}>
             <span className="fopt__box">{filters.makers.includes(s) && <IconCheck size={11} />}</span>
@@ -290,27 +290,21 @@ export default function Shop() {
                   </>
                 ) : filters.category ? (
                   <>
-                    {categoryName(filters.category).split(' ')[0]}
-                    <br />
-                    <em>collection.</em>
+                    {categoryName(filters.category)}.
                   </>
                 ) : (
                   <>
-                    Everything,
-                    <br />
-                    <em>by hand.</em>
+                    All products.
                   </>
                 )}
               </h1>
             </div>
             <div className="shop-head__meta">
               <div className="shop-head__count">
-                {String(filtered.length).padStart(2, '0')} {filtered.length === 1 ? 'piece' : 'pieces'}
+                {filtered.length} {filtered.length === 1 ? 'product' : 'products'}
               </div>
-              <div>
-                {qParam ? 'Matching your search' : 'In the studio right now'}
-              </div>
-              <div className="shop-head__folio">Catalogue No. 07 — Dar es Salaam</div>
+              <div>{qParam ? 'Matching your search' : 'In stock and ready to ship'}</div>
+              <div className="shop-head__folio">Free shipping over $100</div>
             </div>
           </div>
 
@@ -325,7 +319,7 @@ export default function Shop() {
             </button>
             <div className="cat-slider" ref={sliderRef} role="tablist" aria-label="Product categories">
               <button className={`cat-tab ${!filters.category ? 'is-on' : ''}`} onClick={() => setCategory(null)} role="tab" aria-selected={!filters.category}>
-                All pieces <span className="cat-tab__n">{products.length}</span>
+                All products <span className="cat-tab__n">{products.length}</span>
               </button>
               {categories.map((c) => (
                 <button
@@ -464,7 +458,7 @@ export default function Shop() {
                 {visible < filtered.length && (
                   <div className="load-more">
                     <button className="btn btn--ghost" onClick={() => setVisible((v) => v + 8)}>
-                      Load more pieces ({filtered.length - visible} left)
+                      Load more products ({filtered.length - visible} left)
                     </button>
                   </div>
                 )}
@@ -483,7 +477,7 @@ export default function Shop() {
               Reset
             </button>
             <button className="btn" onClick={() => setFilterSheet(false)}>
-              Show {filtered.length} pieces
+              Show all {filtered.length} products
             </button>
           </div>
         </Sheet>

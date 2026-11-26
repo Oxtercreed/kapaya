@@ -92,8 +92,8 @@ export default function Product() {
   const imgList = product.images
 
   return (
-    <div>
-      <div className="shell">
+    <div className="pdp-shell">
+      <div>
         <nav className="pdp__crumb" aria-label="Breadcrumb" style={{ paddingTop: 18 }}>
           <Link to="/">Home</Link>
           <IconChevronRight size={11} />

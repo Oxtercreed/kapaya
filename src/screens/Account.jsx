@@ -44,7 +44,7 @@ export function AccountLayout() {
   const unread = state.notifications.filter((n) => !n.read).length
 
   useEffect(() => {
-    document.title = 'Your account · KAPAYA'
+    document.title = 'Your account · VOLTA'
   }, [])
 
   const links = [
@@ -66,7 +66,7 @@ export function AccountLayout() {
               <span className="dot" /> Your studio
             </p>
             <h1 style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
-              Karibu, {state.user.firstName}.
+              Hello, {state.user.firstName}.
             </h1>
           </div>
           <div className="row gap-8" style={{ marginBottom: 8 }}>
@@ -1000,8 +1000,8 @@ export function Details() {
         <div className="form-grid" style={{ marginTop: 12 }}>
           <div className="field">
             <label>Currency</label>
-            <select className="select" defaultValue="TZS">
-              <option value="TZS">TZS — Tanzanian shilling</option>
+            <select className="select" defaultValue="USD">
+              <option value="USD">USD — US dollar</option>
               <option value="KES">KES — Kenyan shilling</option>
               <option value="USD">USD — US dollar</option>
             </select>
@@ -1120,7 +1120,7 @@ export function Help() {
           <IconTruck size={18} style={{ color: 'var(--clay)' }} />
           <h3 style={{ marginTop: 10, fontSize: 15 }}>Delivery</h3>
           <p className="faint" style={{ fontSize: 12.5, margin: '6px 0 0', lineHeight: 1.6 }}>
-            Same-day in Dar before 12:00. Standard 2–4 days, free over TZS 500,000.
+            Express next working day. Standard 3–5 days, free over $100.
           </p>
         </div>
         <div className="panel" style={{ flex: 1, minWidth: 220 }}>

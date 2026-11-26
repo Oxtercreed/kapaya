@@ -22,10 +22,10 @@ import { buildIndex, searchProducts } from '../lib/search'
    ============================================================ */
 function Announce() {
   const items = [
-    'Free standard delivery over TZS 500,000',
-    'Handmade in small batches, signed by the maker',
-    'New in: Halcyon Rattan pendant',
-    'Karibu — 10% off your first order with KARIBU10',
+    'Good tech. Better everyday.',
+    'Free shipping on orders $100+',
+    'New in: Slate Mechanical Keyboard',
+    '30-day returns, two-year warranty',
   ]
   return (
     <div className="announce" aria-hidden="true">
@@ -85,7 +85,7 @@ function SearchOverlay({ open, onClose }) {
       <div className="search-panel">
         <div className="search-panel__inner">
           <div className="search-panel__row">
-            <SearchBox value={q} onChange={setQ} onSubmit={submit} autoFocus size="lg" placeholder="Search ceramics, textiles, makers…" />
+            <SearchBox value={q} onChange={setQ} onSubmit={submit} autoFocus size="lg" placeholder="Search audio, wearables, desk…" />
             <button className="icon-btn" onClick={onClose} aria-label="Close search">
               <IconClose size={22} />
             </button>
@@ -108,7 +108,7 @@ function SearchOverlay({ open, onClose }) {
               <div>
                 <p className="search-group-label">Popular right now</p>
                 <div className="search-chips">
-                  {['Stoneware vase', 'Linen throw', 'Rattan pendant', 'Candles', 'Under TZS 150,000'].map((s) => (
+                  {['Wireless earbuds', 'Noise cancelling', 'Desk lamp', 'Under $60', 'New arrivals'].map((s) => (
                     <button key={s} className="chip" onClick={() => setQ(s)}>
                       {s}
                     </button>
@@ -229,8 +229,8 @@ function Header({ onSearch, onMenu }) {
             </nav>
           </div>
 
-          <Link to="/" className="wordmark" aria-label="KAPAYA home">
-            KAPAYA
+          <Link to="/" className="wordmark" aria-label="VOLTA home">
+            VOLTA
           </Link>
 
           <div className="header__right">
@@ -241,7 +241,7 @@ function Header({ onSearch, onMenu }) {
               <Link
                 to="/chat"
                 className="icon-btn"
-                aria-label={`Chat with the studio${unread ? `, ${unread} unread` : ''}`}
+                aria-label={`Chat with us${unread ? `, ${unread} unread` : ''}`}
               >
                 <IconChat size={20} />
                 {unread > 0 && <span className="badge-dot">{unread}</span>}
@@ -309,7 +309,7 @@ function TabBar() {
 function MobileMenu({ open, onClose }) {
   const { state } = useStore()
   return (
-    <Sheet open={open} onClose={onClose} title="KAPAYA" side="left" width={360} labelledBy="menu-title">
+    <Sheet open={open} onClose={onClose} title="VOLTA" side="left" width={360} labelledBy="menu-title">
       <div className="mmenu">
         <Link to="/shop" onClick={onClose}>
           Shop all <IconChevronRight size={18} />
@@ -332,7 +332,7 @@ function MobileMenu({ open, onClose }) {
           Account <IconChevronRight size={18} />
         </Link>
         <Link to="/chat" onClick={onClose}>
-          Chat with the studio <IconChevronRight size={18} />
+          Chat with us <IconChevronRight size={18} />
         </Link>
         <div className="mmenu__sub">
           <span className="eyebrow">
@@ -360,11 +360,11 @@ function Footer() {
         <div className="footer__grid">
           <div className="footer__brand">
             <Link to="/" className="wordmark">
-              KAPAYA
+              VOLTA
             </Link>
-            <p className="footer__tag">Objects for a slower home, made by hand.</p>
+            <p className="footer__tag">Good tech. Better everyday.</p>
             <p style={{ fontSize: 13, maxWidth: '34ch', margin: '0 0 4px' }}>
-              A small studio shop in {BRAND.city}, working with independent makers across East Africa.
+              A small hardware studio in {BRAND.city}, building quiet technology for everyday life.
             </p>
             <form
               className="footer__news"
@@ -372,14 +372,14 @@ function Footer() {
                 e.preventDefault()
                 if (!email.includes('@')) return toast('Please enter a valid email address', { tone: 'warn' })
                 setEmail('')
-                toast('Karibu — check your inbox for a welcome note.')
+                toast('Thanks — check your inbox for a welcome note.')
               }}
             >
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email for studio letters"
+                placeholder="Email for product notes"
                 aria-label="Email address"
               />
               <button className="btn btn--sm btn--paper" type="submit">
@@ -403,10 +403,10 @@ function Footer() {
           </div>
 
           <div className="footer__col">
-            <h4>Studio</h4>
+            <h4>Company</h4>
             <ul>
               <li>
-                <Link to="/makers">Our makers</Link>
+                <Link to="/makers">About VOLTA</Link>
               </li>
               <li>
                 <Link to="/journal">Journal</Link>
@@ -439,7 +439,7 @@ function Footer() {
         </div>
 
         <div className="footer__bottom">
-          <span>© {new Date().getFullYear()} Kapaya Studio Ltd · Dar es Salaam, Tanzania</span>
+          <span>© {new Date().getFullYear()} VOLTA Labs Ltd · Dar es Salaam, Tanzania</span>
           <div className="footer__legal">
             <span>Shipping</span>
             <span>Returns</span>

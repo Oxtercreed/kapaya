@@ -34,18 +34,18 @@ export default function Splash({ onDone, quick = false }) {
   }, [onDone, quick])
 
   return (
-    <div className={`splash ${out ? 'is-out' : ''}`} aria-label="KAPAYA is loading" role="status">
-      <span className="splash__corner splash__corner--tl">Kapaya Studio · Est. 2014</span>
+    <div className={`splash ${out ? 'is-out' : ''}`} aria-label="VOLTA is loading" role="status">
+      <span className="splash__corner splash__corner--tl">VOLTA Studio · Est. 2014</span>
       <span className="splash__corner splash__corner--tr">Dar es Salaam, TZ</span>
       <span className="splash__corner splash__corner--bl mono">{String(count).padStart(3, '0')}</span>
-      <span className="splash__corner splash__corner--br">Objects for a slower home</span>
+      <span className="splash__corner splash__corner--br">Free shipping over $100</span>
 
       <div className="splash__center">
-        <h1 className="splash__word" aria-label="KAPAYA">
-          <span>KAPAYA</span>
+        <h1 className="splash__word" aria-label="VOLTA">
+          <span>VOLTA</span>
         </h1>
         <span className="splash__hair" aria-hidden="true" />
-        <p className="splash__tag">Objects for a slower home · since 2014</p>
+        <p className="splash__tag">Good tech. Better everyday.</p>
       </div>
 
       <div className="splash__bar">
