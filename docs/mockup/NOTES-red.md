@@ -94,8 +94,8 @@ pay) and screenshotted at 1440 × 1200, then diffed against `red/ref/`:
 |---|---|
 | Shop | 3.4 % |
 | Product details | 2.6 % |
-| Shopping bag | 4.2 % |
-| Checkout | 2.8 % |
+| Shopping bag | 3.3 % |
+| Checkout | 3.0 % |
 | Order confirmed | 2.8 % |
 
 Residual disagreement is glyph antialiasing, the photographs and the four extra
