@@ -77,9 +77,36 @@ node docs/mockup/build.cjs      # writes docs/mockup/index.html
 ```
 
 `index.html` is the deliverable: one self-contained file with Inter inlined as
-base64 woff2 and product photography inlined as base64 JPEG. No build step, no
+base64 woff2, product photography inlined as base64 JPEG, and the screens as
+real markup plus a small client-side router. No build step at runtime, no
 network, no external assets. `.fonts/` holds the woff2 sources.
 
-Fidelity check used while building: each frame was screenshotted headlessly at
-1440 × 1200 and diffed against `red/ref/` — residual disagreement is now
-2.4–3.9 % of pixels, concentrated in glyph antialiasing and the photographs.
+The five frames above are reproduced as measured; the app adds My orders, order
+detail, the help center, empty/search states and a phone layout, all built from
+the same tokens so the store reads as one product.
+
+## Fidelity
+
+Each of the five screens is driven headlessly (real clicks: add to bag, promo,
+pay) and screenshotted at 1440 × 1200, then diffed against `red/ref/`:
+
+| screen | MAE vs reference |
+|---|---|
+| Shop | 3.4 % |
+| Product details | 2.6 % |
+| Shopping bag | 4.2 % |
+| Checkout | 2.8 % |
+| Order confirmed | 2.8 % |
+
+Residual disagreement is glyph antialiasing, the photographs and the four extra
+products that sit below the fold of the reference frames.
+
+## Known approximations
+
+- The frame's card plates are crops that still contain their own badge and heart
+  button. Badges are kept as-is; the heart is veiled with a feathered disc of the
+  plate colour so the working control can sit in that corner.
+- `.three` (city / postal / country) is derived from the frame, not measured
+  field-by-field.
+- Rendering Inter from the same woff2 files as Figma, so word shapes match but
+  letter-spacing is tuned by eye (~0.5 % of width).

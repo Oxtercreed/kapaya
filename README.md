@@ -1,35 +1,45 @@
 # VOLTA
 
-Design work for VOLTA — an everyday-tech storefront: *good tech, better everyday*.
+An interactive mockup of VOLTA — an everyday-tech storefront: *good tech, better everyday*.
 
-This repository is **design only**. There is no app, no build step and no
-dependencies; every file here opens on its own.
+One self-contained HTML file. No build step to run it, no dependencies, no network:
+open it and the whole store works.
 
 | Path | What it is |
 |---|---|
-| [`docs/mockup/index.html`](docs/mockup/index.html) | The mockup — the five red screens from the Figma file, replicated 1:1, media inlined so it works offline from `file://` |
-| [`docs/mockup/NOTES-red.md`](docs/mockup/NOTES-red.md) | The measurements the mockup was built from: frame ids, palette, grid, type scale |
+| [`docs/mockup/index.html`](docs/mockup/index.html) | The storefront — every screen, live, with media and Inter inlined |
+| [`docs/mockup/build.cjs`](docs/mockup/build.cjs) | The generator that writes that file (`node docs/mockup/build.cjs`) |
+| [`docs/mockup/NOTES-red.md`](docs/mockup/NOTES-red.md) | The measurements it was built from: frame ids, palette, grid, type scale |
 | [`docs/mockup/red/ref/`](docs/mockup/red/ref) | 1:1 crops of the five source frames, for comparison |
 | [`figma-plugin/`](figma-plugin/README.md) | A Figma development plugin that adds nine phone screens to a file as arranged frames |
-| [`figma-plugin/volta-mobile.zip`](figma-plugin/volta-mobile.zip) | The importable plugin |
 
 The Figma source file is
 [zoygvtfjWN92VUiWAsSMOL](https://www.figma.com/file/zoygvtfjWN92VUiWAsSMOL/Untitled).
 
-## What the mockup is
+## What it is
 
-Five desktop screens at 1440 × 1200, matching the **red** frames in the Figma
-file (`8:2`, `8:92`, `8:161`, `8:240`, `8:342`):
+A clickable store, built to the design of the **red** frames in that file
+(`8:2` Shop, `8:92` Product, `8:161` Bag, `8:240` Checkout, `8:342` Confirmed).
+Those five screens are reproduced as measured — same boxes, colours, copy,
+prices and photography — and the rest is built from the same parts so the
+whole thing can actually be used:
 
-1. Shop — hero, category filter, four products, service strip
-2. Product details — gallery, colour and quantity, benefits, tabs
-3. Shopping bag — line item, free-shipping note, order summary
-4. Checkout — contact, shipping address, payment, live order summary
-5. Order confirmed — receipt, tracking timeline, delivery details
+| Screen | What works |
+|---|---|
+| Shop | category filter, live search with an empty state, sort menu, save items |
+| Product | colour choice, quantity stepper, add to bag, specs and reviews tabs |
+| Bag | line quantities, remove, save for later, free-shipping threshold, recommendations |
+| Checkout | editable contact/shipping/payment fields, validation, promo code `VOLTA10` (10% off), live totals |
+| Confirmed | order number, tracking timeline, delivery address, payment summary |
+| My orders | order history, order detail, download-receipt action |
+| Help center | shipping, warranty, payment answers |
 
-They are a reproduction, not a reinterpretation: same boxes, colours, copy,
-prices and photography as the source frames. No extra screens, no mobile
-layout, no palette shift.
+State lives in `localStorage` (`volta.state`), so the bag, saved items and orders
+survive a reload — and a checkout adds a real order you can open from **My orders**.
+
+Layout is responsive: 1440 px desktop to a 390 px phone, with the same tokens
+throughout. On phones the header folds to a wordmark, an account icon, a search
+row, a scrolling nav and a bag pill.
 
 ## The system, in a paragraph
 
@@ -48,4 +58,7 @@ two-column split for bag, checkout and confirmation.
 node docs/mockup/build.cjs
 ```
 
-Writes `docs/mockup/index.html`. Nothing else to install.
+Writes `docs/mockup/index.html`. Nothing else to install. The four products that
+sit beside the frame's own cards use generated studio photography
+(`red/img/card-arc.jpg`, `card-hush.jpg`, `card-ridge.jpg`, `card-orbit.jpg`)
+in the same light-grey studio style.
