@@ -37,7 +37,7 @@ all 1440×1200, at y = 967, x = 751 / 2231 / 3711 / 5191 / 6671.
 
 ```bash
 node docs/mockup/build.cjs        # writes docs/mockup/index.html
-bash tools/fetch-chromium.sh      # once per clone: tools/.chromium/ (150 MB, git-ignored)
+bash tools/fetch-chromium.sh      # once per clone: npm-hosted Chromium 109 + runtime libs
 cd tools && npm install           # once per clone
 ```
 
@@ -58,11 +58,13 @@ node deep.cjs                     # 7 assertions (see §5)
 luminance noise, so every number is ~0.1 pt higher. **Use the default mode**;
 it is the baseline everyone references.
 
-If `tools/.chromium/chromium` is missing and there is no network to Google
-storage, any Chrome/Chromium works: `CHROMIUM_PATH=/path/to/chrome node frames.cjs`.
-Puppeteer is only ever launched with `--no-sandbox`,
-`--disable-dev-shm-usage`, `--font-render-hinting=none`, and env
-`LD_LIBRARY_PATH=tools/node_modules/@achingbrain/nss/linux`.
+`tools/fetch-chromium.sh` now fetches the npm-hosted Chromium 109 build that
+reproduces the baseline on the sandbox's npm-only allowlist; it also unpacks
+the matching NSS/SwiftShader runtime. Any other Chrome/Chromium can be used via
+`CHROMIUM_PATH=/path/to/chrome node frames.cjs`, but a different renderer may
+move the MAE numbers. Puppeteer is only ever launched with `--no-sandbox`,
+`--disable-dev-shm-usage`, `--font-render-hinting=none`, and an
+`LD_LIBRARY_PATH` containing the Chromium and `@achingbrain/nss` libraries.
 
 ## 3. The design system (already exact — do not re-derive)
 

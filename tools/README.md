@@ -5,9 +5,14 @@ only way changes were ever validated in this project; run them after every edit
 to `build.cjs`.
 
 ```bash
-bash fetch-chromium.sh         # once per clone: .chromium/chromium (150 MB, git-ignored)
+bash fetch-chromium.sh         # once per clone: .chromium/chromium + runtime libs (git-ignored)
 npm install                    # puppeteer-core + the nss shim
 ```
+
+The fetch script downloads the npm-hosted Chromium 109 package that matches
+the pinned Puppeteer renderer and the checked-in baseline. It uses only
+`registry.npmjs.org`, then unpacks the browser, newer NSS libraries and the
+SwiftShader runtime into git-ignored derived folders.
 
 | script | what it does |
 |---|---|
@@ -25,11 +30,11 @@ target — the design target is `docs/mockup/red/ref/*.jpg`.
 `LD_LIBRARY_PATH` for the nss shim, `file://` URL, shot directory). Set
 `CHROMIUM_PATH` to use a Chromium you already have.
 
-`fetch-chromium.sh` prints the Chrome-for-Testing URL rather than downloading
-it, because the sandbox only reaches a small allowlist; run the two commands it
-prints, or point `CHROMIUM_PATH` at an existing binary.
+`fetch-chromium.sh` unpacks the same Chromium generation that produced the
+baseline scores. Point `CHROMIUM_PATH` at a local binary only when you know its
+rendering matches; a different Chrome release can move the MAE numbers.
 
-Not tracked: `.chromium/` (150 MB binary) and `node_modules/`.
+Not tracked: `.chromium/` (browser and runtime libraries) and `node_modules/`.
 
 `fetch-fonts.sh` is a fallback only — `docs/mockup/.fonts/` is committed, so the
 build reproduces byte-for-byte. The npm copy of Inter renders ~0.4 % differently
