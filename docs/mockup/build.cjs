@@ -53,6 +53,25 @@ const PRODUCTS = [
     body: 'Plush over-ear cushions and a headband that disappears after an hour. Tuned for long sessions, not short demos.',
     meta: 'Adaptive ANC · 40-hour battery',
     colors: ['Silver', 'Graphite'],
+    foot: 'A closer look at the pair you keep on.',
+    secHead: 'Made for the way you listen',
+    bens: [
+      ['01', 'Silence, on your terms', 'Adaptive cancellation reads the room and leaves the rest of it out.'],
+      ['02', 'Two days between charges', '40 hours of playback, or five hours back in a ten-minute top-up.'],
+      ['03', 'Built to disappear', 'Memory-foam cushions and a 248g frame you stop noticing by nine.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Wore them through a nine-hour flight and forgot they were on my head.'],
+      ['Tomas K.', '5', 'Cancellation is the real thing: my open-plan office simply goes quiet.'],
+      ['Priya S.', '4', 'Beautiful build. The case is bigger than I expected, but it travels fine.'],
+    ],
+    specs: [
+      ['Category', 'Audio · Over-ear headphones'],
+      ['Battery', '40 hours playback, USB-C fast charge'],
+      ['Finish', 'Silver or graphite aluminium'],
+      ['In the box', 'Headphones, hard case, USB-C and 3.5mm cables'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
   {
     id: 'pulse', name: 'Pulse Watch S2', short: 'Pulse Watch S2',
@@ -63,6 +82,25 @@ const PRODUCTS = [
     body: 'Sleep, steps and heart rate, quietly tracked. A week of battery and a screen you can actually read outdoors.',
     meta: '7-day battery · 5 ATM',
     colors: ['Graphite', 'Silver'],
+    foot: 'A closer look at the watch you stop charging.',
+    secHead: 'Made for the way you move',
+    bens: [
+      ['01', 'A week, not a night', 'Seven days of tracking on one charge, so the charger stays in the drawer.'],
+      ['02', 'Readable in daylight', 'A 1.4" transflective display you can read mid-run without shading it.'],
+      ['03', 'Sleep you can act on', 'Resting heart rate, sleep stages and a nudge when the week gets late.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Charged it last Sunday and it is still going. Sleep tracking is the part I use.'],
+      ['Tomas K.', '5', 'Screen is genuinely visible outdoors. Swam with it twice, no issues.'],
+      ['Priya S.', '4', 'Light and comfortable overnight. Would like a couple more watch faces.'],
+    ],
+    specs: [
+      ['Category', 'Wearables · Everyday smartwatch'],
+      ['Battery', '7 days typical, 14 in battery-saver'],
+      ['Finish', 'Graphite or silver aluminium, 5 ATM'],
+      ['In the box', 'Watch, silicone strap, magnetic charger'],
+      ['Warranty', '2 years, VOLTA direct'],
+    ],
   },
   {
     id: 'glide', name: 'Glide Pro Mouse', short: 'Glide Pro Mouse',
@@ -73,100 +111,23 @@ const PRODUCTS = [
     body: 'A sculpted shell, silent switches and a sensor that tracks on anything. Charges over USB-C in an hour.',
     meta: 'Silent switches · USB-C',
     colors: ['Graphite'],
-  },
-  {
-    id: 'arc', name: 'Arc Desk Lamp', short: 'Arc Desk Lamp', kind: 'Ambient task light', cat: 'Accessories',
-    price: 129, rate: '4.7', reviews: 64, tag: 'New arrival',
-    plate: 'card-arc.jpg', hero: 'card-arc.jpg', thumb: 'thumb-arc.jpg', gallery: 'gal-arc.jpg', blurb: 'Light that knows when to stop.', body: 'Warm-to-cool dimming with a diffuser that keeps glare off the desk, not in your eyes.',
-    meta: '2700–5000K · Touch dimmer', colors: ['Silver'],
-    foot: 'A closer look at the light on your desk.', secHead: 'Made for long evenings',
+    foot: 'A closer look at the mouse that gets out of the way.',
+    secHead: 'Made for the way you work',
     bens: [
-      ['01', 'Light that moves with the work', 'A weighted base and a slim arm swing where the page is, then stay put.'],
-      ['02', 'Warm by dinner, cool by deadline', 'One touch slides from 2700K to 5000K without a flicker.'],
-      ['03', 'Glare stays off the desk', 'The diffuser throws light sideways, so reflections never reach your screen.'],
+      ['01', 'Quiet clicks, all day', 'Silent switches take the sound out of a late session without dulling the press.'],
+      ['02', 'Tracks on anything', 'A 4000 DPI sensor that works on glass, denim and a hotel desk.'],
+      ['03', 'Pairs with three devices', 'One button swaps between laptop, desktop and tablet mid-sentence.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Warm in the evening, bright enough to actually work under. It looks right on the desk too.'],
-      ['Tomas K.', '5', 'The base is heavier than it looks, so it never drifts. Dimmer is a pleasure.'],
-      ['Priya S.', '4', 'Wish the arm reached a touch higher, but the light itself is excellent.'],
+      ['Maya R.', '5', 'Shape fits my hand properly and the clicks are near silent. No regrets.'],
+      ['Tomas K.', '5', 'Switching between two machines with one button is worth the price alone.'],
+      ['Priya S.', '4', 'Excellent everyday mouse. Scroll wheel could be a touch heavier.'],
     ],
     specs: [
-      ['Category', 'Accessories · Ambient task light'],
-      ['Colour temperature', '2700–5000K, touch dimmer'],
-      ['Finish', 'Silver anodised aluminium'],
-      ['In the box', 'Lamp, 2m braided cable, quick start guide'],
-      ['Warranty', '2 years, VOLTA direct'],
-    ],
-  },
-  {
-    id: 'hush', name: 'Hush Sleep Buds', short: 'Hush Sleep Buds', kind: 'Sleep earbuds', cat: 'Audio',
-    price: 149, rate: '4.6', reviews: 51, tag: 'Bestseller',
-    plate: 'card-hush.jpg', hero: 'card-hush.jpg', thumb: 'thumb-hush.jpg', gallery: 'gal-hush.jpg', blurb: 'Small, soft, silent.', body: 'Side-sleeper friendly, with a masking sound library on board and no lights to wake you.',
-    meta: 'Sleep masking · 10-hour battery', colors: ['Silver'],
-    foot: 'A closer look at your next good night.', secHead: 'Made for the way you sleep',
-    bens: [
-      ['01', 'Soft enough to lie on', 'A 4.6g shell that sits flush in the ear, so a pillow does not press it in.'],
-      ['02', 'Masking, not white noise', 'A sound library on board covers traffic, snoring and thin hotel walls.'],
-      ['03', 'Nothing glows at 3am', 'The case light turns off with the lid. Ten hours of play per charge.'],
-    ],
-    revs: [
-      ['Maya R.', '5', 'Side sleeper, and I genuinely forget they are in. The city noise is gone.'],
-      ['Tomas K.', '5', 'Library of sounds is the point: rain at a low volume beats any noise machine.'],
-      ['Priya S.', '4', 'Ten hours is enough for me. Would like a slightly smaller case.'],
-    ],
-    specs: [
-      ['Category', 'Audio · Sleep earbuds'],
-      ['Battery', '10 hours, 30 with the case'],
-      ['Finish', 'Off-white, soft-touch shell'],
-      ['In the box', 'Buds, charging case, 3 tip sizes, USB-C cable'],
-      ['Warranty', '2 years, VOLTA direct'],
-    ],
-  },
-  {
-    id: 'ridge', name: 'Ridge Laptop Stand', short: 'Ridge Laptop Stand', kind: 'Aluminium riser', cat: 'Accessories',
-    price: 98, rate: '4.8', reviews: 87, tag: 'Work better',
-    plate: 'card-ridge.jpg', hero: 'card-ridge.jpg', thumb: 'thumb-ridge.jpg', gallery: 'gal-ridge.jpg', blurb: 'Sit up straight. Stay there.', body: 'One piece of milled aluminium, folding flat for the bag and holding firm on a desk.',
-    meta: 'Folds flat · Fits 13–16"', colors: ['Silver'],
-    foot: 'A closer look at your desk setup.', secHead: 'Made for the way you work',
-    bens: [
-      ['01', 'Your neck, an inch higher', 'Lifts a 13–16" laptop to eye level so you stop folding yourself over it.'],
-      ['02', 'Folds flat for the bag', 'One milled piece, 9mm closed. It lives in the laptop sleeve, not on a shelf.'],
-      ['03', 'Holds firm, stays put', 'Silicone feet grip glass and wood; the deck does not slide while you type.'],
-    ],
-    revs: [
-      ['Maya R.', '5', 'Took the ache out of my shoulders in a week. Folds down and travels.'],
-      ['Tomas K.', '5', 'Does not wobble, which is more than I can say for the plastic one it replaced.'],
-      ['Priya S.', '4', 'Solid and beautiful. Wish it came in graphite as well.'],
-    ],
-    specs: [
-      ['Category', 'Accessories · Aluminium riser'],
-      ['Fits', '13–16" laptops, up to 2.5kg'],
-      ['Finish', 'Silver anodised aluminium'],
-      ['In the box', 'Stand, travel sleeve, quick start guide'],
-      ['Warranty', '2 years, VOLTA direct'],
-    ],
-  },
-  {
-    id: 'orbit', name: 'Orbit Tracker', short: 'Orbit Tracker', kind: 'Key and bag finder', cat: 'Accessories',
-    price: 39, rate: '4.5', reviews: 203, tag: 'Work better',
-    plate: 'card-orbit.jpg', hero: 'card-orbit.jpg', thumb: 'thumb-orbit.jpg', gallery: 'gal-orbit.jpg', blurb: 'Lose less. Every day.', body: 'A year on one battery, a loud speaker and a ring you can trigger from your phone.',
-    meta: '1-year battery · IP67', colors: ['Graphite'],
-    foot: 'A closer look at the things you misplace.', secHead: 'Made for the things you lose',
-    bens: [
-      ['01', 'A year on one battery', 'No charging shuffle at the door. It simply keeps working.'],
-      ['02', 'Loud enough to find under a seat', 'A 92dB ring you can trigger from your phone, or from the tag back.'],
-      ['03', 'Keys, bag, bike', 'IP67 sealed and 24g, so it takes rain and being sat on.'],
-    ],
-    revs: [
-      ['Maya R.', '5', 'Found my keys in a coat pocket three rooms away. Worth every cent.'],
-      ['Tomas K.', '5', 'Ring is genuinely loud. Battery has not moved in eight months.'],
-      ['Priya S.', '4', 'One on the bike, one on the dog lead. Would like a loop that opens.'],
-    ],
-    specs: [
-      ['Category', 'Accessories · Key and bag finder'],
-      ['Battery', '1 year, user replaceable'],
+      ['Category', 'Accessories · Wireless precision mouse'],
+      ['Battery', '70 days, USB-C, 1-hour charge'],
       ['Finish', 'Graphite, soft-touch shell'],
-      ['In the box', '2 trackers, 2 key loops, quick start guide'],
+      ['In the box', 'Mouse, USB-C cable, USB-A receiver'],
       ['Warranty', '2 years, VOLTA direct'],
     ],
   },
@@ -430,7 +391,7 @@ const bag = (state) => {
   const ship = subtotal >= 100 || subtotal === 0 ? 0 : 9;
   const total = subtotal + ship;
 
-  const also = PRODUCTS.filter((p) => !lines.some((l) => l.id === p.id)).slice(0, 3);
+  const also = ['vertex', 'pulse', 'glide'].map(byId);
 
   return `
 <main class="page">
@@ -946,13 +907,13 @@ img{display:block;max-width:100%}
   height:318px;border-radius:28px;background:#FCE6E9;
   display:flex;align-items:center;position:relative;overflow:hidden;
 }
-.hero-l{padding-left:36px;width:540px;padding-top:8px}
+.hero-l{padding-left:36px;width:540px;padding-top:4px}
 .eyebrow{font:600 12px/1.2 Inter,sans-serif;color:#96151F}
-.hero-h{font:600 48px/58px Inter,sans-serif;letter-spacing:-.022em;margin-top:16px}
-.hero-p{font:400 16px/19px Inter,sans-serif;color:#6B5F62;margin-top:30px}
+.hero-h{font:600 48px/58px Inter,sans-serif;letter-spacing:-.022em;margin-top:14px}
+.hero-p{font:400 16px/19px Inter,sans-serif;color:#6B5F62;margin-top:28px}
 .btn-dark{
   display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 26px;border-radius:22px;
-  background:#14171E;color:#fff;font:600 14px/1 Inter,sans-serif;margin-top:21px;
+  background:#14171E;color:#fff;font:600 14px/1 Inter,sans-serif;margin-top:15px;
   transition:background .12s ease;
 }
 .btn-dark:hover{background:#22262F}
@@ -1546,7 +1507,7 @@ img{display:block;max-width:100%}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','card-arc.jpg','card-hush.jpg','card-ridge.jpg','card-orbit.jpg','gal-arc.jpg','gal-hush.jpg','gal-ridge.jpg','gal-orbit.jpg','thumb-arc.jpg','thumb-hush.jpg','thumb-ridge.jpg','thumb-orbit.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
+for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
   PICS[n] = img(n);
 }
 

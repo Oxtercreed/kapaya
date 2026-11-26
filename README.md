@@ -58,7 +58,10 @@ two-column split for bag, checkout and confirmation.
 node docs/mockup/build.cjs
 ```
 
-Writes `docs/mockup/index.html`. Nothing else to install. The four products that
-sit beside the frame's own cards use generated studio photography
-(`red/img/card-arc.jpg`, `card-hush.jpg`, `card-ridge.jpg`, `card-orbit.jpg`)
-in the same light-grey studio style.
+Writes `docs/mockup/index.html`. Nothing else to install.
+
+The catalogue is the four products the reference frames show — Aurora Buds Pro,
+Vertex H9, Pulse Watch S2, Glide Pro Mouse — so the shop grid is a single row of
+four and every count in the UI reads `4 products`, matching the frames. Each of
+the four has its own detail copy (benefit set, specifications, reviews) rather
+than one earbud script reused across a lamp and a mouse.

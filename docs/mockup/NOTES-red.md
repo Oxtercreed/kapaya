@@ -92,14 +92,16 @@ pay) and screenshotted at 1440 × 1200, then diffed against `red/ref/`:
 
 | screen | MAE vs reference |
 |---|---|
-| Shop | 3.4 % |
+| Shop | 2.6 % |
 | Product details | 2.6 % |
 | Shopping bag | 3.3 % |
 | Checkout | 3.0 % |
 | Order confirmed | 2.8 % |
 
-Residual disagreement is glyph antialiasing, the photographs and the four extra
-products that sit below the fold of the reference frames.
+Residual disagreement is glyph antialiasing and the photographs. The catalogue
+is deliberately the frame's four products: an earlier build added four more
+invented ones, which pushed the shop into a second row and moved the Shop frame
+from 2.6 % to 3.4 %.
 
 ## Known approximations
 
