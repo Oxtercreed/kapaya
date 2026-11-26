@@ -186,7 +186,7 @@ const shop = (state) => {
   const hero = byId('aurora');
   return `
 <main class="page">
-  <section class="hero">
+  ${state.query ? '' : `<section class="hero">
     <div class="hero-l">
       <p class="eyebrow">LESS NOISE. MORE YOU.</p>
       <h1 class="hero-h">Your everyday,<br>upgraded.</h1>
@@ -202,7 +202,7 @@ const shop = (state) => {
     <a class="hero-r" data-go="product" data-arg="aurora" aria-label="Aurora Buds Pro">
       <img class="hero-shot" src="${img('herotile.jpg')}" alt="Aurora Buds Pro">
     </a>
-  </section>
+  </section>`}
 
   <h2 class="sec-h">Find your next everyday essential</h2>
   <p class="sec-p">Thoughtful design. Tech you’ll actually love.</p>
