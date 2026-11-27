@@ -193,10 +193,11 @@ const NAV = [
 ];
 
 const chrome = () => `
-<div class="band">
-  <span>Good tech. Better everyday.</span>
-  <i class="band-div" aria-hidden="true"></i>
-  <span>Free shipping on orders $100+</span>
+<div class="band" aria-label="Good tech. Better everyday. Free shipping on orders $100+">
+  <div class="band-track" aria-hidden="true">
+    <div class="band-group"><span>Good tech. Better everyday.</span><i class="band-div"></i><span>Free shipping on orders $100+</span></div>
+    <div class="band-group"><span>Good tech. Better everyday.</span><i class="band-div"></i><span>Free shipping on orders $100+</span></div>
+  </div>
 </div>
 <header class="hdr">
   <div class="mobile-chrome">
@@ -395,7 +396,7 @@ const home = () => `
         <a data-go="shop">Shop</a>
         <a data-go="help">Warranty</a>
         <a data-go="help">Returns</a>
-        <a href="mailto:support@kapaya.example">Contact</a>
+        <a href="mailto:b%26dlabs@gmail.com">Contact</a>
       </nav>
       <div class="home-ftr-col">
         <p class="home-ftr-h">Payments</p>
@@ -408,7 +409,7 @@ const home = () => `
     </div>
     <div class="home-ftr-bottom">
       <span>© 2026 Kapaya. All rights reserved.</span>
-      <span>support@kapaya.example</span>
+      <span>b&amp;dlabs@gmail.com</span>
     </div>
   </footer>
 </main>`;
@@ -509,7 +510,6 @@ const product = (state) => {
   const price = storagePrice(p, state.storage);
   return `
 <main class="page product-page">
-  <p class="crumb"><a data-go="shop">Shop</a><span>/</span><a data-go="shop" data-arg="${p.cat.toLowerCase()}">${p.cat}</a><span>/</span><span class="cur">${p.name}</span></p>
 
   <div class="pdp">
     <div class="gallery">
@@ -618,7 +618,6 @@ const bag = (state) => {
 
   return `
 <main class="page bag-page">
-  <p class="crumb"><a data-go="shop">Shop</a><span>/</span><span class="cur">Shopping bag</span></p>
 
   <div class="bag-head">
     <div>
@@ -749,7 +748,7 @@ const checkout = (state) => {
           <span class="deliv-dot"></span>
           <div class="deliv-body">
             <p class="deliv-h">Standard delivery</p>
-            <p class="deliv-p">Arrives Dec 1–3</p>
+            <p class="deliv-p">Delivery details confirmed with your order</p>
           </div>
           <span class="deliv-free">${ship === 0 ? 'Free' : money(ship)}</span>
         </div>
@@ -829,7 +828,7 @@ const confirmed = (state) => {
     </div>
     <div class="done-r">
       <p class="done-est">Estimated delivery</p>
-      <p class="done-date">Dec 1–3</p>
+      <p class="done-date">To be confirmed</p>
       <p class="done-ship">Free standard shipping</p>
     </div>
   </section>
@@ -903,11 +902,10 @@ const confirmed = (state) => {
 /* Account / My orders same system, new screen */
 const account = (state) => `
 <main class="page">
-  <p class="crumb"><span class="cur">My orders</span></p>
   <div class="bag-head">
     <div>
       <h1 class="page-h">My orders</h1>
-      <p class="page-p">Signed in as alex.morgan@example.com</p>
+      <p class="page-p">B&amp;D LABS · Dar es Salaam, Tanzania</p>
     </div>
     <a class="continue" data-go="shop">Continue shopping <span class="arw">→</span></a>
   </div>
@@ -941,13 +939,13 @@ const account = (state) => `
     <aside class="co-side">
       <div class="order-card">
         <h2 class="sum-h">Your details</h2>
-        <div class="det"><span>Name</span><span>Alex Morgan</span></div>
-        <div class="det"><span>Email</span><span>alex.morgan@example.com</span></div>
+        <div class="det"><span>Name</span><span>B&amp;D LABS</span></div>
+        <div class="det"><span>Email</span><span>b&amp;dlabs@gmail.com</span></div>
         <div class="co-rule"></div>
         <p class="ord-l">Addresses</p>
         <div class="addr">
-          <p class="addr-h">Home <span class="pill pill-grey">Default</span></p>
-          <p class="addr-p">Kepler Street 14<br>3011 AA Rotterdam<br>Netherlands</p>
+          <p class="addr-h">Location</p>
+          <p class="addr-p">Dar es Salaam<br>Tanzania</p>
         </div>
         <div class="co-rule"></div>
         <a class="info-link" data-go="help">Need help with an order <span class="arw">→</span></a>
@@ -965,7 +963,6 @@ const orderDetail = (state) => {
   const o = state.order;
   return `
 <main class="page">
-  <p class="crumb"><a data-go="account">My orders</a><span>/</span><span class="cur">${o.id}</span></p>
   <div class="bag-head">
     <div>
       <h1 class="page-h">${o.id}</h1>
@@ -1030,16 +1027,15 @@ const orderDetail = (state) => {
 /* Help */
 const help = () => `
 <main class="page">
-  <p class="crumb"><span class="cur">Help center</span></p>
   <h1 class="page-h">How can we help?</h1>
   <p class="page-p">Real people, usually within a day.</p>
 
   <div class="help-grid">
     ${[
-      ['Shipping & returns', 'Free over $100, 30 days to change your mind.', 'Orders leave Rotterdam within a day. Standard delivery lands in 2–3 working days, and anything unopened can come back within 30 days for a full refund.'],
+      ['Shipping & returns', 'Free over $100, 30 days to change your mind.', 'Based in Dar es Salaam, Tanzania. Contact us for delivery arrangements and returns information.'],
       ['Warranty', 'Two years on every device, no receipt needed.', 'We keep order history against your email, so a claim is a conversation rather than paperwork.'],
       ['Payments', 'Card, Kapaya wallet, and one promo code per order.', 'You are charged when the order ships. Nothing is stored on our side.'],
-      ['Talk to us', 'support@kapaya.example · Mon–Fri, 9–18 CET', 'Include your order number if you have one and we can move faster.'],
+      ['Talk to us', 'b&amp;dlabs@gmail.com · Dar es Salaam, Tanzania', 'Include your order number if you have one and we can move faster.'],
     ].map(([h, p, b]) => `<article class="help-card"><h3 class="help-h">${h}</h3><p class="help-p">${p}</p><p class="help-b">${b}</p></article>`).join('')}
   </div>
 
@@ -1459,12 +1455,6 @@ body.is-home .ftr{display:none}
   display:flex;align-items:center;justify-content:space-between;gap:20px;
   font:400 12.5px/1.4 Inter,sans-serif;color:#656976;
 }
-
-/* breadcrumb */
-.crumb{font:400 13px/16px Inter,sans-serif;color:#6B6F79;display:flex;align-items:center}
-.crumb a:hover{color:#C92332}
-.crumb span{padding:0 9px;color:#C3C5CB}
-.crumb .cur{padding:0}
 
 /* ── product ───────────────────────────────────────────────────────────── */
 .pdp{display:grid;grid-template-columns:624px minmax(0,1fr);gap:64px;margin-top:32px}
@@ -2154,7 +2144,6 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
  body.is-product.pdp-search-open .hdr-right{display:flex;width:100%;padding:10px 0}
  body.is-product.pdp-search-open .hdr-right .orders,body.is-product.pdp-search-open .hdr-right .bag-pill{display:none}
  .product-page{padding:20px 18px 44px}
- .product-page .crumb{font-size:12px}
  .product-page .pdp{margin-top:18px;gap:24px}
  .product-page .gallery{padding:0;background:transparent;border-radius:0}
  .product-page .gallery-plate{aspect-ratio:1/1.1;border-radius:15px}
@@ -2319,6 +2308,17 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
   }
   .home-ftr{padding:36px 24px 24px}
 }
+
+/* Seamless announcement, with a static reduced-motion alternative. */
+body .band,body.is-home .band,body.is-product .band{display:block;overflow:hidden;padding:0;height:30px;flex:0 0 30px;white-space:nowrap}
+.band-track{display:flex;width:max-content;height:100%;animation:announcement-scroll 24s linear infinite}
+.band-group{display:flex;align-items:center;justify-content:center;gap:16px;width:max(100vw,620px);height:100%}
+.band-group .band-div{display:block;width:1px;height:12px;background:rgba(150,21,31,.3)}
+@keyframes announcement-scroll{to{transform:translateX(-50%)}}
+.desktop-chat{position:fixed;right:24px;bottom:24px;z-index:45;display:flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 17px;border-radius:24px;background:#14171e;color:#fff;font:600 13px/1 Inter;box-shadow:0 6px 20px rgba(20,23,30,.2)}
+.desktop-chat svg{width:21px;height:21px}.desktop-chat:hover{background:#c92332}
+@media(max-width:767px){.desktop-chat{display:none}body .band,body.is-home .band,body.is-product .band{padding:0;display:block}.band-group{width:max(100vw,360px);gap:12px}.band-group span:first-child,.band-group .band-div{display:none!important}}
+@media(prefers-reduced-motion:reduce){.band-track{animation:none}}
 
 /* Checkout and support chat */
 .checkout-page .co-grid{margin-top:24px}
@@ -2527,6 +2527,7 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
 }
 @media(max-width:360px){.shop-page .hero-shop .hero-h{font-size:29px;line-height:30px}.shop-page .card-price{font-size:11px}.shop-page .card-link{padding:0 7px;font-size:10px}.mobile-logo .brand-logo{width:108px}}
 
+@media(max-width:767px){body .band,body.is-home .band,body.is-product .band{display:block;padding:0;overflow:hidden}}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -2601,10 +2602,10 @@ const store = {
   product: initialProduct, qty: 1, color: initialProduct.colors[0], storage: '128GB', galleryIndex: 0, tab: 'overview',
   promo: '', promoMsg: '', discount: 0,
   form: {
-    email: 'alex.morgan@example.com',
-    first: 'Alex', last: 'Morgan',
-    street: 'Kepler Street 14', city: 'Rotterdam',
-    postal: '3011 AA', country: 'Netherlands',
+    email: 'b&dlabs@gmail.com',
+    first: 'B&D', last: 'LABS',
+    street: '', city: 'Dar es Salaam',
+    postal: '', country: 'Tanzania',
     card: '•••• •••• •••• 4242', exp: '08 / 29', cvc: '•••',
   },
   viewOrder: null,
@@ -2623,7 +2624,8 @@ try {
     if (Array.isArray(saved.cart)) store.cart = saved.cart;
     if (Array.isArray(saved.favs)) store.favs = saved.favs;
     if (Array.isArray(saved.orders)) store.orders = saved.orders;
-    if (saved.form) { const {card, exp, cvc, ...details} = saved.form; Object.assign(store.form, details); }
+    if (saved.form) { const {card, exp, cvc, ...details} = saved.form; if (details.email === 'alex.morgan@example.com' && details.first === 'Alex' && details.last === 'Morgan') Object.assign(details, {email:'b&dlabs@gmail.com',first:'B&D',last:'LABS',street:'',city:'Dar es Salaam',postal:'',country:'Tanzania'}); Object.assign(store.form, details); }
+    store.orders.forEach((o) => { if (o.id === 'KAP-47102' && o.email === 'alex.morgan@example.com') Object.assign(o, {first:'B&D',last:'LABS',email:'b&dlabs@gmail.com',street:'',city:'Dar es Salaam',postal:'',country:'Tanzania'}); });
   }
   if (legacyKey) localStorage.removeItem(legacyKey);
 } catch (e) {}
@@ -2986,8 +2988,8 @@ document.addEventListener('keydown', (e) => {
 if (!store.orders.length) {
   store.orders = [{
     id: 'KAP-47102', date: 'OCT 14, 2026', status: 'Delivered',
-    first: 'Alex', last: 'Morgan', email: 'alex.morgan@example.com',
-    street: 'Kepler Street 14', city: 'Rotterdam', postal: '3011 AA', country: 'Netherlands',
+    first: 'B&D', last: 'LABS', email: 'b&dlabs@gmail.com',
+    street: '', city: 'Dar es Salaam', postal: '', country: 'Tanzania',
     last4: '4242',
     lines: [{ id: 'iphone-15', qty: 1, color: 'Blue' }],
     subtotal: 799, discount: 0, total: 799,
@@ -3016,6 +3018,7 @@ const SHELL = [
   '<body>',
   chrome(),
   '<div id="app"></div>',
+  `<button class="desktop-chat" data-go="chat" aria-label="Open chat" title="Chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5c0 4-3.6 7-8 7-1 0-2-.2-2.8-.5L5 20l1-3.8a6.8 6.8 0 0 1-2-4.7c0-4 3.6-7 8-7s8 3 8 7z"/><path d="M8.5 11.5h7"/></svg><span>Chat</span></button>`,
   `<nav class="mobile-bottom" aria-label="Mobile navigation">
     <button data-go="home" data-mobile-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Landing</span></button>
     <button data-go="shop" data-mobile-route="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M10 19h4"/></svg><span>Shop</span></button>

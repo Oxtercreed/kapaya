@@ -13,6 +13,7 @@ const SHOP = APP + '#/shop';
   fs.mkdirSync(OUT, { recursive: true });
   const b = await launch({ defaultViewport: { width: 1440, height: 1200, deviceScaleFactor: 1 } });
   const p = await b.newPage();
+  await p.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
   const errs = []; p.on('pageerror', (e) => errs.push(e.message));
   const open = async () => {
     await p.goto(SHOP, { waitUntil: 'networkidle0' });
