@@ -208,7 +208,7 @@ const chrome = () => `
     <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden>
       <div class="mobile-home-links"><a href="#the-edit" data-scroll="the-edit">The Edit</a><a href="#finishes" data-scroll="finishes">Finishes</a><a href="#generations" data-scroll="generations">Generations</a><a href="#why-kapaya" data-scroll="why-kapaya">Why Kapaya</a></div>
       <div class="mobile-store-links"><a data-go="shop">All iPhones</a><a data-go="shop" data-arg="pro">Pro</a><a data-go="shop" data-arg="standard">Standard</a><a data-go="shop" data-arg="classic">Classic</a></div>
-      <a data-go="account">My orders</a><a data-go="help">Help &amp; support</a><a class="mobile-menu-cta" data-go="shop">Start shopping <span>→</span></a>
+      <a data-go="account">My orders</a><a data-go="chat">Chat</a><a data-go="help">Help &amp; support</a><a class="mobile-menu-cta" data-go="shop">Start shopping <span>→</span></a>
     </nav>
   </div>
   <a class="mark" data-go="home" aria-label="Kapaya home">${brandLogo()}</a>
@@ -725,39 +725,25 @@ const checkout = (state) => {
   const f = state.form;
 
   return `
-<main class="page">
+<main class="page checkout-page">
   <a class="back" data-go="bag">← Back to bag</a>
 
   <div class="co-head">
     <div>
       <h1 class="page-h">Checkout</h1>
-      <p class="page-p">Guest checkout</p>
+      <p class="page-p">Guest checkout · Demo only, no payment processed</p>
     </div>
-    <p class="steps">Bag<span class="sep">/</span>Checkout<span class="sep">/</span><span class="steps-cur">Confirmation</span></p>
   </div>
 
   <form class="co-grid" data-checkout novalidate>
     <div class="co-main">
       <div class="co-card">
-        <div class="co-row-h">
-          <h2 class="co-h">1. Contact details</h2>
-          <p class="co-signin">Already a member? <a class="link-red" data-go="account">Sign in</a></p>
-        </div>
-        ${fld('Email address', 'email', f.email, { type: 'email' })}
-        <p class="co-help">Order updates and your receipt will be sent here.</p>
-        <div class="co-rule"></div>
-
-        <h2 class="co-h mt">2. Shipping address</h2>
+        <h2 class="co-h"><span class="co-number">1</span>Shipping details</h2>
         <div class="two">
           ${fld('First name', 'first', f.first)}
           ${fld('Last name', 'last', f.last)}
         </div>
-        ${fld('Street address', 'street', f.street)}
-        <div class="three">
-          ${fld('City', 'city', f.city)}
-          ${fld('Postal code', 'postal', f.postal)}
-          ${fld('Country', 'country', f.country)}
-        </div>
+        ${fld('City', 'city', f.city)}
 
         <div class="deliv">
           <span class="deliv-dot"></span>
@@ -768,11 +754,13 @@ const checkout = (state) => {
           <span class="deliv-free">${ship === 0 ? 'Free' : money(ship)}</span>
         </div>
 
-        <h2 class="co-h mt">3. Payment</h2>
+        <div class="co-rule payment-rule"></div>
+        <h2 class="co-h mt"><span class="co-number">2</span>Payment</h2>
         <div class="pay-tabs">
           <button type="button" class="pay-tab is-on"><span class="radio on"></span>Credit or debit card</button>
-          <button type="button" class="pay-tab"><span class="radio"></span>Kapaya wallet</button>
+          <button type="button" class="pay-tab" disabled title="Wallet is not available in this demo"><span class="radio"></span>Kapaya wallet</button>
         </div>
+        <p class="checkout-demo-note">Demo only: please do not enter real payment information.</p>
         <div class="pay-fields">
           ${fld('Card number', 'card', f.card, { cls: 'w-card', inputmode: 'numeric' })}
           ${fld('Expiry date', 'exp', f.exp, { cls: 'w-exp' })}
@@ -815,7 +803,7 @@ const checkout = (state) => {
 
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
+        <p class="protect-p">This is a storefront demo. No payment is processed.<br>Need help? Visit the help center.</p>
       </div>
     </aside>
   </form>
@@ -833,7 +821,7 @@ const confirmed = (state) => {
     <div class="done-l">
       <p class="done-eyebrow">ORDER ${o.id} · ${o.date}</p>
       <h1 class="done-h">Thanks, ${o.first}. You’re all set.</h1>
-      <p class="done-p">Your payment of ${money(total)} was successful. A receipt is on its way to<br>${o.email}</p>
+      <p class="done-p">Your demo order total is ${money(total)}. No payment was processed.</p>
       <div class="done-actions">
         <button class="btn-red btn-details" data-go="order">View order details</button>
         <button class="btn-plain" data-go="shop">Continue shopping</button>
@@ -850,7 +838,7 @@ const confirmed = (state) => {
     <div class="done-col">
       <div class="track-card">
         <h2 class="card-h">Your order is getting ready</h2>
-        <p class="track-p">We’ll email you tracking details as soon as it ships.</p>
+        <p class="track-p">This is a demo order; no shipment will be created.</p>
         <div class="track">
           ${[['01', 'Confirmed', true], ['02', 'Preparing'], ['03', 'Shipped'], ['04', 'Delivered']]
             .map(([n, l, done]) => `<div class="track-i${done ? ' is-done' : ''}">
@@ -864,14 +852,14 @@ const confirmed = (state) => {
         <div class="info-col">
           <h3 class="info-h">Delivering to</h3>
           <p class="info-b">${o.first} ${o.last}</p>
-          <p class="info-p">${o.street}<br>${o.postal} ${o.city}<br>${o.country}</p>
+          <p class="info-p">${o.street ? o.street + '<br>' : ''}${o.postal ? o.postal + ' ' : ''}${o.city}${o.country ? '<br>' + o.country : ''}</p>
         </div>
         <div class="info-sep"></div>
         <div class="info-col">
           <h3 class="info-h">Payment details</h3>
           <p class="info-b">Visa ending in ${o.last4}</p>
-          <p class="info-p">${money(total)} paid · Tax included</p>
-          <a class="info-link" data-receipt>Download receipt <span class="arw">→</span></a>
+          <p class="info-p">${money(total)} demo total · Tax included</p>
+
         </div>
       </div>
     </div>
@@ -966,7 +954,7 @@ const account = (state) => `
       </div>
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
+        <p class="protect-p">This is a storefront demo. No payment is processed.<br>Need help? Visit the help center.</p>
       </div>
     </aside>
   </div>
@@ -1002,14 +990,14 @@ const orderDetail = (state) => {
         <div class="info-col">
           <h3 class="info-h">Delivering to</h3>
           <p class="info-b">${o.first} ${o.last}</p>
-          <p class="info-p">${o.street}<br>${o.postal} ${o.city}<br>${o.country}</p>
+          <p class="info-p">${o.street ? o.street + '<br>' : ''}${o.postal ? o.postal + ' ' : ''}${o.city}${o.country ? '<br>' + o.country : ''}</p>
         </div>
         <div class="info-sep"></div>
         <div class="info-col">
           <h3 class="info-h">Payment details</h3>
           <p class="info-b">Visa ending in ${o.last4}</p>
           <p class="info-p">${money(o.total)} paid · Tax included</p>
-          <a class="info-link" data-receipt>Download receipt <span class="arw">→</span></a>
+
         </div>
       </div>
     </div>
@@ -1065,6 +1053,22 @@ const help = () => `
 </main>`;
 
 /* ── styles ────────────────────────────────────────────────────────────── */
+const escapeText = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const chat = (state) => `
+<main class="page chat-page">
+  <a class="back" data-go="shop">← Back to shopping</a>
+  <section class="chat-panel" aria-labelledby="chat-title">
+    <div class="chat-header"><div class="chat-avatar" aria-hidden="true">K</div><div><p class="chat-eyebrow">KAPAYA SUPPORT</p><h1 id="chat-title">Let’s chat</h1><p>Questions about your iPhone? We’re here to help.</p></div></div>
+    <div class="chat-notice">Demo chat · Messages are not sent to a support team.</div>
+    <div class="chat-messages" aria-live="polite" aria-label="Conversation">
+      <div class="chat-bubble chat-reply">Hi there! Welcome to Kapaya. What can we help you with today?</div>
+      ${state.messages.map((message) => `<div class="chat-bubble chat-sent">${escapeText(message)}</div><div class="chat-bubble chat-reply">Thanks for your message. This is a demo chat, so no one will receive it. Explore our help center for more information.</div>`).join('')}
+    </div>
+    <form class="chat-compose" data-chat-form><label class="chat-label" for="chat-message">Your message</label><div class="chat-input-row"><input id="chat-message" name="message" maxlength="500" placeholder="Write a message…" required autocomplete="off"><button type="submit">Send <span aria-hidden="true">→</span></button></div></form>
+    <div class="chat-foot">Need more information? <a data-go="help">Visit the help center →</a></div>
+  </section>
+</main>`;
+
 const CSS = String.raw`
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -2316,6 +2320,71 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
   .home-ftr{padding:36px 24px 24px}
 }
 
+/* Checkout and support chat */
+.checkout-page .co-grid{margin-top:24px}
+.checkout-page .co-card{padding:30px 32px 36px}
+.checkout-page .co-h{display:flex;align-items:center;gap:12px;font-size:20px}
+.co-number{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#f1f0f1;font:600 16px/1 Inter;flex:none}
+.checkout-page .deliv{border:1px solid #e9848e;background:#fff4f5}
+.checkout-page .deliv-dot{width:16px;height:16px;border:5px solid #c92332;background:white}
+.checkout-page .payment-rule{margin:28px 0 20px}
+.checkout-page .pay-tab.is-on{border:1px solid #ec9ba4}
+.checkout-page .pay-tab:disabled{opacity:.6;cursor:not-allowed}
+.checkout-demo-note{font:400 12px/17px Inter;color:#656976;margin-top:14px}
+.checkout-page .protect{border-radius:16px}
+.chat-page{max-width:900px;width:100%;margin:0 auto}
+.chat-panel{margin-top:24px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 30px rgba(20,23,30,.05);border:1px solid #f0eeee}
+.chat-header{display:flex;gap:17px;align-items:center;padding:28px 30px}
+.chat-avatar{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;background:#fcebed;color:#b91e2d;font:700 22px/1 Inter}
+.chat-eyebrow{font:600 10px/1.2 Inter;letter-spacing:.1em;color:#b91e2d}
+.chat-header h1{font:600 25px/31px Inter;letter-spacing:-.025em;margin-top:5px}
+.chat-header p:last-child{font:400 13px/19px Inter;color:#656976;margin-top:3px}
+.chat-notice{background:#fceff0;color:#8d3942;padding:12px 30px;font:500 12px/17px Inter}
+.chat-messages{min-height:260px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:26px 30px}
+.chat-bubble{max-width:80%;padding:13px 16px;border-radius:16px;font:400 14px/21px Inter;overflow-wrap:anywhere;white-space:pre-wrap}
+.chat-reply{align-self:flex-start;background:#f5f4f4;border-bottom-left-radius:5px}
+.chat-sent{align-self:flex-end;background:#c92332;color:white;border-bottom-right-radius:5px}
+.chat-compose{padding:0 30px 18px}
+.chat-label{display:block;font:500 12px/16px Inter;color:#656976;margin-bottom:8px}
+.chat-input-row{display:flex;gap:10px}
+.chat-input-row input{flex:1;min-width:0;height:48px;border:1px solid #dedbdb;border-radius:24px;padding:0 18px;font:400 14px/1 Inter}
+.chat-input-row input:focus{outline:2px solid rgba(201,35,50,.25);border-color:#c92332}
+.chat-input-row button{height:48px;border-radius:24px;background:#14171e;color:#fff;padding:0 22px;font:600 13px/1 Inter}
+.chat-foot{border-top:1px solid #efeded;padding:16px 30px;color:#656976;font:400 12px/17px Inter}
+.chat-foot a{color:#c92332;font-weight:500}
+@media(max-width:767px){
+ .checkout-page{padding:18px 14px 32px}
+ .checkout-page .co-head{margin-top:12px}
+ .checkout-page .page-h{font-size:28px;line-height:34px}
+ .checkout-page .page-p{font-size:12px}
+ .checkout-page .co-grid{gap:12px;margin-top:16px}
+ .checkout-page .co-card{padding:20px 16px;border-radius:16px}
+ .checkout-page .co-h{font-size:18px;line-height:24px}
+ .checkout-page .two{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+ .checkout-page .fld{margin-top:14px}
+ .checkout-page .fld-l{margin-bottom:6px}
+ .checkout-page .fld-i{height:44px}
+ .checkout-page .deliv{padding:14px;margin-top:18px}
+ .checkout-page .payment-rule{margin:22px 0 18px}
+ .checkout-page .pay-tabs{flex-wrap:nowrap;gap:8px;margin-top:14px}
+ .checkout-page .pay-tab{height:42px;min-width:0;padding:0 12px;font-size:11px;gap:6px}
+ .checkout-page .pay-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+ .checkout-page .pay-fields .w-card{grid-column:1 / -1}
+ .checkout-page .order-card{padding:20px 16px}
+ .checkout-page .protect{padding:18px;margin-top:12px}
+ .chat-page{padding:18px 14px 28px}
+ .chat-panel{margin-top:16px;border-radius:17px}
+ .chat-header{padding:22px 18px;gap:12px}
+ .chat-avatar{width:44px;height:44px;font-size:19px}
+ .chat-header h1{font-size:21px;line-height:27px}
+ .chat-header p:last-child{font-size:12px}
+ .chat-notice{padding:11px 18px;font-size:11px}
+ .chat-messages{padding:22px 18px;min-height:240px}
+ .chat-bubble{font-size:13px;line-height:19px;max-width:90%}
+ .chat-compose{padding:0 18px 16px}
+ .chat-foot{padding:14px 18px}
+}
+
 /* Bag: clear item controls and an editorial order summary. */
 .bag-page .bag-card{position:relative}
 .bag-page .bag-thumb img{object-fit:cover;padding:0}
@@ -2512,7 +2581,9 @@ const HELPERS = [
   named('account', account),
   named('orderDetail', orderDetail),
   named('help', help),
-  'const VIEWS = { home, shop, product, bag, checkout, confirmed, account, order: orderDetail, help };',
+  named('escapeText', escapeText),
+  named('chat', chat),
+  'const VIEWS = { home, shop, product, bag, checkout, confirmed, account, order: orderDetail, help, chat };',
 ].join('\n');
 
 const RUNTIME = String.raw`
@@ -2524,7 +2595,7 @@ let expectedHash = location.hash || '#/home';
 
 const store = {
   route: VIEWS[initialRoute] ? initialRoute : 'home', arg: null,
-  cart: [], favs: [], orders: [],
+  cart: [], favs: [], orders: [], messages: [],
   cat: initialRoute === 'shop' && initialArg && !['all', 'store'].includes(initialArg) ? initialArg : 'all',
   sort: 'featured', query: '',
   product: initialProduct, qty: 1, color: initialProduct.colors[0], storage: '128GB', galleryIndex: 0, tab: 'overview',
@@ -2552,7 +2623,7 @@ try {
     if (Array.isArray(saved.cart)) store.cart = saved.cart;
     if (Array.isArray(saved.favs)) store.favs = saved.favs;
     if (Array.isArray(saved.orders)) store.orders = saved.orders;
-    if (saved.form) Object.assign(store.form, saved.form);
+    if (saved.form) { const {card, exp, cvc, ...details} = saved.form; Object.assign(store.form, details); }
   }
   if (legacyKey) localStorage.removeItem(legacyKey);
 } catch (e) {}
@@ -2560,7 +2631,7 @@ try {
 const persist = () => {
   try {
     localStorage.setItem(APP_STATE_KEY, JSON.stringify({
-      cart: store.cart, favs: store.favs, orders: store.orders, form: store.form,
+      cart: store.cart, favs: store.favs, orders: store.orders, form: (({card, exp, cvc, ...details}) => details)(store.form),
     }));
   } catch (e) {}
 };
@@ -2646,7 +2717,7 @@ function paint() {
     el.textContent = el.classList.contains('hdr-n') ? String(count()) : 'Bag (' + count() + ')';
   });
   renderFavs();
-  const mobileRoute = store.route === 'home' ? 'home' : ['account', 'order'].includes(store.route) ? 'account' : store.route === 'help' ? 'more' : 'shop';
+  const mobileRoute = store.route === 'home' ? 'home' : ['account', 'order'].includes(store.route) ? 'account' : ['chat', 'help'].includes(store.route) ? 'chat' : 'shop';
   $$('[data-mobile-route]').forEach((el) => { const active = el.dataset.mobileRoute === mobileRoute; el.classList.toggle('is-current', active); if (active) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); });
 
   const si = $('.search input');
@@ -2844,6 +2915,16 @@ document.addEventListener('input', (e) => {
 });
 
 document.addEventListener('submit', (e) => {
+  if (e.target.matches('[data-chat-form]')) {
+    e.preventDefault();
+    const input = $('input[name="message"]', e.target), message = input.value.trim();
+    if (!message) return;
+    store.messages.push(message);
+    paint();
+    const list = $('.chat-messages'); list.scrollTop = list.scrollHeight;
+    $('#chat-message').focus();
+    return;
+  }
   if (e.target.matches('[data-mobile-search]')) { e.preventDefault(); store.query = $('input', e.target).value.trim(); go('shop', 'all'); return; }
   if (e.target.matches('[data-search]')) {
     e.preventDefault();
@@ -2855,10 +2936,8 @@ document.addEventListener('submit', (e) => {
   e.preventDefault();
   const f = store.form;
   const bad = [];
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)) bad.push('email');
   if (!f.first.trim()) bad.push('first');
   if (!f.last.trim()) bad.push('last');
-  if (!f.street.trim()) bad.push('street');
   if (!f.city.trim()) bad.push('city');
 
   const err = $('[data-err]');
@@ -2884,8 +2963,8 @@ document.addEventListener('submit', (e) => {
     id: 'KAP-' + (88217 + store.orders.length),
     date: 'NOV 26, 2026',
     status: 'Confirmed',
-    first: f.first, last: f.last, email: f.email,
-    street: f.street, city: f.city, postal: f.postal, country: f.country,
+    first: f.first, last: f.last, email: '',
+    street: '', city: f.city, postal: '', country: '',
     last4: digits.slice(-4) || '4242',
     lines: store.cart.slice(),
     subtotal: subtotal, discount: store.discount, total: total,
@@ -2938,10 +3017,10 @@ const SHELL = [
   chrome(),
   '<div id="app"></div>',
   `<nav class="mobile-bottom" aria-label="Mobile navigation">
-    <button data-go="home" data-mobile-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></button>
+    <button data-go="home" data-mobile-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Landing</span></button>
     <button data-go="shop" data-mobile-route="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M10 19h4"/></svg><span>Shop</span></button>
     <button data-go="account" data-mobile-route="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="m12 2 9 5v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"/></svg><span>Orders</span></button>
-    <button data-mobile-menu data-mobile-route="more" aria-label="More navigation options" aria-expanded="false" aria-controls="mobile-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>More</span></button>
+    <button data-go="chat" data-mobile-route="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5c0 4-3.6 7-8 7-1 0-2-.2-2.8-.5L5 20l1-3.8a6.8 6.8 0 0 1-2-4.7c0-4 3.6-7 8-7s8 3 8 7z"/><path d="M8.5 11.5h7"/></svg><span>Chat</span></button>
   </nav>`,
   '<div class="toast" id="toast" role="status" aria-live="polite"></div>',
   '<script>',

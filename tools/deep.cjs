@@ -181,7 +181,7 @@ const { launch, APP } = require('./lib.cjs');
   await new Promise((r) => setTimeout(r, 250));
   await p.click('[data-go="checkout"]');
   await new Promise((r) => setTimeout(r, 250));
-  await p.click('.fld-i[name="email"]');
+  await p.click('.fld-i[name="first"]');
   await p.keyboard.down('Control'); await p.keyboard.press('KeyA'); await p.keyboard.up('Control');
   await p.keyboard.press('Backspace');
   await p.click('.btn-pay');
@@ -189,7 +189,7 @@ const { launch, APP } = require('./lib.cjs');
   console.log('error shown:', await p.$eval('[data-err]', (e) => !e.hidden && e.textContent.slice(0, 28)));
 
   // 7. fix and pay
-  await p.type('.fld-i[name="email"]', 'alex@kapaya.example');
+  await p.type('.fld-i[name="first"]', 'Alex');
   await p.click('.btn-pay');
   await new Promise((r) => setTimeout(r, 400));
   console.log('reached confirmed:', !!(await p.$('.done-hero')));
