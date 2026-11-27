@@ -70,8 +70,9 @@ const fs = require('fs');
     left: !!document.querySelector('.hero-l .hero-h'),
     art: !!document.querySelector('.hero-art'),
     right: document.querySelectorAll('.hero .hero-m').length,
+    noShopButton: !document.querySelector('.hero-shop .btn-dark'),
   }));
-  if (!heroClean.left || !heroClean.art || heroClean.right) {
+  if (!heroClean.left || !heroClean.art || heroClean.right || !heroClean.noShopButton) {
     throw new Error('mobile hero cleanup assertion failed: ' + JSON.stringify(heroClean));
   }
   console.log('hero left-only:', !heroClean.right, '| left copy:', heroClean.left, '| artwork:', heroClean.art);

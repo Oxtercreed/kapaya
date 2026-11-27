@@ -978,7 +978,6 @@ body.is-shop .band-div{display:block}
 .hero-shop .hero-l{width:520px;padding-left:38px;padding-top:0}
 .hero-shop .hero-h{font-size:72px;line-height:74px;letter-spacing:-.045em;margin-top:16px}
 .hero-shop .hero-p{font-size:18px;line-height:26px;max-width:450px;margin-top:16px;color:#535863}
-.hero-shop .btn-dark{height:48px;padding:0 28px;margin-top:18px;border-radius:24px}
 .hero-shop .hero-art{display:none}
 .shop-page .filter-row{margin:16px 14px 0;scroll-margin-top:110px}
 .shop-page .chips{gap:16px}
@@ -1298,7 +1297,6 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
  .shop-page .hero-shop .eyebrow{font-size:10px}
  .shop-page .hero-shop .hero-h{font:600 32px/33px Inter;letter-spacing:-.045em;margin-top:10px}
  .shop-page .hero-shop .hero-p{font:400 12px/17px Inter;margin-top:9px;max-width:210px}
- .shop-page .hero-shop .btn-dark{height:36px;padding:0 18px;margin-top:12px;font-size:12px}
  .shop-page .filter-row{margin:10px 0 0;gap:8px}
  .shop-page .chips{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;scrollbar-width:none}
  .shop-page .chips::-webkit-scrollbar{display:none}
@@ -1489,7 +1487,7 @@ const heroBand = (variant) => {
     <p class="eyebrow">ONE ICON. EVERY GENERATION.</p>
     <h1 class="hero-h">Only iPhone.<br>Every era.</h1>
     <p class="hero-p">Four generations, one clean edit. Find the one that fits your everyday.</p>
-    <a class="btn-dark" ${isHome ? 'data-go="shop"' : 'data-scroll="shop-products"'}>${isHome ? 'Enter the shop' : 'Shop iPhones'} <span class="arw">→</span></a>
+    ${isHome ? '<a class="btn-dark" data-go="shop">Enter the shop <span class="arw">→</span></a>' : ''}
   </div>
   <a class="hero-art" data-go="shop" aria-label="Shop the iPhone collection">
     <img class="hero-phone hero-phone-back" src="${img('iphone-15-blue-back.webp')}" alt="">
