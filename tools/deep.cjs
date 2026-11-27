@@ -1,4 +1,4 @@
-// Seven behavioural assertions across the whole store.
+// Brand and behavioural assertions across the whole store.
 const { launch, APP } = require('./lib.cjs');
 
 (async () => {
@@ -9,6 +9,20 @@ const { launch, APP } = require('./lib.cjs');
   await p.evaluate(() => localStorage.clear());
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 300));
+
+
+  // 0. Kapaya brand identity is present, with no old placeholder brand visible.
+  const brand = await p.evaluate(() => ({
+    title: document.title,
+    logo: !!document.querySelector('.mark .brand-logo'),
+    footerLogo: !!document.querySelector('.ftr-mark .brand-logo'),
+    favicon: (document.querySelector('link[rel="icon"]')?.getAttribute('href') || '').startsWith('data:image/svg+xml'),
+    oldVisible: /VOLTA/i.test(document.body.innerText),
+  }));
+  if (!brand.title.startsWith('Kapaya') || !brand.logo || !brand.footerLogo || !brand.favicon || brand.oldVisible) {
+    throw new Error('brand identity assertion failed: ' + JSON.stringify(brand));
+  }
+  console.log('brand:', brand.title, '| logo:', brand.logo, '| footer logo:', brand.footerLogo, '| favicon:', brand.favicon, '| old visible:', brand.oldVisible);
 
   // 1. landing opens first, footerless, with a working shop CTA
   const landing = await p.evaluate(() => ({
@@ -50,7 +64,7 @@ const { launch, APP } = require('./lib.cjs');
 
   // 6. checkout validation
   await p.evaluate(() => {
-    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }], favs: [], orders: [] }));
+    localStorage.setItem('kapaya.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }], favs: [], orders: [] }));
   });
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 250));
@@ -66,7 +80,7 @@ const { launch, APP } = require('./lib.cjs');
   console.log('error shown:', await p.$eval('[data-err]', (e) => !e.hidden && e.textContent.slice(0, 28)));
 
   // 7. fix and pay
-  await p.type('.fld-i[name="email"]', 'alex@volta.example');
+  await p.type('.fld-i[name="email"]', 'alex@kapaya.example');
   await p.click('.btn-pay');
   await new Promise((r) => setTimeout(r, 400));
   console.log('reached confirmed:', !!(await p.$('.done-hero')));

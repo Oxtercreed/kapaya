@@ -18,6 +18,10 @@ render. `red/img/*.jpg` are the product photographs cropped out of the same
 render — the originals are Figma image fills behind signed URLs that this
 sandbox cannot fetch, so these are the highest-resolution copies obtainable.
 
+The red-screen palette below is the historical Figma measurement. The current
+Kapaya identity uses burnt orange `#B84B18`, ink `#14171E` and cream `#F4F3EF`;
+see `HANDOFF.md`.
+
 ## Palette (sampled, not eyeballed)
 
 | token | hex | used for |
@@ -120,8 +124,9 @@ On phones (`≤640`) the catalogue cards are deliberately smaller: a two-column
 grid of image + name + price only, with badges, ratings, hearts and "View
 product" links hidden. The desktop card remains the measured 304 × 326 plate.
 
-This is not a fidelity target. After both deliberate changes, raw Figma JPEG
-MAE is **6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %**. All five
+This is not a fidelity target. After the landing/hero, iPhone-only and
+Kapaya-brand changes, raw Figma JPEG MAE is **6.3390 / 5.7722 / 3.5064 /
+2.3351 / 3.1021 %**. All five
 `tools/ref/*.png` regression references were replaced with the intentional new
 renders, so default `node diff.cjs` prints 0.0000 % on every screen. The
 Shop-only re-baseline after the landing/hero step was 4.7872 % against the

@@ -17,12 +17,13 @@ SwiftShader runtime into git-ignored derived folders.
 | script | what it does |
 |---|---|
 | `node frames.cjs` | loads the app, clicks through all five screens, writes `/tmp/red/fr-0N-*.png` at 1440×1200, prints `errors: none` |
-| `node diff.cjs` | MAE of those shots against `ref/*.png`. All five references were deliberately re-baselined after the iPhone-only divergence, so a clean run prints **0.0000 % on all five**. `--figma` scores the original raw Figma JPEG crops and reports the intentional design difference: 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 % |
+| `node diff.cjs` | MAE of those shots against `ref/*.png`. All five references were deliberately re-baselined after the iPhone-only and Kapaya-brand changes, so a clean run prints **0.0000 % on all five**. `--figma` scores the original raw Figma JPEG crops and reports the intentional design difference: 6.3390 / 5.7722 / 3.5064 / 2.3351 / 3.1021 % |
 | `node mobile.cjs` | 390×844 @2x walk through every route; asserts the footerless landing and compact two-column buttonless cards; prints `OVERFLOW` if anything is wider than the viewport |
-| `node deep.cjs` | nine interaction assertions — landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
+| `node deep.cjs` | brand identity plus nine interaction assertions — landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
 
-All five `ref/*.png` files are now deliberate regression baselines of the
-current iPhone-only design. The original Figma crops in
+All five `ref/*.png` files are deliberate regression baselines of the current
+iPhone-only, Kapaya-branded design; they were re-baselined again for the logo,
+header, footer, promotional and support-copy changes. The original Figma crops in
 `docs/mockup/red/ref/*.jpg` remain for `--figma` divergence checks. If a default
 number moves above 0.0000 %, either the code changed or the environment did.
 

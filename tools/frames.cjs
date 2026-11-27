@@ -31,7 +31,7 @@ const SHOP = APP + '#/shop';
   await shot('02-product');
 
   await p.evaluate(() => {
-    localStorage.setItem('volta.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }], favs: [], orders: [] }));
+    localStorage.setItem('kapaya.state', JSON.stringify({ cart: [{ id: 'iphone-16-pro', qty: 1, color: 'Natural Titanium' }], favs: [], orders: [] }));
   });
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 300));

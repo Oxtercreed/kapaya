@@ -1,5 +1,5 @@
 {
-  "name": "volta-tools",
+  "name": "kapaya-tools",
   "private": true,
   "description": "Headless-Chromium probes for docs/mockup/index.html",
   "scripts": {

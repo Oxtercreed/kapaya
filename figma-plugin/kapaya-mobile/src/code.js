@@ -1,4 +1,4 @@
-// VOLTA · mobile screens → Figma
+// Kapaya · mobile screens → Figma
 // Builds a "Mobile" section of nine 390×844 phone frames, laid out like the desktop rail:
 // a header + top row of screens, the frame name below each one, wrapped in rows.
 //
@@ -151,7 +151,7 @@ async function main() {
   }
 
   figma.viewport.scrollAndZoomIntoView([section])
-  figma.notify(`VOLTA — ${SCREENS.length} mobile frames added`)
+  figma.notify(`Kapaya — ${SCREENS.length} mobile frames added`)
   figma.closePlugin()
 }
 
@@ -175,7 +175,7 @@ function decodeBase64(b64) {
 const IMG = __IMAGES__
 
 main().catch((err) => {
-  figma.notify('VOLTA plugin failed: ' + err.message, { error: true })
+  figma.notify('Kapaya plugin failed: ' + err.message, { error: true })
   console.error(err)
   figma.closePlugin()
 })

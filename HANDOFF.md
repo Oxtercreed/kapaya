@@ -1,4 +1,4 @@
-# HANDOFF — VOLTA storefront mockup
+# HANDOFF — Kapaya storefront mockup
 
 Everything a fresh session needs: what the project is, what has been built, the
 rules that broke us, and what to do next (including the request that was in
@@ -11,7 +11,7 @@ of truth, this file is the map.
 
 ## 1. What this project is
 
-A clickable **VOLTA** storefront mockup — *good tech, better everyday* — shipped
+A clickable **Kapaya** storefront mockup — *good tech, better everyday* — shipped
 as **one self-contained HTML file** with no build step at runtime, no network
 and no external assets. All CSS, JS, Inter (base64 woff2) and all photography
 (base64 JPEG) live inside `docs/mockup/index.html`.
@@ -55,8 +55,8 @@ node deep.cjs                     # 9 assertions (see §5)
 ```
 
 `diff.cjs --figma` scores against the original raw Figma JPEG crops. After the
-iPhone-only divergence it reports **6.2864 / 5.7210 / 3.4435 / 2.2825 /
-3.0409 %**; JPEG luminance noise adds roughly 0.1 pt. **Use the default mode**
+iPhone-only and Kapaya-brand divergence it reports **6.3390 / 5.7722 /
+3.5064 / 2.3351 / 3.1021 %**; JPEG luminance noise adds roughly 0.1 pt. **Use the default mode**
 for regression: all five `tools/ref/*.png` files were re-baselined on purpose to
 the intentional new design, so a clean run is all zeros. The Figma-era numbers
 in §4 are historical.
@@ -77,14 +77,21 @@ tint `#FCE6E9` · bar/delivery/confirmed hero/ship-note `#FDECEE` · strip/suppo
 `#FAEDEF` · search `#F5F3F3` · tile `#F3F3F3` · mint `#D8F2E7` · green
 `#2F7A52` · muted `#7A7E88`.
 
+**Brand:** Kapaya uses a burnt-orange split-ring monogram (`#B84B18`) with
+`Kapaya` in ink (`#14171E`) on cream (`#F4F3EF`). `brand.cjs` is the vector
+source shared by the inline site logo, favicon, and standalone SVGs;
+`build-logo.cjs` exports `assets/kapaya-logo-4k.png`, a transparent 3840×2160
+master, a cream presentation export, and standalone SVG lockup/mark files. The
+measured store layout and original accent system are unchanged.
+
 **Grid:** 28 px announcement band + 93 px header (hairline at y121) · 64 px page
 margins · 1312 px content · footer 108 px · shop cards 304×326 on 32 px gutters
 4-up · bag/checkout/confirmed split **824 + 32 + 456** · radii 28 hero / 22
 panels / 18 cards / 12 inputs. Breakpoints ≤1120 (3-up) · ≤960 (hero stacks,
 splits 1-col) · ≤640 (2-row header, chips wrap).
 
-**Type:** Inter throughout, **no positive tracking**, wordmark 28/700, hero
-48/600 over 58, page titles 40/600 over 48 (confirmed headline 36/600), section
+**Type:** Inter throughout, **no positive tracking**, inline Kapaya logo
+(28 px-equivalent header height), hero 48/600 over 58, page titles 40/600 over 48 (confirmed headline 36/600), section
 heads 28/600, summary heads 24/600, nav 15/400, micro labels 11–11.5/500.
 
 **Products (4, and only 4 iPhones):** iPhone 16 Pro $1099 ★4.9·128
@@ -93,13 +100,13 @@ heads 28/600, summary heads 24/600, nav 15/400, micro labels 11–11.5/500.
 $599 ★4.9·120 "Best value" (Classic). Clean transparent WebP cut-outs are
 inlined from `docs/mockup/assets/`; no Figma plate crops are used in the store.
 Address Kepler Street 14 / 3011 AA Rotterdam / Netherlands,
-`alex.morgan@example.com`, support `support@volta.example`. Promo `VOLTA10`
+`alex.morgan@example.com`, support `support@kapaya.example`. Promo `KAPAYA10`
 = 10 %.
 
-**State:** `localStorage['volta.state'] = {cart, favs, orders, form}`;
+**State:** `localStorage['kapaya.state'] = {cart, favs, orders, form}`;
 prefilled card `•••• •••• •••• 4242`, exp `08 / 29`, cvc `•••`. Seed order
-`VX-47102` (OCT 14 2026, Delivered, iPhone 15, $799); a new checkout makes
-`VX-(88217+n)`, `NOV 26, 2026`.
+`KAP-47102` (OCT 14 2026, Delivered, iPhone 15, $799); a new checkout makes
+`KAP-(88217+n)`, `NOV 26, 2026`.
 
 **Frame copy still used:** "Good tech. Better everyday." / "Free shipping on
 orders $100+" / "A little more to love" / "Thanks, Alex. You're all set." /
@@ -125,10 +132,10 @@ was **deleting four invented products** (a lamp, sleep buds, a laptop stand, a
 tracker) — the frame says "4 products" in one row, and eight pushed the grid to
 a second row and moved Shop from 2.6 % to 3.4 %.
 
-After the landing/hero and iPhone-catalogue divergence, all five
+After the landing/hero, iPhone-catalogue and Kapaya-brand divergence, all five
 `tools/ref/*.png` images were deliberately re-baselined to the new renders.
 `node diff.cjs` now prints 0.0000 % on every screen; `node diff.cjs --figma`
-prints 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %. Those larger numbers are
+prints 6.3390 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %. Those larger numbers are
 the intended design difference, not a regression.
 
 **Known approximations** (documented in `NOTES-red.md`, do not "fix" blindly):
@@ -265,10 +272,10 @@ Implemented in this branch:
    Clean transparent WebP cut-outs are shown with `object-fit:contain` on the
    existing measured plates. The frames' catalogue copy is explicitly no longer
    binding.
-4. **Final deliberate re-baseline.** Because the catalogue appears across all
-   five measured screens, all `tools/ref/*.png` files were replaced with the
-   new renders. Default `node diff.cjs` prints 0.0000 % on all five; raw Figma
-   divergence is 6.2864 / 5.7210 / 3.4435 / 2.2825 / 3.0409 %.
+4. **Catalogue re-baseline.** Because the catalogue appears across all five
+   measured screens, all `tools/ref/*.png` files were replaced with the new
+   renders. Raw Figma divergence was 6.2864 / 5.7210 / 3.4435 / 2.2825 /
+   3.0409 % before the brand identity change.
 5. **Probes.** `frames.cjs` opens `#/shop`; `mobile.cjs` and `deep.cjs` assert
    the landing opens first, the footer is hidden, and the CTA reaches the shop.
    Deep assertions now use iPhone names, search `16`, and the Pro category.
@@ -278,6 +285,16 @@ Implemented in this branch:
    remains clickable. The measured desktop card is untouched, so no desktop
    reference needed another re-baseline. The mobile hero note is hidden on
    phones so the cut-out does not collide with the copy.
+7. **Kapaya brand identity.** The supplied orange split-ring mark and black
+   `Kapaya` wordmark were rebuilt as resolution-independent vector geometry.
+   The header and footer use inline SVG, the favicon is an inlined monogram, and
+   all visible copy, promo, wallet, support, order IDs, titles and state storage
+   now use Kapaya. Standalone transparent and cream 3840×2160 masters plus SVG
+   lockup/mark files live in `docs/mockup/assets/`. Because the header, footer
+   and copy appear across all screens, all five `tools/ref/*.png` references
+   were deliberately re-baselined again; default `node diff.cjs` prints
+   0.0000 % on all five and current `--figma` divergence is 6.3390 / 5.7722 /
+   3.5064 / 2.3351 / 3.1021 %.
 
 ## 8. Preview
 
@@ -292,10 +309,10 @@ That surfaces as `https://8080-{sandboxId}.e2b.app/`. Bind to `0.0.0.0`, never
 `127.0.0.1`, or the proxied preview cannot reach it. A stale server may already
 be running on 8080 from the previous session — check before starting another.
 
-For a full-screen public preview, Vercel project **`volta-kapaya`** deploys this
+For a full-screen public preview, Vercel project **`kapaya-storefront`** deploys this
 branch with root directory `docs/mockup` and no build/install step. Production
-URL: <https://volta-kapaya.vercel.app/>. Deployment `dpl_EjMjiHTvvGRUSBJaKPoMAsYCSYmL`
-is the first deployment from commit `579642c`.
+URL: <https://kapaya-storefront.vercel.app/>. The production deployment is
+created from the current branch after each committed brand batch.
 
 ## 9. Git
 
@@ -310,6 +327,6 @@ alignment · `778b648` four-product catalogue · `311a291` · `721aef8` ·
 `93e640c` · `c677f5c` · `d503cfb` · `f78ab45` · `0f5f7e7` · `dd7e712`.
 
 `tools/.chromium/`, `tools/node_modules/` and
-`figma-plugin/volta-mobile/img/*.b64` are git-ignored derived assets.
+`figma-plugin/kapaya-mobile/img/*.b64` are git-ignored derived assets.
 `docs/mockup/.fonts/` is tracked on purpose: it is what makes the build
 reproducible to the byte.

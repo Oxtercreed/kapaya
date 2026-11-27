@@ -1,4 +1,4 @@
-# VOLTA — storefront mockup
+# Kapaya — storefront mockup
 
 **Open `index.html`** — that is the whole deliverable. It is one self-contained
 page: Inter is inlined as base64 woff2, clean iPhone photography is inlined as
@@ -15,7 +15,9 @@ their own.
 docs/mockup/
 ├── index.html          the self-contained deliverable
 ├── build.cjs           regenerates index.html  (node build.cjs)
-├── assets/             clean transparent iPhone cut-outs inlined by build.cjs
+├── brand.cjs           Kapaya vector geometry shared by the site and assets
+├── build-logo.cjs      regenerates the standalone SVG and 4K PNG logo
+├── assets/             iPhone cut-outs + Kapaya 4K/vector brand assets
 ├── NOTES-red.md        source measurements, tokens and divergence notes
 ├── .fonts/             Inter woff2 files that get inlined
 └── red/
@@ -35,7 +37,7 @@ docs/mockup/
 | `#/confirmed` | receipt, tracking timeline, delivery and payment details |
 | `#/account`, `#/orders`, `#/help` | order history, order detail and help center |
 
-State lives in `localStorage` (`volta.state`), so bag, saved items, form values
+State lives in `localStorage` (`kapaya.state`), so bag, saved items, form values
 and orders survive a reload. The catalogue is four iPhone generations — 16 Pro,
 15, 14 Pro and 13 — with Pro, Standard and Classic categories. On phones the
 cards collapse to a compact two-column image + name + price invitation with no
@@ -45,10 +47,11 @@ card buttons; desktop keeps the measured card.
 
 The five **red** Figma screens were the measured starting point: palette, type
 scale, 64 / 1312 grid, 304 × 326 cards, and the 824 + 32 + 456 split. The
-landing page, edge-bleeding hero and iPhone-only catalogue are deliberate
-divergences from those frames; see `NOTES-red.md` and `HANDOFF.md`. The tools
-folder keeps both a zero-drift regression baseline and `--figma` divergence
-scores against the original crops.
+landing page, edge-bleeding hero, iPhone-only catalogue and Kapaya brand
+identity are deliberate divergences from those frames; see `NOTES-red.md` and
+`HANDOFF.md`. All five regression references were re-baselined again after the
+brand identity change. The tools folder keeps both a zero-drift regression
+baseline and `--figma` divergence scores against the original crops.
 
 To change anything, edit `build.cjs` and run `node build.cjs`, then verify with
 the headless probes in `tools/`.

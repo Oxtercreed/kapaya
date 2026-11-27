@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds docs/mockup/index.html — an interactive mockup of the VOLTA store.
+ * Builds docs/mockup/index.html — an interactive mockup of the Kapaya store.
  *
  * One screen at a time, real navigation between them, cart/quantity/filter/
  * search state that actually works. The store screens come from the RED frame
@@ -14,11 +14,13 @@
  *  Account (My orders), Order detail, Help, and the search/filter empty state.
  *
  * Output is one self-contained HTML file: Inter inlined as base64 woff2, the
- * product photography inlined as base64 WebP/JPEG. No build step, no network.
+ * Kapaya identity inlined as SVG, and product photography inlined as base64
+ * WebP. No build step, no network.
  */
 
 const fs = require('fs');
 const path = require('path');
+const { brandBody, markSvg, BRAND_ORANGE, BRAND_CREAM } = require('./brand.cjs');
 
 const ROOT = __dirname;
 const IMG = path.join(ROOT, 'red', 'img');
@@ -26,7 +28,7 @@ const ASSETS = path.join(ROOT, 'assets');
 const FONTS = path.join(ROOT, '.fonts');
 
 const b64 = (p, mime) => `data:${mime};base64,${fs.readFileSync(p).toString('base64')}`;
-const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp' };
+const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
 const img = (n) => {
   const ext = path.extname(n).toLowerCase();
   const dir = ext === '.jpg' || ext === '.jpeg' ? IMG : ASSETS;
@@ -38,6 +40,9 @@ const font = (w, f) => {
     ? `@font-face{font-family:Inter;font-style:normal;font-weight:${w};font-display:block;src:url(${b64(p, 'font/woff2')}) format('woff2')}`
     : '';
 };
+
+const favicon = 'data:image/svg+xml;base64,' + Buffer.from(markSvg()).toString('base64');
+const brandLogo = (className = 'brand-logo') => `<svg class="${className}" viewBox="0 0 340 100" role="img" aria-label="Kapaya" xmlns="http://www.w3.org/2000/svg">${brandBody}</svg>`;
 
 /* ── catalogue ─────────────────────────────────────────────────────────── */
 const PRODUCTS = [
@@ -71,7 +76,7 @@ const PRODUCTS = [
       ['Chip', 'A18 Pro'],
       ['Camera', '48MP Fusion · 5× telephoto'],
       ['Finish', 'Natural Titanium or Black Titanium'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
   {
@@ -104,7 +109,7 @@ const PRODUCTS = [
       ['Chip', 'A16 Bionic'],
       ['Camera', '48MP main · 2× telephoto'],
       ['Finish', 'Blue or Black aluminium'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
   {
@@ -137,7 +142,7 @@ const PRODUCTS = [
       ['Chip', 'A16 Bionic'],
       ['Camera', '48MP main · 3× telephoto'],
       ['Finish', 'Deep Purple or Graphite'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
   {
@@ -170,7 +175,7 @@ const PRODUCTS = [
       ['Chip', 'A15 Bionic'],
       ['Camera', '12MP dual camera'],
       ['Finish', 'Midnight or Starlight aluminium'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
 ];
@@ -193,7 +198,7 @@ const chrome = () => `
   <span>Free shipping on orders $100+</span>
 </div>
 <header class="hdr">
-  <a class="mark" data-go="home">VOLTA</a>
+  <a class="mark" data-go="home" aria-label="Kapaya home">${brandLogo()}</a>
   <span class="hdr-tools">
     <button class="hdr-ico" data-go="account" aria-label="My orders">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14171E" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.7-3.7 3.6-5.6 7-5.6s6.3 1.9 7 5.6"/></svg>
@@ -222,7 +227,7 @@ const footer = () => `
 <footer class="ftr">
   <div class="ftr-in">
     <div class="ftr-left">
-      <span class="ftr-mark">VOLTA</span>
+      <span class="ftr-mark">${brandLogo('brand-logo ftr-brand')}</span>
       <span class="ftr-tag">Thoughtful tech for everyday life.</span>
     </div>
     <div class="ftr-right">
@@ -230,7 +235,7 @@ const footer = () => `
       <a class="ftr-l" data-go="help">Shipping &amp; returns</a>
       <a class="ftr-l" data-go="help">Privacy</a>
       <a class="ftr-l" data-go="help">Terms</a>
-      <span class="ftr-copy">© 2026 VOLTA</span>
+      <span class="ftr-copy">© 2026 Kapaya</span>
     </div>
   </div>
 </footer>`;
@@ -291,7 +296,7 @@ const home = () => `
     <div>
       <p class="eyebrow">A SINGLE OBSESSION</p>
       <h2 class="home-intro-h">Good tech, distilled<br>to one icon.</h2>
-      <p class="home-intro-p">VOLTA now does one thing: the iPhone. From the newest Pro to the generation that still feels just right, every device is presented without noise.</p>
+      <p class="home-intro-p">Kapaya now does one thing: the iPhone. From the newest Pro to the generation that still feels just right, every device is presented without noise.</p>
     </div>
     <span class="home-intro-index">01 — 04</span>
   </section>
@@ -333,7 +338,7 @@ const home = () => `
     </div>
   </section>
 
-  <section class="home-values" aria-label="Why VOLTA">
+  <section class="home-values" aria-label="Why Kapaya">
     <article class="home-value"><span class="home-value-n">01</span><h3>Only iPhones</h3><p>Four generations, edited with intent.</p></article>
     <article class="home-value"><span class="home-value-n">02</span><h3>Clean presentation</h3><p>Every phone shown without the visual noise.</p></article>
     <article class="home-value"><span class="home-value-n">03</span><h3>Free over $100</h3><p>Standard delivery, always included.</p></article>
@@ -484,7 +489,7 @@ const product = (state) => {
              ['Category', `${p.cat} · ${p.kind}`],
              ['Finish', p.colors.join(', ')],
              ['In the box', 'Device, USB-C cable, quick start guide'],
-             ['Warranty', '2 years, VOLTA direct'],
+             ['Warranty', '2 years, Kapaya direct'],
              [p.meta.split(' · ')[0], 'Included'],
            ]).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
          </dl>`
@@ -498,7 +503,7 @@ const product = (state) => {
                .map(([n, s, t]) => `<div class="rev"><p class="rev-head"><b>${n}</b><span class="star">${'★'.repeat(+s)}</span></p><p class="rev-body">${t}</p></div>`).join('')}
            </div>
          </div>`
-      : `<p class="tab-p">${p.body} Every VOLTA product ships with free returns for 30 days, so you can live with it before you commit.</p>`}
+      : `<p class="tab-p">${p.body} Every Kapaya product ships with free returns for 30 days, so you can live with it before you commit.</p>`}
   </div>
 </main>`;
 };
@@ -582,7 +587,7 @@ const bag = (state) => {
       <div class="sum-total"><span>Total</span><span>${money(total)}</span></div>
       <p class="sum-tax">Tax included. No surprises at checkout.</p>
       <button class="btn-red btn-checkout" data-go="checkout">Continue to checkout <span class="arw">→</span></button>
-      <p class="sum-secure">Secure payment · Card or VOLTA wallet</p>
+      <p class="sum-secure">Secure payment · Card or Kapaya wallet</p>
       <p class="sum-promo">Have a promo code? Add it at checkout.</p>
     </aside>
   </div>
@@ -664,7 +669,7 @@ const checkout = (state) => {
         <h2 class="co-h mt">3. Payment</h2>
         <div class="pay-tabs">
           <button type="button" class="pay-tab is-on"><span class="radio on"></span>Credit or debit card</button>
-          <button type="button" class="pay-tab"><span class="radio"></span>VOLTA wallet</button>
+          <button type="button" class="pay-tab"><span class="radio"></span>Kapaya wallet</button>
         </div>
         <div class="pay-fields">
           ${fld('Card number', 'card', f.card, { cls: 'w-card', inputmode: 'numeric' })}
@@ -698,7 +703,7 @@ const checkout = (state) => {
         ${state.promoMsg ? `<p class="promo-msg">${state.promoMsg}</p>` : ''}
         <div class="sum-line"><span>Subtotal</span><span>${money(subtotal - state.discount)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="${ship === 0 ? 'green' : ''}">${ship === 0 ? 'Free' : money(ship)}</span></div>
-        ${state.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
+        ${state.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total</span><span>${money(total - state.discount)}</span></div>
         <p class="sum-tax">Tax included</p>
@@ -708,7 +713,7 @@ const checkout = (state) => {
 
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@volta.example</p>
+        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
       </div>
     </aside>
   </form>
@@ -786,8 +791,8 @@ const confirmed = (state) => {
         <div class="co-rule"></div>
         <div class="sum-line"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="green">Free</span></div>
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total paid</span><span>${money(total)}</span></div>
         <p class="sum-tax">30-day returns from the day it arrives.</p>
@@ -859,7 +864,7 @@ const account = (state) => `
       </div>
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@volta.example</p>
+        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
       </div>
     </aside>
   </div>
@@ -923,7 +928,7 @@ const orderDetail = (state) => {
         <div class="co-rule"></div>
         <div class="sum-line"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="green">Free</span></div>
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total paid</span><span>${money(o.total)}</span></div>
       </div>
@@ -943,8 +948,8 @@ const help = () => `
     ${[
       ['Shipping & returns', 'Free over $100, 30 days to change your mind.', 'Orders leave Rotterdam within a day. Standard delivery lands in 2–3 working days, and anything unopened can come back within 30 days for a full refund.'],
       ['Warranty', 'Two years on every device, no receipt needed.', 'We keep order history against your email, so a claim is a conversation rather than paperwork.'],
-      ['Payments', 'Card, VOLTA wallet, and one promo code per order.', 'You are charged when the order ships. Nothing is stored on our side.'],
-      ['Talk to us', 'support@volta.example · Mon–Fri, 9–18 CET', 'Include your order number if you have one and we can move faster.'],
+      ['Payments', 'Card, Kapaya wallet, and one promo code per order.', 'You are charged when the order ships. Nothing is stored on our side.'],
+      ['Talk to us', 'support@kapaya.example · Mon–Fri, 9–18 CET', 'Include your order number if you have one and we can move faster.'],
     ].map(([h, p, b]) => `<article class="help-card"><h3 class="help-h">${h}</h3><p class="help-p">${p}</p><p class="help-b">${b}</p></article>`).join('')}
   </div>
 
@@ -970,7 +975,7 @@ body{
 a,button{cursor:pointer;font-family:inherit}
 a{color:inherit;text-decoration:none}
 button{background:none;border:0;color:inherit}
-:focus-visible{outline:2px solid #C92332;outline-offset:3px;border-radius:6px}
+:focus-visible{outline:2px solid var(--brand-orange);outline-offset:3px;border-radius:6px}
 img{display:block;max-width:100%}
 .arw{font-size:.92em}
 
@@ -992,7 +997,9 @@ img{display:block;max-width:100%}
   position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
   background:#C92332;color:#fff;font:600 10.5px/17px Inter,sans-serif;text-align:center;
 }
-.mark{font:700 28px/1 Inter,sans-serif;letter-spacing:-.01em;flex:0 0 auto}
+.mark{display:flex;align-items:center;flex:0 0 auto}
+.brand-logo{display:block;width:132px;height:auto}
+:root{--brand-orange:${BRAND_ORANGE};--brand-cream:${BRAND_CREAM}}
 .nav{display:flex;gap:30px;margin-left:29px}
 .nav-i{font:400 15px/1 Inter,sans-serif;padding:6px 0;position:relative}
 .nav-i:hover{color:#C92332}
@@ -1163,7 +1170,8 @@ body.is-home .ftr{display:none}
   display:flex;align-items:center;
 }
 .ftr-left{display:flex;align-items:center;gap:29px}
-.ftr-mark{font:700 22px/1 Inter,sans-serif;letter-spacing:-.01em}
+.ftr-mark{display:flex;align-items:center}
+.ftr-brand{width:112px}
 .ftr-tag{font:400 14px/1 Inter,sans-serif;color:#656976}
 .ftr-right{margin-left:auto;display:flex;align-items:center;gap:47px}
 .ftr-l{font:400 14px/1 Inter,sans-serif}
@@ -1180,9 +1188,9 @@ body.is-home .ftr{display:none}
   background:#FCE6E9;
 }
 .hero-home:after{
-  content:'VOLTA';position:absolute;right:42px;top:42px;
-  font:700 190px/1 Inter,sans-serif;letter-spacing:-.06em;
-  color:rgba(150,21,31,.07);z-index:0;pointer-events:none;
+  content:'Kapaya';position:absolute;right:42px;top:54px;
+  font:700 150px/1 Inter,sans-serif;letter-spacing:-.065em;
+  color:var(--brand-orange);opacity:.075;z-index:0;pointer-events:none;
 }
 .hero-home .hero-l{width:690px;padding-left:64px;padding-top:34px}
 .hero-home .hero-h{font:600 72px/78px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
@@ -1667,7 +1675,8 @@ body.is-home .ftr{display:none}
   .nav-i{white-space:nowrap}
   .page{padding:20px 18px 56px}
   .ftr-in{padding:0 18px}
-  .mark{font-size:24px}
+  .brand-logo{width:116px}
+  .ftr-brand{width:104px}
   .nav{order:3;width:100%;gap:18px;margin-left:0;overflow-x:auto;padding-bottom:4px}
   .nav-i{font-size:14px;white-space:nowrap}
   .hdr-right{order:2;margin-left:auto;gap:14px}
@@ -1869,19 +1878,27 @@ const store = {
   viewOrder: null,
 };
 
+const APP_STATE_KEY = 'kapaya.state';
 try {
-  const saved = JSON.parse(localStorage.getItem('volta.state') || 'null');
+  let raw = localStorage.getItem(APP_STATE_KEY);
+  let legacyKey = null;
+  if (!raw) {
+    legacyKey = Object.keys(localStorage).find((k) => k.endsWith('.state') && /"cart"/.test(localStorage.getItem(k) || ''));
+    if (legacyKey) raw = localStorage.getItem(legacyKey);
+  }
+  const saved = JSON.parse(raw || 'null');
   if (saved) {
     if (Array.isArray(saved.cart)) store.cart = saved.cart;
     if (Array.isArray(saved.favs)) store.favs = saved.favs;
     if (Array.isArray(saved.orders)) store.orders = saved.orders;
     if (saved.form) Object.assign(store.form, saved.form);
   }
+  if (legacyKey) localStorage.removeItem(legacyKey);
 } catch (e) {}
 
 const persist = () => {
   try {
-    localStorage.setItem('volta.state', JSON.stringify({
+    localStorage.setItem(APP_STATE_KEY, JSON.stringify({
       cart: store.cart, favs: store.favs, orders: store.orders, form: store.form,
     }));
   } catch (e) {}
@@ -2049,13 +2066,13 @@ document.addEventListener('click', (e) => {
   if (t.hasAttribute('data-apply')) {
     const code = (store.promo || '').trim().toUpperCase();
     const sub = store.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
-    if (code === 'VOLTA10') {
+    if (code === 'KAPAYA10') {
       store.discount = Math.round(sub * 10) / 100;
-      store.promoMsg = 'VOLTA10 applied — 10% off.';
+      store.promoMsg = 'KAPAYA10 applied — 10% off.';
     } else if (!code) {
       store.discount = 0; store.promoMsg = '';
     } else {
-      store.discount = 0; store.promoMsg = 'That code didn\u2019t work. Try VOLTA10.';
+      store.discount = 0; store.promoMsg = 'That code didn\u2019t work. Try KAPAYA10.';
     }
     paint();
     return;
@@ -2125,7 +2142,7 @@ document.addEventListener('submit', (e) => {
   const digits = (f.card || '').replace(/\D/g, '');
 
   const order = {
-    id: 'VX-' + (88217 + store.orders.length),
+    id: 'KAP-' + (88217 + store.orders.length),
     date: 'NOV 26, 2026',
     status: 'Confirmed',
     first: f.first, last: f.last, email: f.email,
@@ -2150,7 +2167,7 @@ document.addEventListener('keydown', (e) => {
 
 if (!store.orders.length) {
   store.orders = [{
-    id: 'VX-47102', date: 'OCT 14, 2026', status: 'Delivered',
+    id: 'KAP-47102', date: 'OCT 14, 2026', status: 'Delivered',
     first: 'Alex', last: 'Morgan', email: 'alex.morgan@example.com',
     street: 'Kepler Street 14', city: 'Rotterdam', postal: '3011 AA', country: 'Netherlands',
     last4: '4242',
@@ -2168,8 +2185,11 @@ const SHELL = [
   '<head>',
   '<meta charset="utf-8">',
   '<meta name="viewport" content="width=device-width, initial-scale=1">',
-  '<meta name="description" content="VOLTA — an interactive, iPhone-only storefront mockup.">',
-  '<title>VOLTA — good tech, better everyday</title>',
+  '<meta name="description" content="Kapaya — an interactive, iPhone-only storefront mockup.">',
+  '<meta name="application-name" content="Kapaya">',
+  `<meta name="theme-color" content="${BRAND_CREAM}">`,
+  `<link rel="icon" type="image/svg+xml" href="${favicon}">`,
+  '<title>Kapaya — good tech, better everyday</title>',
   '<style>',
   [400, 500, 600, 700].map((w) => font(w, `inter-latin-${w}-normal.woff2`)).join('\n'),
   CSS,
