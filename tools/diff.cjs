@@ -6,9 +6,12 @@
 //                               so these numbers sit ~0.1 pt higher and are
 //                               only good for spot-checks)
 //
-// tools/ref/*.png are lossless PNGs of the exact render that scored
-// 2.52 / 2.52 / 3.25 / 2.14 / 2.88 %, so a clean run must print those numbers
-// back.  If it does not, the markup or the environment drifted.
+// All five tools/ref/*.png files were deliberately re-baselined to the
+// landing/hero + iPhone-only + Kapaya-branded design; 01-shop.png was
+// re-baselined again after the right-hand hero copy was removed. A clean
+// default run prints 0.0000 % on every screen. Use --figma to measure the
+// intentional divergence against the original raw Figma JPEG crops
+// (6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %).
 const { execSync } = require('child_process');
 const path = require('path');
 const { OUT } = require('./lib.cjs');

@@ -2,9 +2,9 @@
 .env
 *.local
 
-# derived figma plugin assets (rebuild with figma-plugin/volta-mobile/build.cjs)
-figma-plugin/volta-mobile/img/*.b64
+# derived Figma plugin assets (rebuild with figma-plugin/kapaya-mobile/build.cjs)
+figma-plugin/kapaya-mobile/img/*.b64
 
-# headless Chromium for the probes in tools/ (150 MB; fetch once with tools/fetch-chromium.sh)
+# headless Chromium for the probes in tools/ (fetch once with tools/fetch-chromium.sh)
 tools/.chromium/
 tools/node_modules/

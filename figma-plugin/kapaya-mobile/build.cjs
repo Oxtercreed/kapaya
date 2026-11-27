@@ -23,4 +23,4 @@ const entries = Object.entries(files).map(([key, file]) => {
 const src = fs.readFileSync(path.join(__dirname, 'src', 'code.js'), 'utf8')
 const out = src.replace('__IMAGES__', `{\n${entries.join(',\n')}\n}`)
 fs.writeFileSync(path.join(__dirname, 'code.js'), out)
-console.log('code.js —', (out.length / 1048576).toFixed(2), 'MB')
+console.log('code.js:', (out.length / 1048576).toFixed(2), 'MB')

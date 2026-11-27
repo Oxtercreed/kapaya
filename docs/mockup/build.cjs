@@ -1,30 +1,39 @@
 #!/usr/bin/env node
 /**
- * Builds docs/mockup/index.html — an interactive mockup of the VOLTA store.
+ * Builds docs/mockup/index.html an interactive mockup of the Kapaya store.
  *
  * One screen at a time, real navigation between them, cart/quantity/filter/
- * search state that actually works. The visual design is the RED frame set in
- * the Figma file (zoygvtfjWN92VUiWAsSMOL — 8:2, 8:92, 8:161, 8:240, 8:342),
- * reproduced from measurements of a 1:1 render: same palette, same type scale,
- * same 64/1312 grid, same 824+32+456 split. See NOTES-red.md.
+ * search state that actually works. The store screens come from the RED frame
+ * set in the Figma file (zoygvtfjWN92VUiWAsSMOL 8:2, 8:92, 8:161, 8:240,
+ * 8:342), reproduced from measurements of a 1:1 render: same palette, same
+ * type scale, same 64/1312 grid, same 824+32+456 split. The landing page and
+ * edge-bleeding hero are a deliberate divergence. See NOTES-red.md.
  *
- * Screens in the file:  Shop, Product, Bag, Checkout, Confirmed.
+ * Screens in the file:  Home (landing), Shop, Product, Bag, Checkout, Confirmed.
  * Screens added to make it navigable (same system, no new visual language):
  *  Account (My orders), Order detail, Help, and the search/filter empty state.
  *
  * Output is one self-contained HTML file: Inter inlined as base64 woff2, the
- * product photography inlined as base64 JPEG. No build step, no network.
+ * Kapaya identity inlined as SVG, and product photography inlined as base64
+ * WebP. No build step, no network.
  */
 
 const fs = require('fs');
 const path = require('path');
+const { brandBody, markSvg, BRAND_ORANGE, BRAND_CREAM } = require('./brand.cjs');
 
 const ROOT = __dirname;
 const IMG = path.join(ROOT, 'red', 'img');
+const ASSETS = path.join(ROOT, 'assets');
 const FONTS = path.join(ROOT, '.fonts');
 
 const b64 = (p, mime) => `data:${mime};base64,${fs.readFileSync(p).toString('base64')}`;
-const img = (n) => b64(path.join(IMG, n), 'image/jpeg');
+const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
+const img = (n) => {
+  const ext = path.extname(n).toLowerCase();
+  const dir = ext === '.jpg' || ext === '.jpeg' ? IMG : ASSETS;
+  return b64(path.join(dir, n), MIME[ext] || 'application/octet-stream');
+};
 const font = (w, f) => {
   const p = path.join(FONTS, f);
   return fs.existsSync(p)
@@ -32,106 +41,145 @@ const font = (w, f) => {
     : '';
 };
 
+const favicon = 'data:image/svg+xml;base64,' + Buffer.from(markSvg()).toString('base64');
+const brandLogo = (className = 'brand-logo') => `<svg class="${className}" viewBox="0 0 340 100" role="img" aria-label="Kapaya" xmlns="http://www.w3.org/2000/svg">${brandBody}</svg>`;
+
 /* ── catalogue ─────────────────────────────────────────────────────────── */
 const PRODUCTS = [
   {
-    id: 'aurora', name: 'Aurora Buds Pro', short: 'Aurora Buds Pro',
-    kind: 'Wireless earbuds', cat: 'Audio', price: 189,
-    rate: '4.9', reviews: 128, tag: 'Bestseller',
-    plate: 'card1.jpg', crop: true, hero: 'hero.jpg', tile: 'herotile.jpg', thumb: 'bagthumb.jpg', gallery: 'hero.jpg',
-    blurb: 'Big sound. A little more quiet.',
-    body: 'Get lost in your music, not the noise. A comfortable fit, immersive audio, and all-day power for wherever life goes.',
-    hook: 'Small size.<br>Immersive sound.', note: 'Noise cancelling · 30-hour battery',
-    colors: ['Silver', 'Graphite'],
-  },
-  {
-    id: 'vertex', name: 'Vertex H9 Headphones', short: 'Vertex H9 Headphones',
-    kind: 'Over-ear headphones', cat: 'Audio', price: 249,
-    rate: '4.8', reviews: 96, tag: 'Premium sound',
-    plate: 'card2.jpg', crop: true, hero: 'card2.jpg', thumb: 'rec1.jpg', gallery: 'rec1.jpg',
-    blurb: 'Room to think, room to listen.',
-    body: 'Plush over-ear cushions and a headband that disappears after an hour. Tuned for long sessions, not short demos.',
-    meta: 'Adaptive ANC · 40-hour battery',
-    colors: ['Silver', 'Graphite'],
-    foot: 'A closer look at the pair you keep on.',
-    secHead: 'Made for the way you listen',
+    id: 'iphone-16-pro', name: 'iPhone 16 Pro', short: 'iPhone 16 Pro',
+    kind: 'Titanium flagship', cat: 'Pro', price: 1099,
+    rate: '4.9', reviews: 128, tag: 'Latest generation',
+    plate: 'iphone-16-pro-front.webp', hero: 'iphone-16-pro-front.webp',
+    tile: 'iphone-16-pro-front.webp', thumb: 'iphone-16-pro-front.webp',
+    gallery: 'iphone-16-pro-front.webp',
+    blurb: 'The newest era, in titanium.',
+    body: 'A bright edge-to-edge display, a precise titanium frame and the most considered Pro camera system yet. The newest iPhone, without the noise around it.',
+    hook: 'Every generation,<br>considered.', note: 'A18 Pro · Pro camera · Titanium',
+    meta: 'A18 Pro · Titanium',
+    colors: ['Natural Titanium', 'Black Titanium'],
+    foot: 'A closer look at the newest iPhone.',
+    secHead: 'Made for the newest everyday',
     bens: [
-      ['01', 'Silence, on your terms', 'Adaptive cancellation reads the room and leaves the rest of it out.'],
-      ['02', 'Two days between charges', '40 hours of playback, or five hours back in a ten-minute top-up.'],
-      ['03', 'Built to disappear', 'Memory-foam cushions and a 248g frame you stop noticing by nine.'],
+      ['01', 'Titanium, quietly lighter', 'A strong, brushed frame that feels balanced in the hand without asking for attention.'],
+      ['02', 'A display with more room', 'Slim borders, outdoor brightness and true-to-life colour for everything from messages to film.'],
+      ['03', 'A Pro camera, simplified', 'A 48MP main camera and 5× telephoto make the shot you wanted feel effortless.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Wore them through a nine-hour flight and forgot they were on my head.'],
-      ['Tomas K.', '5', 'Cancellation is the real thing: my open-plan office simply goes quiet.'],
-      ['Priya S.', '4', 'Beautiful build. The case is bigger than I expected, but it travels fine.'],
+      ['Maya R.', '5', 'The titanium finish is beautiful in person, and the screen is superb outdoors.'],
+      ['Tomas K.', '5', 'Camera upgrades are obvious without making the phone feel complicated.'],
+      ['Priya S.', '4', 'A clean, fast upgrade. I would like a slightly lighter case, but the phone is excellent.'],
     ],
     specs: [
-      ['Category', 'Audio · Over-ear headphones'],
-      ['Battery', '40 hours playback, USB-C fast charge'],
-      ['Finish', 'Silver or graphite aluminium'],
-      ['In the box', 'Headphones, hard case, USB-C and 3.5mm cables'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Category', 'Pro · Titanium flagship'],
+      ['Display', '6.3-inch Super Retina XDR'],
+      ['Chip', 'A18 Pro'],
+      ['Camera', '48MP Fusion · 5× telephoto'],
+      ['Finish', 'Natural Titanium or Black Titanium'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
   {
-    id: 'pulse', name: 'Pulse Watch S2', short: 'Pulse Watch S2',
-    kind: 'Everyday smartwatch', cat: 'Wearables', price: 198,
-    rate: '4.8', reviews: 182, tag: 'New arrival',
-    plate: 'card3.jpg', crop: true, hero: 'card3.jpg', thumb: 'rec2.jpg', gallery: 'rec2.jpg',
-    blurb: 'Your day, on your wrist.',
-    body: 'Sleep, steps and heart rate, quietly tracked. A week of battery and a screen you can actually read outdoors.',
-    meta: '7-day battery · 5 ATM',
-    colors: ['Graphite', 'Silver'],
-    foot: 'A closer look at the watch you stop charging.',
-    secHead: 'Made for the way you move',
+    id: 'iphone-15', name: 'iPhone 15', short: 'iPhone 15',
+    kind: 'Everyday standard', cat: 'Standard', price: 799,
+    rate: '4.8', reviews: 96, tag: 'Clean blue finish',
+    plate: 'iphone-15-blue-back.webp', hero: 'iphone-15-blue-back.webp',
+    tile: 'iphone-15-blue-back.webp', thumb: 'iphone-15-blue-back.webp',
+    gallery: 'iphone-15-blue-back.webp',
+    blurb: 'The everyday iPhone, refined.',
+    body: 'Dynamic Island, a soft blue glass back and USB-C make this the calm centre of the collection. Familiar in the best way, with the details quietly updated.',
+    hook: 'Blue glass.<br>Everyday ease.', note: 'Dynamic Island · USB-C · 48MP main',
+    meta: 'A16 Bionic · USB-C',
+    colors: ['Blue', 'Black'],
+    foot: 'A closer look at the blue finish.',
+    secHead: 'Made for the everyday',
     bens: [
-      ['01', 'A week, not a night', 'Seven days of tracking on one charge, so the charger stays in the drawer.'],
-      ['02', 'Readable in daylight', 'A 1.4" transflective display you can read mid-run without shading it.'],
-      ['03', 'Sleep you can act on', 'Resting heart rate, sleep stages and a nudge when the week gets late.'],
+      ['01', 'Familiar, then better', 'Dynamic Island turns the everyday alerts and timers into something you barely have to think about.'],
+      ['02', 'One cable, everywhere', 'USB-C charges the phone, the bag and the desk without a drawer of adapters.'],
+      ['03', 'A finish with softness', 'Colour-infused blue glass keeps reflections gentle and fingerprints quiet.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Charged it last Sunday and it is still going. Sleep tracking is the part I use.'],
-      ['Tomas K.', '5', 'Screen is genuinely visible outdoors. Swam with it twice, no issues.'],
-      ['Priya S.', '4', 'Light and comfortable overnight. Would like a couple more watch faces.'],
+      ['Maya R.', '5', 'The blue is subtle and the move to USB-C has made travel much simpler.'],
+      ['Tomas K.', '5', 'Exactly the everyday phone I wanted: quick, clean and uncomplicated.'],
+      ['Priya S.', '4', 'Lovely finish and reliable battery. The camera is a real step up from my old phone.'],
     ],
     specs: [
-      ['Category', 'Wearables · Everyday smartwatch'],
-      ['Battery', '7 days typical, 14 in battery-saver'],
-      ['Finish', 'Graphite or silver aluminium, 5 ATM'],
-      ['In the box', 'Watch, silicone strap, magnetic charger'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Category', 'Standard · Everyday iPhone'],
+      ['Display', '6.1-inch Super Retina XDR'],
+      ['Chip', 'A16 Bionic'],
+      ['Camera', '48MP main · 2× telephoto'],
+      ['Finish', 'Blue or Black aluminium'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
   {
-    id: 'glide', name: 'Glide Pro Mouse', short: 'Glide Pro Mouse',
-    kind: 'Wireless precision mouse', cat: 'Accessories', price: 66,
-    rate: '4.9', reviews: 120, tag: 'Work better',
-    plate: 'card4.jpg', crop: true, hero: 'card4.jpg', thumb: 'rec3.jpg', gallery: 'rec3.jpg',
-    blurb: 'Point, click, forget it is there.',
-    body: 'A sculpted shell, silent switches and a sensor that tracks on anything. Charges over USB-C in an hour.',
-    meta: 'Silent switches · USB-C',
-    colors: ['Graphite'],
-    foot: 'A closer look at the mouse that gets out of the way.',
-    secHead: 'Made for the way you work',
+    id: 'iphone-14-pro', name: 'iPhone 14 Pro', short: 'iPhone 14 Pro',
+    kind: 'Pro classic', cat: 'Pro', price: 899,
+    rate: '4.8', reviews: 182, tag: 'Pro camera',
+    plate: 'iphone-14-pro-purple.webp', hero: 'iphone-14-pro-purple.webp',
+    tile: 'iphone-14-pro-purple.webp', thumb: 'iphone-14-pro-purple.webp',
+    gallery: 'iphone-14-pro-purple.webp',
+    blurb: 'A Pro chapter worth keeping.',
+    body: 'Deep Purple glass, the first 48MP main camera and an Always-On display. A generation that still reads as unmistakably Pro, presented exactly as it is.',
+    hook: 'Deep Purple.<br>Still Pro.', note: '48MP main · Always-On display',
+    meta: 'A16 Bionic · 48MP main',
+    colors: ['Deep Purple', 'Graphite'],
+    foot: 'A closer look at the Deep Purple finish.',
+    secHead: 'Made for the considered upgrade',
     bens: [
-      ['01', 'Quiet clicks, all day', 'Silent switches take the sound out of a late session without dulling the press.'],
-      ['02', 'Tracks on anything', 'A 4000 DPI sensor that works on glass, denim and a hotel desk.'],
-      ['03', 'Pairs with three devices', 'One button swaps between laptop, desktop and tablet mid-sentence.'],
+      ['01', 'The 48MP turning point', 'Detail-rich photos with a flexible 2× crop that keeps the frame natural.'],
+      ['02', 'Information at a glance', 'An Always-On display keeps time, widgets and notifications quietly visible.'],
+      ['03', 'Deep Purple, properly deep', 'A matte glass finish that shifts from graphite to plum with the light.'],
     ],
     revs: [
-      ['Maya R.', '5', 'Shape fits my hand properly and the clicks are near silent. No regrets.'],
-      ['Tomas K.', '5', 'Switching between two machines with one button is worth the price alone.'],
-      ['Priya S.', '4', 'Excellent everyday mouse. Scroll wheel could be a touch heavier.'],
+      ['Maya R.', '5', 'Deep Purple still looks special, and the 48MP camera remains excellent.'],
+      ['Tomas K.', '5', 'Always-On display is more useful than I expected. Battery has stayed strong.'],
+      ['Priya S.', '4', 'A lovely Pro phone. I prefer this size to the newer models.'],
     ],
     specs: [
-      ['Category', 'Accessories · Wireless precision mouse'],
-      ['Battery', '70 days, USB-C, 1-hour charge'],
-      ['Finish', 'Graphite, soft-touch shell'],
-      ['In the box', 'Mouse, USB-C cable, USB-A receiver'],
-      ['Warranty', '2 years, VOLTA direct'],
+      ['Category', 'Pro · Pro classic'],
+      ['Display', '6.1-inch Super Retina XDR, Always-On'],
+      ['Chip', 'A16 Bionic'],
+      ['Camera', '48MP main · 3× telephoto'],
+      ['Finish', 'Deep Purple or Graphite'],
+      ['Warranty', '2 years, Kapaya direct'],
+    ],
+  },
+  {
+    id: 'iphone-13', name: 'iPhone 13', short: 'iPhone 13',
+    kind: 'Earlier generation', cat: 'Classic', price: 599,
+    rate: '4.9', reviews: 120, tag: 'Best value',
+    plate: 'iphone-13-midnight.webp', hero: 'iphone-13-midnight.webp',
+    tile: 'iphone-13-midnight.webp', thumb: 'iphone-13-midnight.webp',
+    gallery: 'iphone-13-midnight.webp',
+    blurb: 'Still the one that just works.',
+    body: 'Midnight graphite, the diagonal dual-camera layout and a dependable all-day battery. A clean earlier generation for the person who wants the iPhone, simply.',
+    hook: 'The essential<br>iPhone.', note: 'Dual camera · All-day battery',
+    meta: 'A15 Bionic · Dual camera',
+    colors: ['Midnight', 'Starlight'],
+    foot: 'A closer look at the Midnight finish.',
+    secHead: 'Made for the simple choice',
+    bens: [
+      ['01', 'Nothing extra', 'The core iPhone experience, with no spec-sheet detours and no learning curve.'],
+      ['02', 'A camera you trust', 'Two diagonal lenses and clean computational photography make everyday shots easy.'],
+      ['03', 'A darker classic', 'Midnight graphite keeps the design crisp, understated and easy to live with.'],
+    ],
+    revs: [
+      ['Maya R.', '5', 'Bought this as a simpler option and it still does everything I need beautifully.'],
+      ['Tomas K.', '5', 'Battery is dependable and the Midnight finish hides daily wear very well.'],
+      ['Priya S.', '4', 'Excellent value. Not the newest camera, but photos are consistently good.'],
+    ],
+    specs: [
+      ['Category', 'Classic · Earlier generation'],
+      ['Display', '6.1-inch Super Retina XDR'],
+      ['Chip', 'A15 Bionic'],
+      ['Camera', '12MP dual camera'],
+      ['Finish', 'Midnight or Starlight aluminium'],
+      ['Warranty', '2 years, Kapaya direct'],
     ],
   },
 ];
+
 
 const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 const money = (n) => `$${n.toFixed(2)}`;
@@ -139,18 +187,27 @@ const money = (n) => `$${n.toFixed(2)}`;
 /* ── shared chrome (measured from the frames) ──────────────────────────── */
 const NAV = [
   ['Shop', 'shop', 'store'],
-  ['Audio', 'shop', 'audio'],
-  ['Wearables', 'shop', 'wearables'],
-  ['Accessories', 'shop', 'accessories'],
+  ['Pro', 'shop', 'pro'],
+  ['Standard', 'shop', 'standard'],
+  ['Classic', 'shop', 'classic'],
 ];
 
 const chrome = () => `
 <div class="band">
   <span>Good tech. Better everyday.</span>
+  <i class="band-div" aria-hidden="true"></i>
   <span>Free shipping on orders $100+</span>
 </div>
 <header class="hdr">
-  <a class="mark" data-go="shop">VOLTA</a>
+  <a class="mark" data-go="home" aria-label="Kapaya home">${brandLogo()}</a>
+  <button class="home-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="home-menu" data-home-menu><span></span><span></span></button>
+  <nav id="home-menu" class="home-nav" aria-label="Landing sections">
+    <a href="#the-edit" data-scroll="the-edit">The Edit</a>
+    <a href="#finishes" data-scroll="finishes">Finishes</a>
+    <a href="#generations" data-scroll="generations">Generations</a>
+    <a href="#why-kapaya" data-scroll="why-kapaya">Why Kapaya</a>
+    <a class="home-menu-shop" data-go="shop">Start shopping <span aria-hidden="true">→</span></a>
+  </nav>
   <span class="hdr-tools">
     <button class="hdr-ico" data-go="account" aria-label="My orders">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14171E" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.7-3.7 3.6-5.6 7-5.6s6.3 1.9 7 5.6"/></svg>
@@ -167,19 +224,20 @@ const chrome = () => `
     <div class="hdr-right">
       <form class="search" data-search>
         <svg class="sicon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8A8E99" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-        <input type="search" placeholder="Search products…" aria-label="Search products">
+        <input type="search" placeholder="Search iPhones…" aria-label="Search iPhones">
       </form>
       <a class="orders" data-go="account">My orders</a>
       <a class="bag-pill" data-go="bag"><span data-bagcount>Bag (0)</span></a>
     </div>
   </div>
+  <a class="home-shop-pill" data-go="shop">Start shopping</a>
 </header>`;
 
 const footer = () => `
 <footer class="ftr">
   <div class="ftr-in">
     <div class="ftr-left">
-      <span class="ftr-mark">VOLTA</span>
+      <span class="ftr-mark">${brandLogo('brand-logo ftr-brand')}</span>
       <span class="ftr-tag">Thoughtful tech for everyday life.</span>
     </div>
     <div class="ftr-right">
@@ -187,7 +245,7 @@ const footer = () => `
       <a class="ftr-l" data-go="help">Shipping &amp; returns</a>
       <a class="ftr-l" data-go="help">Privacy</a>
       <a class="ftr-l" data-go="help">Terms</a>
-      <span class="ftr-copy">© 2026 VOLTA</span>
+      <span class="ftr-copy">© 2026 Kapaya</span>
     </div>
   </div>
 </footer>`;
@@ -213,41 +271,151 @@ const plate = (p, cls = '') =>
 
 /* ══ screens ═════════════════════════════════════════════════════════════ */
 
-/* Shop — hero, filters, grid, service strip  (frame 8:2) */
+/* The hero artwork is a transparent cut-out living on the panel itself. No
+   image plate, no radius, no second background: it overhangs the clipped edge. */
+const heroBand = (variant) => {
+  const isHome = variant === 'home';
+  return `
+<section class="hero${isHome ? ' hero-home' : ''}">
+  <div class="hero-l">
+    <p class="eyebrow">ONE ICON. EVERY GENERATION.</p>
+    <h1 class="hero-h">Only iPhone.<br>Every era.</h1>
+    <p class="hero-p">Four generations, one clean edit. Find the one that fits your everyday.</p>
+    <a class="btn-dark" data-go="shop">${isHome ? 'Enter the shop' : 'Shop the collection'} <span class="arw">→</span></a>
+  </div>
+  <a class="hero-art" data-go="shop" aria-label="Shop the iPhone collection">
+    <img class="hero-phone hero-phone-back" src="${img('iphone-15-blue-back.webp')}" alt="">
+    <img class="hero-phone hero-phone-front" src="${img('iphone-16-pro-front.webp')}" alt="">
+  </a>
+</section>`;
+};
+
+/* Landing page editorial, route-first, with a dedicated brand footer. */
+const home = () => `
+<main class="home">
+  ${heroBand('home')}
+
+  <section class="home-intro">
+    <div>
+      <p class="eyebrow">A SINGLE OBSESSION</p>
+      <h2 class="home-intro-h">Good tech, distilled<br>to one icon.</h2>
+      <p class="home-intro-p">Kapaya now does one thing: the iPhone. From the newest Pro to the generation that still feels just right, every device is presented without noise.</p>
+    </div>
+    <span class="home-intro-index">01 / 04</span>
+  </section>
+
+  <section id="the-edit" class="home-moment home-moment-dark full" aria-label="The Edit">
+    <div class="home-moment-art home-art-left">
+      <img src="${img('iphone-16-pro-front.webp')}" alt="">
+    </div>
+    <div class="home-moment-copy home-copy-right">
+      <p class="home-kicker">01 / THE DISPLAY</p>
+      <h2 class="home-moment-h">A screen that<br>gets out of the way.</h2>
+      <p class="home-moment-p">Edge-to-edge glass, true-to-life colour and the quiet confidence of a display that simply disappears into whatever you are doing.</p>
+      <a class="home-link" data-go="shop">Explore the collection <span class="arw">→</span></a>
+    </div>
+  </section>
+
+  <section id="finishes" class="home-moment home-moment-blush full" aria-label="Finishes">
+    <div class="home-moment-copy">
+      <p class="home-kicker">02 / THE FINISH</p>
+      <h2 class="home-moment-h">Colour, material,<br>generation.</h2>
+      <p class="home-moment-p">Titanium, aluminium, blue glass, deep purple and midnight graphite. Four distinct chapters of the same unmistakable design language.</p>
+      <a class="home-link" data-go="shop">Find your finish <span class="arw">→</span></a>
+    </div>
+    <div class="home-moment-art home-art-right">
+      <img src="${img('iphone-15-blue-back.webp')}" alt="">
+    </div>
+  </section>
+
+  <section id="generations" class="home-moment home-moment-pair full" aria-label="Generations">
+    <div class="home-moment-art home-art-pair">
+      <img class="pair-back" src="${img('iphone-14-pro-purple.webp')}" alt="">
+      <img class="pair-front" src="${img('iphone-13-midnight.webp')}" alt="">
+    </div>
+    <div class="home-moment-copy home-copy-right">
+      <p class="home-kicker">03 / THE CHOICE</p>
+      <h2 class="home-moment-h">One family.<br>Your era.</h2>
+      <p class="home-moment-p">Choose the camera, finish and generation that match your everyday. No accessory aisles, no spec-sheet maze. Just the phone.</p>
+      <a class="home-link" data-go="shop">Compare the edit <span class="arw">→</span></a>
+    </div>
+  </section>
+
+  <section id="why-kapaya" class="home-values" aria-label="Why Kapaya">
+    <article class="home-value">
+      <svg class="home-value-ico" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C92332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="3"/><path d="M14 7h4"/><path d="M15 25h2"/></svg>
+      <h3>Only iPhones</h3><p>Four generations, edited with intent.</p>
+    </article>
+    <article class="home-value">
+      <svg class="home-value-ico" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C92332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3l10 4v8c0 6.5-4.4 11.2-10 14-5.6-2.8-10-7.5-10-14V7z"/><path d="m11 16 3.5 3.5L22 12"/></svg>
+      <h3>12-Month Warranty</h3><p>Every device backed and tested for peace of mind</p>
+    </article>
+    <article class="home-value">
+      <svg class="home-value-ico" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C92332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h14v13H4z"/><path d="M18 13h4l4 4v5h-8z"/><path d="M4 14h14"/><circle cx="9" cy="24" r="2"/><circle cx="22" cy="24" r="2"/></svg>
+      <h3>Free over $100</h3><p>Standard delivery, always included.</p>
+    </article>
+    <article class="home-value">
+      <svg class="home-value-ico" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C92332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12a10 10 0 1 1 1.5 10"/><path d="M7 6v6h6"/><path d="M16 11v6l4 2"/></svg>
+      <h3>30-day returns</h3><p>Time to live with your choice.</p>
+    </article>
+  </section>
+
+  <section class="home-close">
+    <div>
+      <p class="eyebrow">READY WHEN YOU ARE</p>
+      <h2>Find the iPhone<br>that feels like yours.</h2>
+      <p>Four generations. One considered edit. The shop is just beyond this door.</p>
+    </div>
+    <a class="home-close-cta" data-go="shop">Enter the shop <span class="arw">→</span></a>
+  </section>
+
+  <footer class="home-ftr">
+    <div class="home-ftr-in">
+      <div class="home-ftr-brand-block">
+        <span class="home-ftr-logo">${HOME_FOOTER_LOGO}</span>
+        <p>Thoughtful tech for everyday life.</p>
+      </div>
+      <nav class="home-ftr-col" aria-label="Quick links">
+        <p class="home-ftr-h">Quick links</p>
+        <a data-go="shop">Shop</a>
+        <a data-go="help">Warranty</a>
+        <a data-go="help">Returns</a>
+        <a href="mailto:support@kapaya.example">Contact</a>
+      </nav>
+      <div class="home-ftr-col">
+        <p class="home-ftr-h">Payments</p>
+        <div class="home-ftr-pay" aria-label="Supported payment methods">
+          <span class="pay-method" title="Apple Pay" aria-label="Apple Pay"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M16.4 1.4c0 1.1-.4 2.2-1.1 3-.9.9-2.2 1.7-3.4 1.6-.1-1.1.4-2.2 1.1-3 .8-.9 2.2-1.5 3.4-1.6zM20.8 17.2c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.2-3.7 3.2-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.7.9c-1.6 0-2.8-1.6-3.7-3-2.5-4-2.8-8.6-1.2-11.1 1.1-1.7 2.8-2.8 4.5-2.8 1.7 0 2.7.9 4.1.9 1.3 0 2.2-.9 4.1-.9 1.5 0 3 .8 4.1 2.2-3.6 2-3 7.2.6 8.9z"/></svg><span>Pay</span></span>
+          <span class="pay-method" title="Visa" aria-label="Visa"><span class="pay-visa-word">VISA</span></span>
+          <span class="pay-method" title="Mastercard" aria-label="Mastercard"><svg viewBox="0 0 32 24" width="28" height="20" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="#EB001B"/><circle cx="20" cy="12" r="8" fill="#F79E1B" fill-opacity=".88"/><path d="M16 5.6a8 8 0 0 0 0 12.8 8 8 0 0 0 0-12.8z" fill="#FF5F00"/></svg></span>
+        </div>
+      </div>
+    </div>
+    <div class="home-ftr-bottom">
+      <span>© 2026 Kapaya. All rights reserved.</span>
+      <span>support@kapaya.example</span>
+    </div>
+  </footer>
+</main>`;
+
+/* Shop hero, filters, grid, service strip  (frame 8:2) */
 const shop = (state) => {
   const items = state.results;
-  const hero = byId('aurora');
   return `
 <main class="page">
-  ${state.query ? '' : `<section class="hero">
-    <div class="hero-l">
-      <p class="eyebrow">LESS NOISE. MORE YOU.</p>
-      <h1 class="hero-h">Your everyday,<br>upgraded.</h1>
-      <p class="hero-p">Discover audio that makes room for what matters.</p>
-      <a class="btn-dark" data-go="shop" data-arg="audio">Shop audio <span class="arw">→</span></a>
-    </div>
-    <div class="hero-m">
-      <p class="eyebrow">AURORA BUDS PRO</p>
-      <h2 class="hero-mh">${hero.hook}</h2>
-      <p class="hero-price">${money(hero.price)}</p>
-      <p class="hero-note">${hero.note}</p>
-    </div>
-    <a class="hero-r" data-go="product" data-arg="aurora" aria-label="Aurora Buds Pro">
-      <img class="hero-shot" src="${img('herotile.jpg')}" alt="Aurora Buds Pro">
-    </a>
-  </section>`}
+  ${state.query ? '' : heroBand('shop')}
 
-  <h2 class="sec-h">Find your next everyday essential</h2>
-  <p class="sec-p">Thoughtful design. Tech you’ll actually love.</p>
+  <h2 class="sec-h">Find your next iPhone</h2>
+  <p class="sec-p">Four generations. One clean edit.</p>
 
   <div class="filter-row">
     <div class="chips">
-      ${['all', 'Audio', 'Wearables', 'Accessories'].map((c) => {
+      ${['all', 'Pro', 'Standard', 'Classic'].map((c) => {
         const on = c === 'all' ? state.cat === 'all' : state.cat.toLowerCase() === c.toLowerCase();
-        return `<button class="chip${on ? ' is-on' : ''}" data-filter="${c}">${c === 'all' ? 'All products' : c}</button>`;
+        return `<button class="chip${on ? ' is-on' : ''}" data-filter="${c}">${c === 'all' ? 'All iPhones' : c}</button>`;
       }).join('')}
     </div>
-    <span class="count">${items.length} product${items.length === 1 ? '' : 's'}</span>
+    <span class="count">${items.length} iPhone${items.length === 1 ? '' : 's'}</span>
     <div class="sortwrap">
       <button class="sort" data-sort>Sort: ${state.sortLabel} <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#14171E" stroke-width="1.5"><path d="m1 1 4 4 4-4"/></svg></button>
       <div class="sortmenu" data-sortmenu hidden>
@@ -262,7 +430,7 @@ const shop = (state) => {
   ${items.length ? `<div class="cards">${items.map(card).join('')}</div>`
     : `<div class="empty">
         <p class="empty-h">Nothing matched that.</p>
-        <p class="empty-p">Try a different word, or browse everything we make.</p>
+        <p class="empty-p">Try a generation, or browse all four iPhones.</p>
         <button class="btn-dark sm" data-clear>Show all products</button>
       </div>`}
 
@@ -297,7 +465,7 @@ const card = (p) => `
   </div>
 </article>`;
 
-/* Product — gallery, buy box, benefits, tabs  (frame 8:92) */
+/* Product gallery, buy box, benefits, tabs  (frame 8:92) */
 const product = (state) => {
   const p = state.product;
   return `
@@ -308,7 +476,7 @@ const product = (state) => {
     <div class="gallery">
       <div class="gallery-plate">${p.gallery ? `<img src="${img(p.gallery)}" alt="${p.name}">` : art(p.art)}</div>
       <div class="gallery-foot">
-        <span class="gallery-note">${p.foot || 'A closer look at your next favorite sound.'}</span>
+        <span class="gallery-note">${p.foot || 'A closer look at your next iPhone.'}</span>
         <span class="gallery-tag">${state.color} finish</span>
       </div>
     </div>
@@ -340,12 +508,12 @@ const product = (state) => {
     </div>
   </div>
 
-  <h2 class="sec-h">${p.secHead || 'Made for the way you listen'}</h2>
+  <h2 class="sec-h">${p.secHead || 'Made for your everyday'}</h2>
   <div class="benefits">
     ${(p.bens || [
-      ['01', 'Tune out the noise', 'Active noise cancellation helps you focus on the sound you love.'],
-      ['02', 'More listening. Less charging.', 'Up to 30 hours of listening with the included charging case.'],
-      ['03', 'Comfort that goes with you', 'A lightweight fit and intuitive touch controls for your everyday routine.'],
+      ['01', 'Familiar from the first tap', 'The essentials are exactly where you expect them, with nothing extra in the way.'],
+      ['02', 'A camera you trust', 'Clean, dependable photos in the light you actually have.'],
+      ['03', 'Made to be kept', 'A considered finish and a battery that suits a full day, not a spec sheet.'],
     ]).map(([n, h, b]) => `<article class="benefit"><p class="b-n">${n}</p><h3 class="b-h">${h}</h3><p class="b-p">${b}</p></article>`).join('')}
   </div>
 
@@ -364,7 +532,7 @@ const product = (state) => {
              ['Category', `${p.cat} · ${p.kind}`],
              ['Finish', p.colors.join(', ')],
              ['In the box', 'Device, USB-C cable, quick start guide'],
-             ['Warranty', '2 years, VOLTA direct'],
+             ['Warranty', '2 years, Kapaya direct'],
              [p.meta.split(' · ')[0], 'Included'],
            ]).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
          </dl>`
@@ -372,13 +540,13 @@ const product = (state) => {
       ? `<div class="reviews">
            <div class="rev-score"><p class="rev-big">${p.rate}</p><p class="rev-sub">${p.reviews} verified reviews</p></div>
            <div class="rev-list">
-             ${(p.revs || [['Maya R.', '5', 'Exactly what I wanted. The fit is light enough that I forget I have them in.'],
-                ['Tomas K.', '5', 'Battery genuinely lasts the week. Sound is warm without being muddy.'],
-                ['Priya S.', '4', 'Lovely build. Would like a slightly smaller case, but no real complaints.']])
+             ${(p.revs || [['Maya R.', '5', 'Exactly the iPhone I wanted. Clean, quick and easy to live with.'],
+                ['Tomas K.', '5', 'The finish looks even better in person and the battery gets through a full day.'],
+                ['Priya S.', '4', 'Lovely build. I would like a slightly smaller case, but no real complaints.']])
                .map(([n, s, t]) => `<div class="rev"><p class="rev-head"><b>${n}</b><span class="star">${'★'.repeat(+s)}</span></p><p class="rev-body">${t}</p></div>`).join('')}
            </div>
          </div>`
-      : `<p class="tab-p">${p.body} Every VOLTA product ships with free returns for 30 days, so you can live with it before you commit.</p>`}
+      : `<p class="tab-p">${p.body} Every Kapaya product ships with free returns for 30 days, so you can live with it before you commit.</p>`}
   </div>
 </main>`;
 };
@@ -391,7 +559,8 @@ const bag = (state) => {
   const ship = subtotal >= 100 || subtotal === 0 ? 0 : 9;
   const total = subtotal + ship;
 
-  const also = ['vertex', 'pulse', 'glide'].map(byId);
+  const inBag = lines.map((l) => l.id);
+  const also = PRODUCTS.filter((p) => !inBag.includes(p.id)).slice(0, 3);
 
   return `
 <main class="page">
@@ -408,8 +577,8 @@ const bag = (state) => {
   ${count === 0
     ? `<div class="empty big">
          <p class="empty-h">Your bag is empty.</p>
-         <p class="empty-p">Good tech is a click away — start with the audio.</p>
-         <button class="btn-dark sm" data-go="shop" data-arg="audio">Shop audio <span class="arw">→</span></button>
+         <p class="empty-p">Four iPhone generations are waiting. Pick the era that feels like yours.</p>
+         <button class="btn-dark sm" data-go="shop">Shop all iPhones <span class="arw">→</span></button>
        </div>`
     : `<div class="bag-grid">
     <div class="bag-main">
@@ -445,7 +614,7 @@ const bag = (state) => {
       ${subtotal >= 100
         ? `<div class="ship-note">
              <p class="ship-h">You’ve unlocked free shipping</p>
-             <p class="ship-p">Your everyday essentials, delivered at no extra cost.</p>
+             <p class="ship-p">Your next iPhone, delivered at no extra cost.</p>
            </div>`
         : `<div class="ship-note">
              <p class="ship-h">${money(100 - subtotal)} from free shipping</p>
@@ -461,13 +630,13 @@ const bag = (state) => {
       <div class="sum-total"><span>Total</span><span>${money(total)}</span></div>
       <p class="sum-tax">Tax included. No surprises at checkout.</p>
       <button class="btn-red btn-checkout" data-go="checkout">Continue to checkout <span class="arw">→</span></button>
-      <p class="sum-secure">Secure payment · Card or VOLTA wallet</p>
+      <p class="sum-secure">Secure payment · Card or Kapaya wallet</p>
       <p class="sum-promo">Have a promo code? Add it at checkout.</p>
     </aside>
   </div>
 
   <h2 class="sec-h narrow">A little more to love</h2>
-  <p class="sec-p">Good company for your everyday setup.</p>
+  <p class="sec-p">Three other generations to consider.</p>
   <div class="also">
     ${also.map((p) => `<article class="also-card">
       <a class="also-plate" data-go="product" data-arg="${p.id}">
@@ -543,7 +712,7 @@ const checkout = (state) => {
         <h2 class="co-h mt">3. Payment</h2>
         <div class="pay-tabs">
           <button type="button" class="pay-tab is-on"><span class="radio on"></span>Credit or debit card</button>
-          <button type="button" class="pay-tab"><span class="radio"></span>VOLTA wallet</button>
+          <button type="button" class="pay-tab"><span class="radio"></span>Kapaya wallet</button>
         </div>
         <div class="pay-fields">
           ${fld('Card number', 'card', f.card, { cls: 'w-card', inputmode: 'numeric' })}
@@ -577,7 +746,7 @@ const checkout = (state) => {
         ${state.promoMsg ? `<p class="promo-msg">${state.promoMsg}</p>` : ''}
         <div class="sum-line"><span>Subtotal</span><span>${money(subtotal - state.discount)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="${ship === 0 ? 'green' : ''}">${ship === 0 ? 'Free' : money(ship)}</span></div>
-        ${state.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
+        ${state.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total</span><span>${money(total - state.discount)}</span></div>
         <p class="sum-tax">Tax included</p>
@@ -587,7 +756,7 @@ const checkout = (state) => {
 
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@volta.example</p>
+        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
       </div>
     </aside>
   </form>
@@ -665,8 +834,8 @@ const confirmed = (state) => {
         <div class="co-rule"></div>
         <div class="sum-line"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="green">Free</span></div>
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total paid</span><span>${money(total)}</span></div>
         <p class="sum-tax">30-day returns from the day it arrives.</p>
@@ -684,7 +853,7 @@ const confirmed = (state) => {
 </main>`;
 };
 
-/* Account / My orders — same system, new screen */
+/* Account / My orders same system, new screen */
 const account = (state) => `
 <main class="page">
   <p class="crumb"><span class="cur">My orders</span></p>
@@ -738,13 +907,13 @@ const account = (state) => `
       </div>
       <div class="protect">
         <p class="protect-h">Your details stay protected</p>
-        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@volta.example</p>
+        <p class="protect-p">Encrypted payments. No hidden fees.<br>Need help? support@kapaya.example</p>
       </div>
     </aside>
   </div>
 </main>`;
 
-/* Order detail — the confirmed frame re-read for a past order */
+/* Order detail the confirmed frame re-read for a past order */
 const orderDetail = (state) => {
   const o = state.order;
   return `
@@ -802,7 +971,7 @@ const orderDetail = (state) => {
         <div class="co-rule"></div>
         <div class="sum-line"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="green">Free</span></div>
-        ${o.discount ? `<div class="sum-line"><span>VOLTA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
+        ${o.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(o.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
         <div class="sum-total"><span>Total paid</span><span>${money(o.total)}</span></div>
       </div>
@@ -822,8 +991,8 @@ const help = () => `
     ${[
       ['Shipping & returns', 'Free over $100, 30 days to change your mind.', 'Orders leave Rotterdam within a day. Standard delivery lands in 2–3 working days, and anything unopened can come back within 30 days for a full refund.'],
       ['Warranty', 'Two years on every device, no receipt needed.', 'We keep order history against your email, so a claim is a conversation rather than paperwork.'],
-      ['Payments', 'Card, VOLTA wallet, and one promo code per order.', 'You are charged when the order ships. Nothing is stored on our side.'],
-      ['Talk to us', 'support@volta.example · Mon–Fri, 9–18 CET', 'Include your order number if you have one and we can move faster.'],
+      ['Payments', 'Card, Kapaya wallet, and one promo code per order.', 'You are charged when the order ships. Nothing is stored on our side.'],
+      ['Talk to us', 'support@kapaya.example · Mon–Fri, 9–18 CET', 'Include your order number if you have one and we can move faster.'],
     ].map(([h, p, b]) => `<article class="help-card"><h3 class="help-h">${h}</h3><p class="help-p">${p}</p><p class="help-b">${b}</p></article>`).join('')}
   </div>
 
@@ -849,7 +1018,7 @@ body{
 a,button{cursor:pointer;font-family:inherit}
 a{color:inherit;text-decoration:none}
 button{background:none;border:0;color:inherit}
-:focus-visible{outline:2px solid #C92332;outline-offset:3px;border-radius:6px}
+:focus-visible{outline:2px solid var(--brand-orange);outline-offset:3px;border-radius:6px}
 img{display:block;max-width:100%}
 .arw{font-size:.92em}
 
@@ -859,6 +1028,26 @@ img{display:block;max-width:100%}
   display:flex;align-items:center;justify-content:center;gap:21px;
   font:500 12px/1 Inter,sans-serif;
 }
+.band-div{display:none;width:1px;height:12px;background:rgba(150,21,31,.30)}
+body.is-home .band{
+  height:34px;flex:0 0 34px;gap:14px;padding:0 16px;
+  letter-spacing:.015em;white-space:nowrap;
+}
+body.is-home .band-div{display:block}
+.home-menu-toggle,.home-menu-shop{display:none}
+.home-nav{display:none;align-items:center;gap:34px}
+.home-nav a{
+  position:relative;color:#3C3F48;white-space:nowrap;
+  font:500 13.5px/1 Inter,sans-serif;padding:10px 0;
+  transition:color .16s ease;
+}
+.home-nav a:after{
+  content:'';position:absolute;left:0;right:0;bottom:3px;height:1px;
+  background:#C92332;transform:scaleX(0);transform-origin:center;
+  transition:transform .18s ease;
+}
+.home-nav a:hover{color:#14171E}
+.home-nav a:hover:after{transform:scaleX(1)}
 .hdr{
   height:93px;flex:0 0 93px;background:#fff;border-bottom:1px solid #E8E6E7;
   display:flex;align-items:center;gap:0;padding:0 64px;position:sticky;top:0;z-index:30;
@@ -871,7 +1060,9 @@ img{display:block;max-width:100%}
   position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
   background:#C92332;color:#fff;font:600 10.5px/17px Inter,sans-serif;text-align:center;
 }
-.mark{font:700 28px/1 Inter,sans-serif;letter-spacing:-.01em;flex:0 0 auto}
+.mark{display:flex;align-items:center;flex:0 0 auto}
+.brand-logo{display:block;width:132px;height:auto}
+:root{--brand-orange:${BRAND_ORANGE};--brand-cream:${BRAND_CREAM}}
 .nav{display:flex;gap:30px;margin-left:29px}
 .nav-i{font:400 15px/1 Inter,sans-serif;padding:6px 0;position:relative}
 .nav-i:hover{color:#C92332}
@@ -889,12 +1080,25 @@ img{display:block;max-width:100%}
 .search input::-webkit-search-cancel-button{cursor:pointer}
 .orders{font:500 14px/1 Inter,sans-serif;white-space:nowrap}
 .orders:hover{color:#C92332}
-.bag-pill{
+.bag-pill,.home-shop-pill{
   height:46px;min-width:126px;padding:0 26px;border-radius:23px;background:#14171E;color:#fff;
   font:600 14px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;
-  transition:transform .12s ease,background .12s ease;
+  white-space:nowrap;transition:transform .12s ease,background .12s ease;
 }
-.bag-pill:hover{background:#22262F}
+.bag-pill:hover,.home-shop-pill:hover{background:#22262F}
+.home-shop-pill{display:none}
+body.is-home .hdr{
+  position:sticky;top:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;
+  background:rgba(255,255,255,.74);
+  -webkit-backdrop-filter:blur(12px) saturate(135%);
+  backdrop-filter:blur(12px) saturate(135%);
+  border-bottom:1px solid rgba(20,23,30,.10);
+  box-shadow:0 8px 30px rgba(20,23,30,.035);
+}
+body.is-home .mark{grid-column:1;justify-self:start}
+body.is-home .hdr-tools,body.is-home .hdr-row{display:none}
+body.is-home .home-nav{display:flex;grid-column:2;justify-self:center}
+body.is-home .home-shop-pill{display:flex;grid-column:3;justify-self:end;margin-left:0}
 .bag-pill.pop{animation:pop .32s ease}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
 
@@ -902,12 +1106,12 @@ img{display:block;max-width:100%}
 .page{flex:1 0 auto;width:100%;max-width:1440px;margin:0 auto;padding:33px 64px 88px}
 @media (max-width:1440px){.hdr{padding:0 64px}}
 
-/* hero */
+/* hero cut-outs sit directly on the panel and bleed past its clipped edge */
 .hero{
   height:318px;border-radius:28px;background:#FCE6E9;
   display:flex;align-items:center;position:relative;overflow:hidden;
 }
-.hero-l{padding-left:36px;width:540px;padding-top:4px}
+.hero-l{padding-left:36px;width:540px;padding-top:4px;position:relative;z-index:2}
 .eyebrow{font:600 12px/1.2 Inter,sans-serif;color:#96151F}
 .hero-h{font:600 48px/58px Inter,sans-serif;letter-spacing:-.022em;margin-top:14px}
 .hero-p{font:400 16px/19px Inter,sans-serif;color:#6B5F62;margin-top:28px}
@@ -918,13 +1122,20 @@ img{display:block;max-width:100%}
 }
 .btn-dark:hover{background:#22262F}
 .btn-dark.sm{height:44px;padding:0 24px}
-.hero-m{position:absolute;left:571px;top:0;width:430px;height:100%;display:flex;flex-direction:column;justify-content:center}
-.hero-mh{font:500 26px/30px Inter,sans-serif;letter-spacing:-.015em;margin-top:12px}
-.hero-price{font:600 22px/27px Inter,sans-serif;margin-top:22px}
-.hero-note{font:400 13px/16px Inter,sans-serif;color:#6B5F62;margin-top:24px}
-.hero-r{position:absolute;left:940px;top:18px;display:block}
-.hero-shot{width:270px;height:240px;border-radius:18px;object-fit:cover;transition:transform .3s ease}
-.hero-r:hover .hero-shot{transform:scale(1.02)}
+.hero-art{
+  position:absolute;right:-44px;top:-22px;width:430px;height:362px;
+  display:block;z-index:1;background:none;border-radius:0;
+}
+.hero-phone{
+  position:absolute;display:block;width:auto;max-width:none;height:100%;
+  object-fit:contain;border-radius:0;background:none;
+  filter:drop-shadow(0 24px 26px rgba(90,55,62,.18));
+  transition:transform .35s ease;
+}
+.hero-phone-back{height:312px;left:22px;top:30px;transform:rotate(-10deg)}
+.hero-phone-front{height:352px;right:2px;top:-8px;transform:rotate(7deg)}
+.hero-art:hover .hero-phone-back{transform:translateY(-8px) rotate(-12deg)}
+.hero-art:hover .hero-phone-front{transform:translateY(-10px) rotate(9deg)}
 
 /* section heads */
 .sec-h{font:600 28px/32px Inter,sans-serif;letter-spacing:-.006em;margin-top:39px}
@@ -967,7 +1178,7 @@ img{display:block;max-width:100%}
   position:relative;width:100%;aspect-ratio:280/180;border-radius:12px;overflow:hidden;
   background:#F3F3F3;display:block;
 }
-.card-img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.card-img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease}
 .card-plate:hover .card-img{transform:scale(1.04)}
 .plate-art{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .plate-art svg{width:72%;height:72%;max-height:140px}
@@ -991,7 +1202,7 @@ img{display:block;max-width:100%}
 /* the card plates are crops of the frame, so the frame's own heart button is
    already in the JPEG. Crop it away, then lay our own control on top. */
 .plate-bg{position:absolute;inset:0;overflow:hidden;border-radius:12px;background:#F3F3F3}
-.plate-bg img{width:100%;height:100%;object-fit:cover}
+.plate-bg img{width:100%;height:100%;object-fit:contain;padding:8px 20px}
 /* paint out the plate's baked-in heart button with the plate's own field colour */
 
 .heart-ico{display:flex}
@@ -1022,17 +1233,169 @@ img{display:block;max-width:100%}
 
 /* footer */
 .ftr{flex:0 0 108px;height:108px;background:#fff;border-top:1px solid #E8E6E7;margin-top:auto}
+body.is-home .ftr{display:none}
 .ftr-in{
   max-width:1440px;margin:0 auto;height:100%;padding:0 64px;
   display:flex;align-items:center;
 }
 .ftr-left{display:flex;align-items:center;gap:29px}
-.ftr-mark{font:700 22px/1 Inter,sans-serif;letter-spacing:-.01em}
+.ftr-mark{display:flex;align-items:center}
+.ftr-brand{width:112px}
 .ftr-tag{font:400 14px/1 Inter,sans-serif;color:#656976}
 .ftr-right{margin-left:auto;display:flex;align-items:center;gap:47px}
 .ftr-l{font:400 14px/1 Inter,sans-serif}
 .ftr-l:hover{color:#C92332}
 .ftr-copy{font:400 12px/1 Inter,sans-serif;color:#656976}
+
+/* ── landing ───────────────────────────────────────────────────────────── */
+.home{
+  --home-gutter:max(64px,calc(50vw - 656px));
+  flex:1 0 auto;width:100%;max-width:none;margin:0;padding:0;overflow:hidden;
+}
+.home section[id]{scroll-margin-top:93px}
+.hero-home{
+  height:520px;border-radius:0;align-items:flex-start;
+  padding-left:var(--home-gutter);
+  background:radial-gradient(circle at 76% 46%,#FFF9FA 0,#FDEFF1 28%,#FCE6E9 62%);
+}
+.hero-home:after{
+  content:'Kapaya';position:absolute;right:max(42px,calc(50vw - 678px));top:54px;
+  font:700 150px/1 Inter,sans-serif;letter-spacing:-.065em;
+  color:var(--brand-orange);opacity:.075;z-index:0;pointer-events:none;
+}
+.hero-home .hero-l{width:690px;padding-left:0;padding-top:34px}
+.hero-home .hero-h{font:600 72px/78px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
+.hero-home .hero-p{max-width:430px;font:400 17px/24px Inter,sans-serif;margin-top:24px}
+.hero-home .btn-dark{margin-top:26px;height:50px;padding:0 30px;border-radius:25px}
+.hero-home .hero-art{
+  right:max(-70px,calc(50vw - 790px));top:-24px;width:610px;height:570px;
+  isolation:isolate;
+}
+.hero-home .hero-art:before{
+  content:'';position:absolute;inset:4% 2% 8%;z-index:-2;pointer-events:none;
+  background:radial-gradient(circle at 54% 44%,rgba(255,255,255,.95) 0,rgba(255,255,255,.46) 31%,rgba(216,242,231,.24) 48%,rgba(252,230,233,0) 70%);
+  filter:blur(7px);
+}
+.hero-home .hero-art:after{
+  content:'';position:absolute;left:12%;right:5%;bottom:3%;height:78px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(86,49,56,.20) 0,rgba(86,49,56,.09) 42%,rgba(86,49,56,0) 72%);
+  filter:blur(13px);
+}
+.hero-home .hero-phone{
+  z-index:1;
+  filter:drop-shadow(0 8px 7px rgba(76,43,49,.10))
+         drop-shadow(0 28px 28px rgba(76,43,49,.17))
+         drop-shadow(0 56px 54px rgba(76,43,49,.10));
+}
+.hero-home .hero-phone-back{height:500px;left:40px;top:34px;transform:rotate(-13deg)}
+.hero-home .hero-phone-front{height:555px;right:-22px;top:-18px;transform:rotate(9deg)}
+.home-intro{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:64px;
+  width:100%;max-width:1440px;margin:0 auto;
+  padding:96px 64px 76px;position:relative;
+}
+.home-intro-h{font:600 52px/58px Inter,sans-serif;letter-spacing:-.035em;margin-top:20px}
+.home-intro-p{
+  max-width:520px;font:400 16px/25px Inter,sans-serif;color:#656976;margin-top:24px;
+}
+.home-intro-index{font:500 12px/1 Inter,sans-serif;color:#C92332;letter-spacing:.08em;white-space:nowrap}
+.home-moment{
+  position:relative;width:100%;min-height:470px;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;overflow:hidden;border-radius:0;
+}
+.home-moment.full{width:100%;margin-left:0;border-radius:0}
+.home-moment-dark{background:#14171E;color:#fff}
+.home-moment-blush{background:#FCE6E9}
+.home-moment-pair{background:#D8F2E7}
+.home-moment-copy{
+  position:relative;z-index:2;max-width:none;
+  padding:64px 64px 64px var(--home-gutter);
+}
+.home-copy-right{grid-column:2;padding-left:64px;padding-right:var(--home-gutter)}
+.home-kicker{font:600 11.5px/1 Inter,sans-serif;color:#C92332;letter-spacing:.08em}
+.home-moment-dark .home-kicker{color:#FDECEE}
+.home-moment-h{font:600 48px/54px Inter,sans-serif;letter-spacing:-.035em;margin-top:24px}
+.home-moment-p{font:400 16px/25px Inter,sans-serif;color:#656976;margin-top:24px;max-width:450px}
+.home-moment-dark .home-moment-p{color:#C9CBD1}
+.home-link{
+  display:inline-flex;align-items:center;gap:10px;margin-top:34px;
+  border-bottom:1px solid currentColor;padding-bottom:5px;
+  font:600 14px/1 Inter,sans-serif;color:#C92332;
+}
+.home-moment-dark .home-link{color:#fff}
+.home-link:hover{color:#96151F}
+.home-moment-dark .home-link:hover{color:#FDECEE}
+.home-moment-art{position:absolute;pointer-events:none;z-index:1}
+.home-moment-art img{
+  display:block;max-width:none;width:auto;height:auto;
+  filter:drop-shadow(0 30px 36px rgba(20,23,30,.22));
+}
+.home-art-left{left:calc(var(--home-gutter) - 126px);bottom:-118px;width:380px}
+.home-art-left img{height:570px;transform:rotate(-9deg)}
+.home-art-right{right:calc(var(--home-gutter) - 112px);bottom:-112px;width:360px}
+.home-art-right img{height:560px;transform:rotate(10deg)}
+.home-art-pair{left:8%;bottom:-90px;width:520px;height:530px}
+.home-art-pair img{position:absolute;height:520px}
+.home-art-pair .pair-back{left:20px;top:18px;transform:rotate(-12deg)}
+.home-art-pair .pair-front{right:20px;top:-8px;transform:rotate(10deg)}
+.home-values{
+  width:100%;max-width:1440px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+  background:#E8E6E7;
+}
+.home-value{background:#FAF9F9;padding:42px 32px 46px;min-height:210px}
+.home-value-ico{display:block;width:32px;height:32px}
+.home-value h3{font:600 20px/25px Inter,sans-serif;letter-spacing:-.015em;margin-top:18px}
+.home-value p{font:400 13.5px/20px Inter,sans-serif;color:#656976;margin-top:12px}
+.home-close{
+  width:100%;min-height:390px;border-radius:0;background:#C92332;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:48px;
+  padding:72px var(--home-gutter);margin-top:0;
+}
+.home-close .eyebrow{color:#fff}
+.home-close h2{font:600 56px/62px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
+.home-close p:last-child{font:400 15px/23px Inter,sans-serif;color:#FDECEE;margin-top:22px;max-width:430px}
+.home-close-cta{
+  display:inline-flex;align-items:center;gap:14px;height:58px;padding:0 34px;
+  border-radius:29px;background:#fff;color:#14171E;
+  font:600 15px/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .12s ease,background .12s ease;
+}
+.home-close-cta:hover{transform:translateY(-2px);background:#F5F3F3}
+
+/* landing brand footer */
+.home-ftr{
+  width:100%;background:#FAF9F9;color:#14171E;
+  border-top:1px solid #E8E6E7;
+  padding:54px var(--home-gutter) 32px;
+}
+.home-ftr-in{
+  width:100%;max-width:1312px;margin:0 auto;
+  display:grid;grid-template-columns:1.35fr .8fr 1fr;gap:56px;align-items:start;
+}
+.home-ftr-brand-block{display:flex;flex-direction:column;align-items:flex-start}
+.home-ftr-logo{display:flex;align-items:center}
+.home-ftr-brand{width:124px;height:auto}
+.home-ftr-brand-block p{font:400 14px/22px Inter,sans-serif;color:#656976;margin-top:18px;max-width:280px}
+.home-ftr-col{display:flex;flex-direction:column;align-items:flex-start}
+.home-ftr-h{font:600 11.5px/1 Inter,sans-serif;letter-spacing:.08em;color:#C92332;margin-bottom:18px}
+.home-ftr-col a{font:400 14px/1 Inter,sans-serif;color:#3C3F48;margin-bottom:13px}
+.home-ftr-col a:hover{color:#C92332}
+.home-ftr-pay{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pay-method{
+  height:34px;min-width:58px;padding:0 10px;border:1px solid #E8E6E7;border-radius:8px;
+  background:#fff;display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  color:#14171E;
+}
+.pay-method span{font:600 12px/1 Inter,sans-serif}
+.pay-visa-word{font:700 italic 14px/1 Inter,sans-serif!important;letter-spacing:-.035em;color:#1A1F71}
+.pay-method svg{display:block;flex:0 0 auto}
+.home-ftr-bottom{
+  width:100%;max-width:1312px;margin:42px auto 0;padding-top:20px;
+  border-top:1px solid #E8E6E7;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  font:400 12.5px/1.4 Inter,sans-serif;color:#656976;
+}
 
 /* breadcrumb */
 .crumb{font:400 13px/16px Inter,sans-serif;color:#6B6F79;display:flex;align-items:center}
@@ -1047,7 +1410,7 @@ img{display:block;max-width:100%}
   width:100%;aspect-ratio:568/427;border-radius:14px;background:#F3F3F3;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
-.gallery-plate img{width:100%;height:100%;object-fit:cover}
+.gallery-plate img{width:100%;height:100%;object-fit:contain;padding:18px}
 .gallery-plate .plate-art svg{width:46%;height:46%;max-height:220px}
 .gallery-plate svg{width:60%;height:60%}
 .gallery-foot{display:flex;align-items:center;justify-content:space-between;padding:0;height:101px;gap:16px}
@@ -1143,7 +1506,7 @@ img{display:block;max-width:100%}
   width:145px;height:145px;border-radius:14px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.bag-thumb img{width:100%;height:100%;object-fit:cover}
+.bag-thumb img{width:100%;height:100%;object-fit:contain;padding:10px}
 .bag-thumb svg{width:80%;height:80%}
 .bag-name{font:600 20px/24px Inter,sans-serif}
 .bag-name a:hover{color:#C92332}
@@ -1178,7 +1541,7 @@ img{display:block;max-width:100%}
   position:relative;width:129px;height:152px;border-radius:14px;overflow:hidden;background:#F3F3F3;
   display:flex;align-items:center;justify-content:center;
 }
-.also-plate img{width:100%;height:100%;object-fit:cover}
+.also-plate img{width:100%;height:100%;object-fit:contain;padding:10px}
 .also-plate svg{width:80%;height:80%}
 .also-body{padding-top:6px;display:flex;flex-direction:column}
 .also-name{font:600 16px/21px Inter,sans-serif}
@@ -1241,7 +1604,7 @@ img{display:block;max-width:100%}
   width:88px;height:86px;border-radius:12px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.ord-thumb img{width:100%;height:100%;object-fit:cover}
+.ord-thumb img{width:100%;height:100%;object-fit:contain;padding:7px}
 .ord-thumb svg{width:80%;height:80%}
 .ord-name{font:600 15px/19px Inter,sans-serif}
 .ord-meta{font:400 13px/17px Inter,sans-serif;color:#7A7E88;margin-top:6px}
@@ -1341,7 +1704,7 @@ img{display:block;max-width:100%}
   width:56px;height:56px;border-radius:10px;background:#F3F3F3;overflow:hidden;flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
 }
-.order-thumb img{width:100%;height:100%;object-fit:cover}
+.order-thumb img{width:100%;height:100%;object-fit:contain;padding:5px}
 .order-thumb svg{width:80%;height:80%}
 .order-name{font:600 14px/18px Inter,sans-serif}
 .order-meta{font:400 12.5px/16px Inter,sans-serif;color:#7A7E88;margin-top:4px}
@@ -1384,11 +1747,11 @@ img{display:block;max-width:100%}
   .hdr-row{flex-wrap:wrap;gap:6px}
   .page{padding:24px 28px 64px}
   .ftr-in{padding:0 28px}
-  .hero{height:auto;flex-direction:column;align-items:flex-start;padding:28px 24px;gap:26px}
-  .hero-l{padding-left:0;padding-top:0;width:auto}
-  .hero-m{position:static;width:auto;height:auto;display:block;padding-left:0}
-  .hero-r{position:static;margin:0;padding:0;width:100%}
-  .hero-shot{width:100%;height:220px}
+  .hero{min-height:560px;height:auto;flex-direction:column;align-items:flex-start;padding:28px 24px;gap:20px}
+  .hero-l{padding-left:0;padding-top:0;width:min(100%,520px)}
+  .hero-art{right:-90px;top:auto;bottom:-70px;width:430px;height:430px}
+  .hero-phone-back{height:370px;left:10px;top:24px}
+  .hero-phone-front{height:420px;right:0;top:-8px}
   .hero-h{font-size:38px;line-height:46px}
   .hero-p{margin-top:16px}
   .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -1439,23 +1802,35 @@ img{display:block;max-width:100%}
   .nav-i{white-space:nowrap}
   .page{padding:20px 18px 56px}
   .ftr-in{padding:0 18px}
-  .mark{font-size:24px}
+  .brand-logo{width:116px}
+  .ftr-brand{width:104px}
   .nav{order:3;width:100%;gap:18px;margin-left:0;overflow-x:auto;padding-bottom:4px}
   .nav-i{font-size:14px;white-space:nowrap}
   .hdr-right{order:2;margin-left:auto;gap:14px}
   .search{width:auto;flex:1;min-width:0;height:42px}
   .orders{display:none}
-  .bag-pill{height:42px;min-width:0;padding:0 18px;font-size:13px}
-  .cards{grid-template-columns:1fr}
+  .bag-pill,.home-shop-pill{height:42px;min-width:0;padding:0 18px;font-size:13px}
+  body.is-home .hdr{padding-bottom:12px}
+  /* phones: image + name + price, two compact invitations per row */
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+  .card{padding:8px 8px 12px;border-radius:14px}
+  .card-plate{aspect-ratio:1/1;border-radius:10px}
+  .plate-bg img{padding:8px 14px}
+  .card-kind,.card-rate,.card-link,.badge,.heart{display:none}
+  .card-name{font:600 14px/18px Inter,sans-serif;letter-spacing:-.004em;margin-top:8px}
+  .card-foot{margin-top:8px;padding-top:0}
+  .card-price{font:600 14px/17px Inter,sans-serif}
   .chip{height:42px;padding:0 18px;font-size:13.5px;white-space:nowrap}
   .filter-row{flex-wrap:wrap;gap:12px;margin-top:18px}
   .chips{flex-wrap:wrap;gap:10px;width:100%}
   .count{order:3;margin-left:0;width:auto}
   .sortwrap{order:2;margin-left:auto}
   .sort{height:42px;padding:0 18px;font-size:13.5px}
-  .hero{padding:24px 22px;gap:22px;border-radius:22px}
+  .hero{min-height:430px;padding:24px 22px;gap:18px;border-radius:22px}
   .hero-h{font-size:30px;line-height:38px}
-  .hero-shot{height:190px}
+  .hero-art{right:-130px;bottom:-70px;width:340px;height:360px}
+  .hero-phone-back{height:310px;left:0;top:22px}
+  .hero-phone-front{height:355px;right:0;top:-8px}
   .eyebrow{font-size:11px}
   .sec-h{font-size:23px;line-height:29px;margin-top:34px}
   .hero-h{font-size:32px;line-height:40px}
@@ -1495,6 +1870,230 @@ img{display:block;max-width:100%}
   .tabpanel,.tab-p{font-size:13.5px}
 }
 
+@media (max-width:960px){
+  .home{--home-gutter:28px}
+  body.is-home .band{height:30px;flex-basis:30px;gap:10px;padding:0 10px;font-size:11px}
+  body.is-home .hdr{
+    grid-template-columns:1fr auto;height:auto;flex:0 0 auto;
+    padding:12px 28px;row-gap:8px;
+  }
+  body.is-home .mark{grid-column:1;grid-row:1}
+  body.is-home .home-shop-pill{grid-column:2;grid-row:1}
+  body.is-home .home-nav{
+    grid-column:1 / -1;grid-row:2;justify-self:center;gap:28px;
+  }
+  body.is-home .home-nav a{font-size:12.5px;padding:4px 0}
+  .hero-home{min-height:620px;align-items:flex-start;padding:36px var(--home-gutter);border-radius:0}
+  .hero-home:after{font-size:130px;right:22px;top:34px}
+  .hero-home .hero-l{width:min(100%,580px);padding-left:0;padding-top:18px}
+  .hero-home .hero-h{font-size:52px;line-height:58px}
+  .hero-home .hero-art{right:-115px;top:auto;bottom:-90px;width:500px;height:500px}
+  .hero-home .hero-phone-back{height:430px;left:20px;top:30px}
+  .hero-home .hero-phone-front{height:490px;right:0;top:-8px}
+  .home-intro{padding:72px var(--home-gutter) 56px;gap:32px;max-width:none}
+  .home-intro-h{font-size:42px;line-height:48px}
+  .home-moment.full{width:100%;margin-left:0}
+  .home-moment{min-height:420px;grid-template-columns:1fr}
+  .home-moment-copy,.home-copy-right{grid-column:1;padding:44px var(--home-gutter);max-width:none}
+  .home-moment-h{font-size:38px;line-height:44px}
+  .home-art-left{left:-100px;bottom:-120px;width:300px}
+  .home-art-left img{height:470px}
+  .home-art-right{right:-110px;bottom:-120px;width:300px}
+  .home-art-right img{height:470px}
+  .home-art-pair{left:-80px;bottom:-110px;width:420px;height:450px;opacity:.8}
+  .home-art-pair img{height:440px}
+  .home-values{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-close{min-height:340px;padding:56px var(--home-gutter);gap:32px}
+  .home-close h2{font-size:44px;line-height:50px}
+  .home-ftr{padding:44px var(--home-gutter) 28px}
+  .home-ftr-in{grid-template-columns:1fr 1fr;gap:34px}
+  .home-ftr-brand-block{grid-column:1 / -1}
+  .home-ftr-bottom{margin-top:30px}
+}
+@media (max-width:640px){
+  .home{--home-gutter:22px}
+  body.is-home{overflow-x:hidden}
+  body.is-home .band{height:30px;flex-basis:30px;gap:7px;padding:0 8px;font-size:10px;letter-spacing:0}
+  body.is-home .band-div{height:10px}
+  body.is-home .hdr{grid-template-columns:1fr auto;padding:10px 18px 8px;row-gap:6px}
+  body.is-home .home-nav{
+    grid-column:1 / -1;grid-row:2;justify-self:stretch;width:100%;
+    justify-content:space-between;gap:8px;overflow-x:auto;scrollbar-width:none;
+    padding:0 0 4px;
+  }
+  body.is-home .home-nav::-webkit-scrollbar{display:none}
+  body.is-home .home-nav a{font-size:11.5px;padding:3px 0}
+  body.is-home .home-shop-pill{grid-column:2;grid-row:1;height:38px;padding:0 15px;font-size:12.5px}
+  .hero-home{min-height:560px;padding:28px var(--home-gutter);border-radius:0}
+  .hero-home:after{font-size:86px;right:14px;top:28px}
+  .hero-home .hero-l{width:100%;padding-top:12px}
+  .hero-home .hero-h{font-size:40px;line-height:46px;letter-spacing:-.035em}
+  .hero-home .hero-p{font-size:15px;line-height:22px;max-width:330px;margin-top:18px}
+  .hero-home .btn-dark{margin-top:20px}
+  .hero-home .hero-art{right:-145px;bottom:-90px;width:390px;height:420px}
+  .hero-home .hero-phone-back{height:365px;left:10px;top:28px}
+  .hero-home .hero-phone-front{height:415px;right:0;top:-8px}
+  .home-intro{padding:58px var(--home-gutter) 44px;display:block}
+  .home-intro-h{font-size:34px;line-height:40px}
+  .home-intro-p{font-size:14px;line-height:22px}
+  .home-intro-index{display:none}
+  .home-moment.full{width:100%;margin-left:0}
+  .home-moment{min-height:440px}
+  .home-moment-copy,.home-copy-right{padding:34px var(--home-gutter)}
+  .home-moment-h{font-size:32px;line-height:38px}
+  .home-moment-p{font-size:14px;line-height:22px;max-width:330px}
+  .home-link{margin-top:26px}
+  .home-art-left{left:-130px;bottom:-120px;width:250px}
+  .home-art-left img{height:400px}
+  .home-art-right{right:-130px;bottom:-120px;width:250px}
+  .home-art-right img{height:400px}
+  .home-art-pair{left:-150px;bottom:-120px;width:360px;height:400px;opacity:.55}
+  .home-art-pair img{height:390px}
+  .home-values{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-value{min-height:170px;padding:24px 16px 28px}
+  .home-value-ico{width:28px;height:28px}
+  .home-value h3{font-size:16px;line-height:20px;margin-top:14px}
+  .home-value p{font-size:12px;line-height:18px;margin-top:9px}
+  .home-close{min-height:420px;flex-direction:column;align-items:flex-start;justify-content:center;padding:48px var(--home-gutter);border-radius:0}
+  .home-close h2{font-size:36px;line-height:42px}
+  .home-close p:last-child{font-size:14px;line-height:21px}
+  .home-close-cta{height:52px;padding:0 26px}
+  .home-ftr{padding:36px var(--home-gutter) 24px}
+  .home-ftr-in{grid-template-columns:1fr;gap:28px}
+  .home-ftr-brand{width:112px}
+  .home-ftr-bottom{flex-direction:column;align-items:flex-start;gap:8px;margin-top:28px}
+}
+
+/* Editorial scenes are separate from the live copy and controls. */
+.hero-home{background:#FCE6E9 url("${img('scene-hero.webp')}") center/cover no-repeat}
+.hero-home:after{display:none}
+.hero-home .hero-art{display:none}
+.home-moment-dark{background:#14171E url("${img('scene-display.webp')}") center/cover no-repeat}
+.home-moment-blush{background:#FCE6E9 url("${img('scene-finish.webp')}") center/cover no-repeat}
+.home-moment-pair{background:#D8F2E7 url("${img('scene-choice.webp')}") center/cover no-repeat}
+.home-moment-art{display:none}
+
+/* Mobile-only landing layout: compact, single-column, no cropped artwork. */
+@media (max-width:767px){
+  .home{--home-gutter:24px}
+  body.is-home .hdr{
+    grid-template-columns:1fr auto;height:auto;flex:0 0 auto;
+    padding:10px 24px;row-gap:0;
+  }
+  body.is-home .mark{grid-column:1;grid-row:1}
+  body.is-home .home-shop-pill{
+    grid-column:2;grid-row:1;height:38px;padding:0 15px;font-size:12.5px;
+  }
+  body.is-home .home-nav{
+    grid-column:1 / -1;grid-row:2;justify-self:stretch;width:100%;
+    justify-content:space-between;gap:8px;overflow-x:auto;scrollbar-width:none;
+    padding:6px 0;
+  }
+  body.is-home .home-nav::-webkit-scrollbar{display:none}
+  body.is-home .home-nav a{font-size:12px;padding:0}
+  body.is-home .home-shop-pill{display:none}
+  body.is-home .home-menu-toggle{
+    display:flex;grid-column:2;grid-row:1;width:44px;height:44px;align-items:center;
+    justify-content:center;flex-direction:column;gap:6px;border:0;background:transparent;cursor:pointer;
+  }
+  .home-menu-toggle span{width:22px;height:2px;background:#14171E;transition:transform .2s}
+  body.is-home .home-menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(4px) rotate(45deg)}
+  body.is-home .home-menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-4px) rotate(-45deg)}
+  body.is-home .home-nav{display:none;grid-column:1 / -1;grid-row:2;overflow:visible;
+    flex-direction:column;align-items:stretch;gap:0;padding:12px 0 18px}
+  body.is-home .home-nav.is-open{display:flex}
+  body.is-home .home-nav a{font-size:15px;padding:14px 0;border-bottom:1px solid #E8E6E7}
+  body.is-home .home-nav a:after{display:none}
+  body.is-home .home-nav .home-menu-shop{display:flex;justify-content:space-between;align-items:center;
+    margin-top:18px;padding:15px 20px;border:0;border-radius:28px;background:#14171E;color:#fff}
+  body.is-home .brand-logo{width:112px}
+
+  .hero-home{
+    height:auto;min-height:0;display:flex;flex-direction:column;align-items:stretch;
+    gap:0;padding:36px 24px 56px;
+  }
+  .hero-home:after{
+    font-size:64px;line-height:1;letter-spacing:-.06em;opacity:.055;
+    left:50%;right:auto;top:92px;transform:translateX(-50%);white-space:nowrap;
+  }
+  .hero-home .hero-l{order:1;width:100%;padding:0}
+  .hero-home .hero-p{max-width:100%}
+  .hero-home .btn-dark{margin-top:20px}
+  .hero-home .hero-art{
+    order:2;position:relative;right:auto;top:auto;bottom:auto;left:auto;
+    width:85%;max-width:320px;height:300px;flex:0 0 auto;
+    margin:28px auto 0;display:flex;align-items:flex-end;justify-content:center;gap:8px;
+  }
+  .hero-home .hero-art:before{inset:0}
+  .hero-home .hero-art:after{bottom:0;height:48px}
+  .hero-home .hero-phone,
+  .hero-home .hero-phone-back,
+  .hero-home .hero-phone-front{
+    position:relative;left:auto;right:auto;top:auto;
+    width:48%;height:100%;max-width:100%;object-fit:contain;transform:none;
+  }
+  .hero-home .hero-phone-front{width:52%}
+  .hero-home .hero-art:hover .hero-phone-back,
+  .hero-home .hero-art:hover .hero-phone-front{transform:none}
+
+  .home-intro{padding:56px 24px;gap:24px}
+  .home-moment,
+  .home-moment.full{
+    display:flex;flex-direction:column;align-items:stretch;
+    min-height:0;height:auto;padding:56px 24px;gap:28px;
+  }
+  .home-moment-copy,
+  .home-copy-right{
+    order:1;grid-column:auto;width:100%;max-width:none;padding:0;
+  }
+  .home-moment-h{margin-top:18px}
+  .home-moment-p{max-width:100%;margin-top:16px}
+  .home-link{margin-top:22px}
+  .home-moment-art,
+  .home-art-left,
+  .home-art-right,
+  .home-art-pair{
+    order:2;position:relative;left:auto;right:auto;top:auto;bottom:auto;
+    width:85%;max-width:320px;height:340px;flex:0 0 auto;
+    margin:0 auto;align-self:center;opacity:1;pointer-events:auto;z-index:1;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .home-moment-art img,
+  .home-art-left img,
+  .home-art-right img,
+  .home-art-pair img{
+    display:block;width:100%;height:100%;max-width:100%;max-height:100%;
+    object-fit:contain;transform:none;
+    filter:drop-shadow(0 18px 22px rgba(20,23,30,.18));
+  }
+  .home-art-pair{gap:8px}
+  .home-art-pair img,
+  .home-art-pair .pair-back,
+  .home-art-pair .pair-front{
+    position:relative;left:auto;right:auto;top:auto;
+    width:48%;height:100%;transform:none;
+  }
+  .hero-home,.home-moment-dark,.home-moment-blush,.home-moment-pair{background-image:none}
+  .hero-home{padding-bottom:0}
+  .hero-home .hero-art{display:block;width:calc(100% + 48px);max-width:none;height:260px;
+    margin:28px -24px 0;background:url("${img('scene-hero.webp')}") 72% center/cover no-repeat}
+  .hero-home .hero-art:before,.hero-home .hero-art:after,.hero-home .hero-art img{display:none}
+  .home-moment,.home-moment.full{padding-bottom:0}
+  .home-moment-art,.home-art-left,.home-art-right,.home-art-pair{display:block;width:calc(100% + 48px);
+    max-width:none;height:260px;margin:0 -24px;align-self:auto;background-size:cover;background-repeat:no-repeat}
+  .home-moment-art img{display:none}
+  .home-art-left{background-image:url("${img('scene-display.webp')}");background-position:25% center}
+  .home-art-right{background-image:url("${img('scene-finish.webp')}");background-position:75% center}
+  .home-art-pair{background-image:url("${img('scene-choice.webp')}");background-position:25% center}
+  .home-values{width:100%}
+  .home-value{min-height:0;padding:24px 16px 28px}
+  .home-close{
+    min-height:0;height:auto;gap:28px;padding:56px 24px;
+    align-items:flex-start;justify-content:center;
+  }
+  .home-ftr{padding:36px 24px 24px}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -1507,7 +2106,7 @@ img{display:block;max-width:100%}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['card1.jpg','card2.jpg','card3.jpg','card4.jpg','hero.jpg','herotile.jpg','bagthumb.jpg','rec1.jpg','rec2.jpg','rec3.jpg']) {
+for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp']) {
   PICS[n] = img(n);
 }
 
@@ -1524,6 +2123,7 @@ const named = (name, fn) => 'const ' + name + ' = ' + fn.toString() + ';';
 const HELPERS = [
   'const PRODUCTS = ' + JSON.stringify(CATALOGUE) + ';',
   'const PICS = ' + JSON.stringify(PICS) + ';',
+  'const HOME_FOOTER_LOGO = ' + JSON.stringify(brandLogo('brand-logo home-ftr-brand')) + ';',
   'const money = (n) => "$" + n.toFixed(2);',
   'const byId = (id) => PRODUCTS.find((p) => p.id === id);',
   'const img = (n) => PICS[n] || "";',
@@ -1532,6 +2132,8 @@ const HELPERS = [
   named('heartSvg', heartSvg),
   named('card', card),
   named('fld', fld),
+  named('heroBand', heroBand),
+  named('home', home),
   named('shop', shop),
   named('product', product),
   named('bag', bag),
@@ -1540,15 +2142,22 @@ const HELPERS = [
   named('account', account),
   named('orderDetail', orderDetail),
   named('help', help),
-  'const VIEWS = { shop, product, bag, checkout, confirmed, account, order: orderDetail, help };',
+  'const VIEWS = { home, shop, product, bag, checkout, confirmed, account, order: orderDetail, help };',
 ].join('\n');
 
 const RUNTIME = String.raw`
+const initialParts = location.hash.replace(/^#\/?/, '').split('/');
+const initialRoute = initialParts[0] === 'orders' ? 'order' : initialParts[0];
+const initialArg = initialParts[1] || null;
+const initialProduct = byId(initialArg) || PRODUCTS[0];
+let expectedHash = location.hash || '#/home';
+
 const store = {
-  route: 'shop', arg: null,
+  route: VIEWS[initialRoute] ? initialRoute : 'home', arg: null,
   cart: [], favs: [], orders: [],
-  cat: 'all', sort: 'featured', query: '',
-  product: PRODUCTS[0], qty: 1, color: PRODUCTS[0].colors[0], tab: 'overview',
+  cat: initialRoute === 'shop' && initialArg && !['all', 'store'].includes(initialArg) ? initialArg : 'all',
+  sort: 'featured', query: '',
+  product: initialProduct, qty: 1, color: initialProduct.colors[0], tab: 'overview',
   promo: '', promoMsg: '', discount: 0,
   form: {
     email: 'alex.morgan@example.com',
@@ -1560,19 +2169,27 @@ const store = {
   viewOrder: null,
 };
 
+const APP_STATE_KEY = 'kapaya.state';
 try {
-  const saved = JSON.parse(localStorage.getItem('volta.state') || 'null');
+  let raw = localStorage.getItem(APP_STATE_KEY);
+  let legacyKey = null;
+  if (!raw) {
+    legacyKey = Object.keys(localStorage).find((k) => k.endsWith('.state') && /"cart"/.test(localStorage.getItem(k) || ''));
+    if (legacyKey) raw = localStorage.getItem(legacyKey);
+  }
+  const saved = JSON.parse(raw || 'null');
   if (saved) {
     if (Array.isArray(saved.cart)) store.cart = saved.cart;
     if (Array.isArray(saved.favs)) store.favs = saved.favs;
     if (Array.isArray(saved.orders)) store.orders = saved.orders;
     if (saved.form) Object.assign(store.form, saved.form);
   }
+  if (legacyKey) localStorage.removeItem(legacyKey);
 } catch (e) {}
 
 const persist = () => {
   try {
-    localStorage.setItem('volta.state', JSON.stringify({
+    localStorage.setItem(APP_STATE_KEY, JSON.stringify({
       cart: store.cart, favs: store.favs, orders: store.orders, form: store.form,
     }));
   } catch (e) {}
@@ -1614,7 +2231,15 @@ function renderFavs() {
   $$('[data-fav]').forEach((b) => b.classList.toggle('is-on', store.favs.includes(b.dataset.fav)));
 }
 
+function closeHomeMenu() {
+  const button = $('[data-home-menu]');
+  const nav = $('#home-menu');
+  if (button) { button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-label', 'Open menu'); }
+  if (nav) nav.classList.remove('is-open');
+}
+
 function paint() {
+  closeHomeMenu();
   const view = VIEWS[store.route] || VIEWS.shop;
   const state = Object.assign({}, store, {
     results: results(),
@@ -1622,10 +2247,16 @@ function paint() {
     order: store.viewOrder || store.orders[0] || null,
   });
   $('#app').innerHTML = view(state);
+  document.body.classList.toggle('is-home', store.route === 'home');
 
-  const active = store.route === 'shop'
-    ? (store.cat === 'all' ? 'Shop' : store.cat)
-    : (store.route === 'product' ? store.product.cat : 'Shop');
+  const catLabel = store.cat === 'all'
+    ? 'Shop'
+    : store.cat.charAt(0).toUpperCase() + store.cat.slice(1);
+  const active = store.route === 'home'
+    ? ''
+    : store.route === 'shop'
+      ? catLabel
+      : (store.route === 'product' ? store.product.cat : 'Shop');
   $$('.nav-i').forEach((a) => a.classList.toggle('is-current', a.dataset.nav === active));
 
   $$('[data-bagcount]').forEach((el) => {
@@ -1637,27 +2268,78 @@ function paint() {
   if (si && document.activeElement !== si) si.value = store.query;
 }
 
-function go(route, arg) {
+function setStoreRoute(route, arg) {
   store.route = route;
   store.arg = arg || null;
-  if (route === 'shop') store.cat = arg || 'all';
+  if (route === 'shop') {
+    store.cat = !arg || arg === 'all' || arg === 'store' ? 'all' : arg;
+  }
   if (route === 'product') {
     const p = byId(arg) || PRODUCTS[0];
     store.product = p; store.qty = 1; store.color = p.colors[0]; store.tab = 'overview';
   }
   if (route === 'account') store.viewOrder = null;
+}
+
+function routeHash(route, arg) {
+  const key = route === 'order' ? 'orders' : route;
+  if (route === 'product') return '#/product/' + (store.product ? store.product.id : arg || '');
+  if (route === 'shop' && arg && !['all', 'store'].includes(arg)) return '#/shop/' + arg;
+  return '#/' + key;
+}
+
+function go(route, arg) {
+  setStoreRoute(route, arg);
+  const hash = routeHash(route, arg);
+  expectedHash = hash;
+  if (location.hash !== hash) location.hash = hash;
   paint();
   window.scrollTo(0, 0);
 }
 
+window.addEventListener('hashchange', () => {
+  if (location.hash === expectedHash) return;
+  expectedHash = location.hash;
+  const parts = location.hash.replace(/^#\/?/, '').split('/');
+  const route = parts[0] === 'orders' ? 'order' : parts[0];
+  if (!VIEWS[route]) return;
+  setStoreRoute(route, parts[1] || null);
+  paint();
+  window.scrollTo(0, 0);
+});
+
 document.addEventListener('click', (e) => {
-  const t = e.target.closest('[data-go],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
+  const menuButton = e.target.closest('[data-home-menu]');
+  if (menuButton) {
+    const open = menuButton.getAttribute('aria-expanded') !== 'true';
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    $('#home-menu').classList.toggle('is-open', open);
+    return;
+  }
+  if (!e.target.closest('#home-menu')) closeHomeMenu();
+  const t = e.target.closest('[data-go],[data-scroll],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
   if (!t) {
     if (!e.target.closest('.sortwrap')) { const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
     return;
   }
   const d = t.dataset;
 
+  if (d.scroll) {
+    e.preventDefault();
+    closeHomeMenu();
+    const target = document.getElementById(d.scroll);
+    if (target) {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const header = document.querySelector('.hdr');
+      const offset = header ? header.offsetHeight : 0;
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + scrollY - offset,
+        behavior: reduce ? 'auto' : 'smooth',
+      });
+    }
+    return;
+  }
   if (d.toastGo) { go(d.toastGo); return; }
   if (d.go) { go(d.go, d.arg); return; }
   if (d.filter) { store.cat = d.filter; paint(); return; }
@@ -1707,13 +2389,13 @@ document.addEventListener('click', (e) => {
   if (t.hasAttribute('data-apply')) {
     const code = (store.promo || '').trim().toUpperCase();
     const sub = store.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
-    if (code === 'VOLTA10') {
+    if (code === 'KAPAYA10') {
       store.discount = Math.round(sub * 10) / 100;
-      store.promoMsg = 'VOLTA10 applied — 10% off.';
+      store.promoMsg = 'KAPAYA10 applied. 10% off.';
     } else if (!code) {
       store.discount = 0; store.promoMsg = '';
     } else {
-      store.discount = 0; store.promoMsg = 'That code didn\u2019t work. Try VOLTA10.';
+      store.discount = 0; store.promoMsg = 'That code didn\u2019t work. Try KAPAYA10.';
     }
     paint();
     return;
@@ -1728,7 +2410,11 @@ document.addEventListener('click', (e) => {
 document.addEventListener('input', (e) => {
   if (e.target.matches('[data-search] input')) {
     store.query = e.target.value.trim();
-    if (store.route !== 'shop') store.route = 'shop';
+    if (store.route !== 'shop') {
+      expectedHash = '#/shop';
+      store.route = 'shop';
+      if (location.hash !== expectedHash) location.hash = expectedHash;
+    }
     const pos = e.target.selectionStart;
     paint();
     const again = $('.search input');
@@ -1746,7 +2432,7 @@ document.addEventListener('submit', (e) => {
   if (e.target.matches('[data-search]')) {
     e.preventDefault();
     const i = $('.search input');
-    if (i) { store.query = i.value.trim(); store.route = 'shop'; paint(); }
+    if (i) { store.query = i.value.trim(); go('shop', store.cat); }
     return;
   }
   if (!e.target.matches('[data-checkout]')) return;
@@ -1766,7 +2452,7 @@ document.addEventListener('submit', (e) => {
     bad.forEach((n) => { const el = $('.fld-i[name="' + n + '"]'); if (el) el.classList.add('err'); });
     if (err) {
       err.hidden = false;
-      err.textContent = 'Check the highlighted fields — we need them to deliver your order.';
+      err.textContent = 'Check the highlighted fields. We need them to deliver your order.';
     }
     const first = $('.fld-i.err');
     if (first) first.focus();
@@ -1779,7 +2465,7 @@ document.addEventListener('submit', (e) => {
   const digits = (f.card || '').replace(/\D/g, '');
 
   const order = {
-    id: 'VX-' + (88217 + store.orders.length),
+    id: 'KAP-' + (88217 + store.orders.length),
     date: 'NOV 26, 2026',
     status: 'Confirmed',
     first: f.first, last: f.last, email: f.email,
@@ -1799,17 +2485,17 @@ document.addEventListener('submit', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
+  if (e.key === 'Escape') { closeHomeMenu(); const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
 });
 
 if (!store.orders.length) {
   store.orders = [{
-    id: 'VX-47102', date: 'OCT 14, 2026', status: 'Delivered',
+    id: 'KAP-47102', date: 'OCT 14, 2026', status: 'Delivered',
     first: 'Alex', last: 'Morgan', email: 'alex.morgan@example.com',
     street: 'Kepler Street 14', city: 'Rotterdam', postal: '3011 AA', country: 'Netherlands',
     last4: '4242',
-    lines: [{ id: 'vertex', qty: 1, color: 'Silver' }],
-    subtotal: 249, discount: 0, total: 249,
+    lines: [{ id: 'iphone-15', qty: 1, color: 'Blue' }],
+    subtotal: 799, discount: 0, total: 799,
   }];
 }
 
@@ -1822,8 +2508,11 @@ const SHELL = [
   '<head>',
   '<meta charset="utf-8">',
   '<meta name="viewport" content="width=device-width, initial-scale=1">',
-  '<meta name="description" content="VOLTA — an interactive mockup of an everyday-tech storefront.">',
-  '<title>VOLTA — good tech, better everyday</title>',
+  '<meta name="description" content="Kapaya is an interactive, iPhone-only storefront mockup.">',
+  '<meta name="application-name" content="Kapaya">',
+  `<meta name="theme-color" content="${BRAND_CREAM}">`,
+  `<link rel="icon" type="image/svg+xml" href="${favicon}">`,
+  '<title>Kapaya: good tech, better everyday</title>',
   '<style>',
   [400, 500, 600, 700].map((w) => font(w, `inter-latin-${w}-normal.woff2`)).join('\n'),
   CSS,
@@ -1843,4 +2532,4 @@ const SHELL = [
 ].join('\n');
 
 fs.writeFileSync(path.join(ROOT, 'index.html'), SHELL);
-console.log(`index.html — ${(fs.statSync(path.join(ROOT, 'index.html')).size / 1024).toFixed(0)} KB`);
+console.log(`index.html: ${(fs.statSync(path.join(ROOT, 'index.html')).size / 1024).toFixed(0)} KB`);

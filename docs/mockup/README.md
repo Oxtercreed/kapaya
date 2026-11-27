@@ -1,51 +1,69 @@
-# VOLTA — red screens mockup
+# Kapaya: storefront mockup
 
-A design mockup of the five **red** screens from the Figma file, replicated at
-1:1 against the source frames: same 1440 × 1200 boxes, same colours, same
-copy, same prices, same photography.
+**Open `index.html`** that is the whole deliverable. It is one self-contained
+page: Inter is inlined as base64 woff2, clean iPhone photography is inlined as
+base64 WebP, and the client-side router renders every screen without a build
+step, server or network request.
 
-**Open `index.html`** — that is the whole deliverable. It is a single
-self-contained page: Inter is inlined as base64 woff2 and the product images
-are inlined as base64 JPEG, so it renders identically with no build step, no
-server and no network.
+The first screen is a luxury editorial **landing page** with its own understated brand footer. The shop lives
+behind its CTA at `#/shop`; product, bag, checkout and confirmed routes use the
+same hash router. The shared hero places transparent cut-outs directly on the
+`#FCE6E9` panel and lets them bleed past its clipped edge no image tile of
+their own. On the landing route, all coloured sections are full-width and square,
+with layered device shadows, a radial glow and a sticky frosted section nav.
 
 ```
 docs/mockup/
-├── index.html          the deck — five frames, desktop size, scales down to fit
+├── index.html          the self-contained deliverable
 ├── build.cjs           regenerates index.html  (node build.cjs)
-├── NOTES-red.md        the source frames, palette, grid and type scale
+├── brand.cjs           Kapaya vector geometry shared by the site and assets
+├── build-logo.cjs      regenerates the standalone SVG and 4K PNG logo
+├── assets/             iPhone cut-outs + Kapaya 4K/vector brand assets
+├── NOTES-red.md        source measurements, tokens and divergence notes
 ├── .fonts/             Inter woff2 files that get inlined
 └── red/
-    ├── img/            product photography cropped from the Figma render
-    └── ref/            1:1 crops of the five Figma frames, for comparison
+    ├── img/            historical Figma product crops, no longer inlined
+    └── ref/            original five Figma frame crops, for divergence diffs
 ```
 
-## What is in it
+## Routes
 
-| # | screen | frame id |
-|---|---|---|
-| 01 | Shop — hero, category filter, four products, service strip | `8:2` |
-| 02 | Product details — gallery, colour + quantity, benefits, tabs | `8:92` |
-| 03 | Shopping bag — line item, free-shipping note, order summary | `8:161` |
-| 04 | Checkout — contact, address, payment, live order summary | `8:240` |
-| 05 | Order confirmed — receipt, tracking timeline, delivery details | `8:342` |
+| route | screen |
+|---|---|
+| first load / `#/home` | editorial landing page, sticky anchor nav, trust strip, brand footer |
+| `#/shop` | four-iPhone catalogue, filters, search, sort and service strip |
+| `#/product/<id>` | gallery, colour + quantity, benefits, specs and reviews |
+| `#/bag` | line quantities, remove/save, free-shipping threshold, recommendations |
+| `#/checkout` | contact, address, payment, promo and live order summary |
+| `#/confirmed` | receipt, tracking timeline, delivery and payment details |
+| `#/account`, `#/orders`, `#/help` | order history, order detail and help center |
 
-Each screen is the desktop frame exactly as drawn in Figma. The page scales the
-whole 1440 px canvas down when the window is narrower than it, so nothing
-reflows or clips — it behaves like a design deck rather than a responsive site.
+State lives in `localStorage` (`kapaya.state`), so bag, saved items, form values
+and orders survive a reload. The catalogue is four iPhone generations 16 Pro,
+15, 14 Pro and 13 with Pro, Standard and Classic categories. On phones the
+cards collapse to a compact two-column image + name + price invitation with no
+card buttons; desktop keeps the measured card. Below 768 px the landing moments
+become compact single-column stacks with text first, centred uncropped phones
+below, a slim two-row sticky header and a scaled hero watermark.
 
-## Notes
+## Design origin
 
-* The frames were reproduced by measuring a 1:1 render, not by reinterpreting
-  the design. Anything not in the file — extra screens, a mobile layout,
-  a palette shift — was deliberately left out.
-* All type is Inter, as in the file.
-* The product photos are crops of the Figma render at native size; the original
-  image fills sit behind signed URLs that could not be downloaded here, so
-  these are the sharpest copies available.
-* `red/ref/` holds the source frames so the reproduction can be diffed at any
-  time.
+The five **red** Figma screens were the measured starting point: palette, type
+scale, 64 / 1312 grid, 304 × 326 cards, and the 824 + 32 + 456 split. The
+landing page, sticky frosted landing header, full-width square sections,
+edge-bleeding hero, left-only hero copy, iPhone-only catalogue and Kapaya brand
+identity are deliberate divergences from those frames; see `NOTES-red.md` and
+`HANDOFF.md`. On the landing route the header shows the Kapaya logo, four centred
+section anchors and a right-aligned `Start shopping` CTA. No cart, search or
+account controls appear there; the shop and other routes keep the full measured
+header. The shop hero shows only
+its left eyebrow, headline, description and CTA; the right collection/price/note
+column is gone. All U+2014 em dashes are gone from the generated copy, title,
+metadata and build logs; en dashes and minus signs remain for numeric ranges and
+discounts. All five regression references were re-baselined after the brand
+change, and `01-shop.png` was deliberately re-baselined again after the hero
+cleanup. The tools folder keeps both a zero-drift regression baseline and
+`--figma` divergence scores against the original crops.
 
-To change anything, edit `build.cjs` and run `node build.cjs` — the frames are
-laid out with absolute coordinates in source order, so the numbers map straight
-onto the Figma layer positions.
+To change anything, edit `build.cjs` and run `node build.cjs`, then verify with
+the headless probes in `tools/`.
