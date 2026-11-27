@@ -310,9 +310,13 @@ That surfaces as `https://8080-{sandboxId}.e2b.app/`. Bind to `0.0.0.0`, never
 be running on 8080 from the previous session — check before starting another.
 
 For a full-screen public preview, Vercel project **`kapaya-storefront`** deploys this
-branch with root directory `docs/mockup` and no build/install step. Production
-URL: <https://kapaya-storefront.vercel.app/>. The production deployment is
-created from the current branch after each committed brand batch.
+branch with root directory `docs/mockup` and `true` build/install commands. The
+verified production URL is <https://volta-kapaya.vercel.app/> — Vercel kept the
+original production alias after the project rename. Deployment
+`dpl_2djsuVQ8M1jLiG6DAJqwTAJmHVsZ` is READY/PROMOTED from commit `db5fc99` and
+serves the Kapaya-branded site. New project-name aliases are SSO-protected, so
+use the production alias for a public preview. GitHub auto-deploys are disabled;
+create a production deployment manually after each committed UI batch.
 
 ## 9. Git
 
