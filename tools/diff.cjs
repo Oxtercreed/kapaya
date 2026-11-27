@@ -27,7 +27,7 @@ names.forEach((name, i) => {
   const a = path.join(OUT, `fr-${name}.png`);
   const b = path.join(REF, `${name}.${ext}`);
   const out = execSync(`compare -metric MAE "${a}" "${b}" null: 2>&1 || true`).toString();
-  const m = out.match(/\(([\d.]+)\)/);
+  const m = out.match(/\(([\d.eE+-]+)\)/);
   const pct = m ? parseFloat(m[1]) * 100 : NaN;
   total += pct;
   console.log(`f${i + 1} ${pct.toFixed(4)} %   ${name}`);

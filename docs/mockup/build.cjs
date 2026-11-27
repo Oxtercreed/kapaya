@@ -123,7 +123,7 @@ const PRODUCTS = [
     body: 'Deep Purple glass, the first 48MP main camera and an Always-On display. A generation that still reads as unmistakably Pro, presented exactly as it is.',
     hook: 'Deep Purple.<br>Still Pro.', note: '48MP main · Always-On display',
     meta: 'A16 Bionic · 48MP main',
-    colors: ['Deep Purple', 'Graphite'],
+    colors: ['Deep Purple', 'Graphite', 'Silver', 'Gold'],
     foot: 'A closer look at the Deep Purple finish.',
     secHead: 'Made for the considered upgrade',
     bens: [
@@ -208,6 +208,9 @@ const chrome = () => `
     <a href="#why-kapaya" data-scroll="why-kapaya">Why Kapaya</a>
     <a class="home-menu-shop" data-go="shop">Start shopping <span aria-hidden="true">→</span></a>
   </nav>
+  <button class="pdp-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-pdp-menu><span></span><span></span><span></span></button>
+  <button class="pdp-search-toggle" type="button" aria-label="Search iPhones" data-pdp-search><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></svg></button>
+  <button class="pdp-bag" data-go="bag" aria-label="Shopping bag"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2 11h12l2-8H6M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg><b data-bagcount class="hdr-n">0</b></button>
   <span class="hdr-tools">
     <button class="hdr-ico" data-go="account" aria-label="My orders">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14171E" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.7-3.7 3.6-5.6 7-5.6s6.3 1.9 7 5.6"/></svg>
@@ -466,34 +469,60 @@ const card = (p) => `
   </div>
 </article>`;
 
+const finishImages = {
+  'iphone-16-pro': {'Natural Titanium':'shop-16.webp','Black Titanium':'pdp-16-black.webp'},
+  'iphone-15': {'Blue':'shop-15.webp','Black':'pdp-15-black.webp'},
+  'iphone-14-pro': {'Deep Purple':'shop-14.webp','Graphite':'pdp-14-graphite.webp','Silver':'pdp-14-silver.webp','Gold':'pdp-14-gold.webp'},
+  'iphone-13': {'Midnight':'shop-13.webp','Starlight':'pdp-13-starlight.webp'},
+};
+const finishColors = {'Natural Titanium':'#aaa398','Black Titanium':'#38393a','Blue':'#a6c5d7','Black':'#272b30','Deep Purple':'#51455d','Graphite':'#3c3d40','Silver':'#d6d7d8','Gold':'#d3bc8c','Midnight':'#202730','Starlight':'#e5ded1'};
+const storagePrice = (p, storage) => p.price + (p.id === 'iphone-14-pro' && storage === '256GB' ? 100 : p.id === 'iphone-14-pro' && storage === '512GB' ? 300 : 0);
+const linePrice = (line) => storagePrice(byId(line.id), line.storage || '128GB');
+const productGallery = (p, color) => {
+  const back = finishImages[p.id][color] || shopPhotos[p.id];
+  const items = [{label:'Back', image:back}];
+  if (p.id === 'iphone-16-pro') items.push({label:'Front Display',image:'pdp16-front.webp'});
+  if (p.id === 'iphone-14-pro') {
+    items.push({label:'Front Display',image:'pdp14-front.webp'});
+    if (color === 'Deep Purple') items.push({label:'Camera Macro',image:'pdp14-camera.webp'},{label:'Side Profile',image:'pdp14-side.webp'});
+  }
+  return items;
+};
+
 /* Product gallery, buy box, benefits, tabs  (frame 8:92) */
 const product = (state) => {
   const p = state.product;
+  const galleryItems = productGallery(p, state.color);
+  const currentImage = galleryItems[Math.min(state.galleryIndex, galleryItems.length - 1)];
+  const price = storagePrice(p, state.storage);
   return `
-<main class="page">
+<main class="page product-page">
   <p class="crumb"><a data-go="shop">Shop</a><span>/</span><a data-go="shop" data-arg="${p.cat.toLowerCase()}">${p.cat}</a><span>/</span><span class="cur">${p.name}</span></p>
 
   <div class="pdp">
     <div class="gallery">
-      <div class="gallery-plate">${p.gallery ? `<img src="${img(p.gallery)}" alt="${p.name}">` : art(p.art)}</div>
-      <div class="gallery-foot">
-        <span class="gallery-note">${p.foot || 'A closer look at your next iPhone.'}</span>
-        <span class="gallery-tag">${state.color} finish</span>
+      <div class="gallery-plate">
+        <img src="${img(currentImage.image)}" alt="${p.name} ${state.color}, ${currentImage.label}">
+        ${galleryItems.length > 1 ? `<button class="gallery-arrow prev" data-gallery-step="-1" aria-label="Previous image">‹</button><button class="gallery-arrow next" data-gallery-step="1" aria-label="Next image">›</button>` : ''}
       </div>
+      ${galleryItems.length > 1 ? `<div class="gallery-dots">${galleryItems.map((g, i) => `<button data-gallery="${i}" class="${i === state.galleryIndex ? 'is-on' : ''}" aria-label="View ${g.label}"></button>`).join('')}</div>
+      <div class="gallery-thumbs">${galleryItems.map((g, i) => `<button class="gallery-thumb${i === state.galleryIndex ? ' is-on' : ''}" data-gallery="${i}" aria-label="View ${g.label}"><span><img src="${img(g.image)}" alt=""></span><small>${g.label}</small></button>`).join('')}</div>` : ''}
+      <div class="gallery-foot"><span class="gallery-note">A closer look at the ${state.color} finish.</span></div>
     </div>
 
     <div class="buy">
       <p class="buy-eyebrow">${p.cat.toUpperCase()} / ${p.kind.toUpperCase()}</p>
       <h1 class="buy-h">${p.name}</h1>
       <div class="rating-row"><span class="star">★</span><b>${p.rate}</b><span class="rating-c">${p.reviews} verified reviews</span></div>
-      <p class="buy-price">${money(p.price)}</p>
+      <p class="buy-price">${money(price)}</p>
       <p class="buy-tax">Tax included. Free standard shipping.</p>
-      <h2 class="buy-h2">${p.blurb}</h2>
-      <p class="buy-p">${p.body}</p>
-
-      <p class="opt-label">Color: ${state.color}</p>
-      <div class="swatches">
-        ${p.colors.map((c) => `<button class="swatch${c === state.color ? ' is-on' : ''}" data-color="${c}">${c}${c === state.color ? ' · selected' : ''}</button>`).join('')}
+      <div class="product-options">
+        <p class="opt-label">Finish <span>−</span> <b>${state.color}</b></p>
+        <div class="swatches">
+          ${p.colors.map((c) => `<button class="swatch${c === state.color ? ' is-on' : ''}" data-color="${c}" aria-pressed="${c === state.color}"><span style="--swatch:${finishColors[c] || '#aaa'}"></span><small>${c}</small></button>`).join('')}
+        </div>
+        <p class="opt-label storage-label">Storage</p>
+        <div class="storage-options">${(p.id === 'iphone-14-pro' ? ['128GB','256GB','512GB'] : ['128GB']).map((v) => `<button class="storage-option${v === state.storage ? ' is-on' : ''}" data-storage="${v}" aria-pressed="${v === state.storage}"><b>${v}</b><span>${money(storagePrice(p, v))}</span></button>`).join('')}</div>
       </div>
 
       <p class="opt-label qty-label">Quantity</p>
@@ -503,12 +532,18 @@ const product = (state) => {
           <span class="step-n">${state.qty}</span>
           <button class="step" data-qty="1" aria-label="More">+</button>
         </div>
-        <button class="btn-red btn-add" data-add="${p.id}">Add to bag · ${money(p.price * state.qty)}</button>
+        <button class="btn-red btn-add" data-add="${p.id}">Add to bag · ${money(price * state.qty)}</button>
       </div>
-      <p class="buy-meta">In stock <span class="dot">·</span> Arrives Dec 1–3 <span class="dot">·</span> 30-day returns</p>
+      <div class="product-perks"><span>◇ &nbsp; In stock</span><span>▱ &nbsp; Free standard shipping</span><span>↻ &nbsp; 30-day returns</span><span>♢ &nbsp; 12-month warranty</span></div>
     </div>
   </div>
 
+  <div class="product-features">
+    <div><svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="18" height="28" rx="3"/><path d="M13 26h6"/></svg><p><b>${p.id === 'iphone-16-pro' ? '6.3' : '6.1'}&quot; Super Retina XDR</b><small>${p.id.includes('pro') ? 'ProMotion' : 'True-to-life colour'}</small></p></div>
+    <div><svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h5l2-3h8l2 3h5v16H5z"/><circle cx="16" cy="18" r="5"/></svg><p><b>${p.id === 'iphone-13' ? '12MP' : '48MP'} Main</b><small>Everyday photography</small></p></div>
+    <div><svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="20" height="20" rx="2"/><path d="M10 2v4m6-4v4m6-4v4M10 26v4m6-4v4m6-4v4M2 10h4m-4 6h4m-4 6h4m20-12h4m-4 6h4m-4 6h4"/></svg><p><b>${p.id === 'iphone-16-pro' ? 'A18 Pro' : p.id === 'iphone-13' ? 'A15 Bionic' : 'A16 Bionic'}</b><small>Power for everyday</small></p></div>
+    <div><svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 2 29 9v14l-13 7L3 23V9zM3 9l13 7 13-7M16 16v14"/></svg><p><b>In the Box</b><small>${p.name} · charging cable</small></p></div>
+  </div>
   <h2 class="sec-h">${p.secHead || 'Made for your everyday'}</h2>
   <div class="benefits">
     ${(p.bens || [
@@ -520,9 +555,9 @@ const product = (state) => {
 
   <div class="tabs">
     <div class="tabs-l">
-      <button class="tab is-on" data-tab="overview">Overview</button>
-      <button class="tab" data-tab="specs">Specifications</button>
-      <button class="tab" data-tab="reviews">Reviews (${p.reviews})</button>
+      <button class="tab${state.tab === 'overview' ? ' is-on' : ''}" data-tab="overview">Overview</button>
+      <button class="tab${state.tab === 'specs' ? ' is-on' : ''}" data-tab="specs">Specifications</button>
+      <button class="tab${state.tab === 'reviews' ? ' is-on' : ''}" data-tab="reviews">Reviews (${p.reviews})</button>
     </div>
     <a class="tabs-help" data-go="help">Need a hand? Talk to our support team <span class="arw">→</span></a>
   </div>
@@ -549,6 +584,12 @@ const product = (state) => {
          </div>`
       : `<p class="tab-p">${p.body} Every Kapaya product ships with free returns for 30 days, so you can live with it before you commit.</p>`}
   </div>
+  <div class="product-mobile-details">
+    <details><summary>Specifications</summary><dl class="specs">${p.specs.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl></details>
+    <details><summary>What’s in the box</summary><p>${p.name} · charging cable</p></details>
+    <details><summary>Shipping &amp; returns</summary><p>Free standard shipping and 30-day returns.</p></details>
+    <details><summary>Reviews (${p.reviews})</summary><p>${p.rate} out of 5 · ${p.reviews} verified reviews</p></details>
+  </div>
 </main>`;
 };
 
@@ -556,7 +597,7 @@ const product = (state) => {
 const bag = (state) => {
   const lines = state.cart;
   const count = lines.reduce((n, l) => n + l.qty, 0);
-  const subtotal = lines.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
+  const subtotal = lines.reduce((n, l) => n + linePrice(l) * l.qty, 0);
   const ship = subtotal >= 100 || subtotal === 0 ? 0 : 9;
   const total = subtotal + ship;
 
@@ -583,7 +624,7 @@ const bag = (state) => {
        </div>`
     : `<div class="bag-grid">
     <div class="bag-main">
-      ${lines.map((l) => {
+      ${lines.map((l, lineIndex) => {
         const p = byId(l.id);
         return `<div class="bag-card">
           <div class="bag-cols"><span>PRODUCT</span><span class="c-q">QUANTITY</span><span class="c-t">TOTAL</span></div>
@@ -592,22 +633,22 @@ const bag = (state) => {
               <div class="bag-thumb">${p.thumb ? `<img src="${img(p.thumb)}" alt="${p.name}">` : art(p.art)}</div>
               <div class="bag-info">
                 <h3 class="bag-name"><a data-go="product" data-arg="${p.id}">${p.name}</a></h3>
-                ${l.qty > 1 ? `<p class="bag-inline-total">${money(p.price * l.qty)} total</p>` : ''}
-                <p class="bag-meta">Color: ${l.color}</p>
-                <p class="bag-meta">${money(p.price)} each</p>
+                ${l.qty > 1 ? `<p class="bag-inline-total">${money(linePrice(l) * l.qty)} total</p>` : ''}
+                <p class="bag-meta">Color: ${l.color}${l.storage ? ` · ${l.storage}` : ''}</p>
+                <p class="bag-meta">${money(linePrice(l))} each</p>
                 <p class="bag-stock">In stock</p>
-                <button class="bag-save" data-save="${l.id}">Save for later</button>
+                <button class="bag-save" data-save="${l.id}" data-line-index="${lineIndex}">Save for later</button>
               </div>
             </div>
             <div class="bag-qty">
               <div class="stepper sm">
-                <button class="step" data-line-qty="${l.id}" data-d="-1">−</button>
+                <button class="step" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="-1">−</button>
                 <span class="step-n">${l.qty}</span>
-                <button class="step" data-line-qty="${l.id}" data-d="1">+</button>
+                <button class="step" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="1">+</button>
               </div>
-              <button class="bag-remove" data-remove="${l.id}">Remove</button>
+              <button class="bag-remove" data-remove="${l.id}" data-line-index="${lineIndex}">Remove</button>
             </div>
-            <div class="bag-total">${money(p.price * l.qty)}</div>
+            <div class="bag-total">${money(linePrice(l) * l.qty)}</div>
           </div>
         </div>`;
       }).join('')}
@@ -661,7 +702,7 @@ const fld = (label, name, value, opts = {}) => `
 </label>`;
 
 const checkout = (state) => {
-  const subtotal = state.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
+  const subtotal = state.cart.reduce((n, l) => n + linePrice(l) * l.qty, 0);
   const ship = subtotal >= 100 ? 0 : 9;
   const total = subtotal + ship;
   const f = state.form;
@@ -734,7 +775,7 @@ const checkout = (state) => {
             <div>
               <h3 class="ord-name">${p.name}</h3>
               <p class="ord-meta">${l.color} · Qty ${l.qty}</p>
-              <p class="ord-price">${money(p.price * l.qty)}</p>
+              <p class="ord-price">${money(linePrice(l) * l.qty)}</p>
             </div>
           </div>`;
         }).join('')}
@@ -828,7 +869,7 @@ const confirmed = (state) => {
             <div>
               <h3 class="ord-name">${p.name}</h3>
               <p class="ord-meta">${l.color} · Qty ${l.qty}</p>
-              <p class="ord-price">${money(p.price * l.qty)}</p>
+              <p class="ord-price">${money(linePrice(l) * l.qty)}</p>
             </div>
           </div>`;
         }).join('')}
@@ -965,7 +1006,7 @@ const orderDetail = (state) => {
             <div>
               <h3 class="ord-name">${p.name}</h3>
               <p class="ord-meta">${l.color} · Qty ${l.qty}</p>
-              <p class="ord-price">${money(p.price * l.qty)}</p>
+              <p class="ord-price">${money(linePrice(l) * l.qty)}</p>
             </div>
           </div>`;
         }).join('')}
@@ -2022,6 +2063,113 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
  .shop-footer nav{flex-wrap:wrap;gap:18px}
 }
 
+/* Product detail layout, scoped so the landing and shop stay unchanged. */
+.pdp-menu-toggle,.pdp-search-toggle,.pdp-bag{display:none}
+.product-page{padding-top:18px;padding-bottom:36px}
+.product-page .pdp{grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);gap:42px;margin-top:14px}
+.product-page .gallery{padding:12px;border-radius:20px;min-width:0}
+.product-page .gallery-plate{position:relative;aspect-ratio:1.6;background:#eee;display:block}
+.product-page .gallery-plate img{object-fit:cover;padding:0}
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.87);font:400 30px/1 Inter;color:#14171E}
+.gallery-arrow.prev{left:18px}.gallery-arrow.next{right:18px}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.gallery-thumb{min-width:0;text-align:center;font:400 12px/16px Inter;color:#656976}
+.gallery-thumb>span{display:block;height:100px;overflow:hidden;border-radius:9px;border:1px solid transparent;background:#f0f0f0}
+.gallery-thumb.is-on>span{border:2px solid #C92332}
+.gallery-thumb img{height:100%;width:100%;object-fit:cover}
+.gallery-thumb small{display:block;margin-top:6px;font:inherit}
+.gallery-dots{display:none}
+.product-page .gallery-foot{height:auto;padding:14px 4px 0}
+.product-page .buy{margin:0}
+.product-page .buy-eyebrow{font-weight:600;letter-spacing:0}
+.product-page .buy-h{font-size:44px;line-height:49px;margin-top:12px}
+.product-page .rating-row{margin-top:12px}
+.product-page .buy-price{margin-top:18px;font-size:40px}
+.product-options{margin-top:18px;padding-top:0;border-top:1px solid #e8e6e7}
+.product-page .opt-label{font:500 14px/18px Inter;color:#14171E;margin-top:18px}
+.product-page .opt-label span{color:#656976;padding:0 6px}
+.product-page .swatches{gap:20px;margin-top:12px}
+.product-page .swatch{height:auto;min-width:60px;padding:0;border-radius:0;background:none;box-shadow:none;display:flex;align-items:center;flex-direction:column;gap:5px;color:#14171E}
+.product-page .swatch>span{display:block;width:52px;height:52px;border-radius:50%;background:var(--swatch);border:4px solid #fff;box-shadow:0 0 0 1px #d8dadd}
+.product-page .swatch.is-on>span{box-shadow:0 0 0 2px #C92332}
+.product-page .swatch small{font:400 11px/14px Inter;white-space:nowrap}
+.product-page .storage-label{margin-top:18px}
+.storage-options{display:flex;gap:10px;margin-top:10px}
+.storage-option{flex:1;max-width:160px;min-height:62px;border:1px solid #dedfe1;border-radius:12px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:400 13px/1 Inter;color:#656976}
+.storage-option b{color:#14171E;font-weight:600}.storage-option.is-on{border-color:#C92332;background:#FDECEE;color:#C92332}
+.product-page .qty-label{margin-top:18px}.product-page .qty-row{margin-top:10px;gap:14px;flex-wrap:nowrap}
+.product-page .btn-add{min-width:0}
+.product-perks{display:flex;justify-content:space-between;gap:10px;margin-top:24px;font:400 12px/17px Inter;color:#3C3F48}
+.product-perks span{white-space:nowrap}
+.product-features{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:16px;margin-top:22px;padding:18px 12px}
+.product-features>div{display:flex;align-items:center;gap:16px;padding:0 18px;min-width:0}
+.product-features>div+div{border-left:1px solid #e8e6e7}
+.feature-icon{width:36px;height:36px;flex-shrink:0;color:#C92332}
+.product-features p{display:flex;flex-direction:column;gap:5px;font:500 13px/17px Inter}
+.product-features small{font:400 11px/15px Inter;color:#656976}
+.product-page .sec-h{margin-top:24px;font-size:25px;line-height:30px}
+.product-page .benefits{margin-top:12px;gap:12px}
+.product-page .benefit{padding:20px 24px;border:1px solid #f0eeee;border-radius:12px}
+.product-page .b-h{font-size:16px;line-height:20px;margin-top:10px}
+.product-page .b-p{margin-top:8px}
+.product-page .tabs{margin-top:18px}.product-page .tabpanel{padding-top:18px}
+.product-mobile-details{display:none}
+@media(max-width:1120px){.product-page .pdp{grid-template-columns:1fr;gap:28px}}
+@media(max-width:767px){
+ body.is-product .band{height:44px;flex-basis:44px;display:flex;flex-direction:column;gap:2px;font-size:10px}
+ body.is-product .band-div{display:none}
+ body.is-product .hdr{display:grid;grid-template-columns:44px 1fr 42px 42px;gap:0;padding:8px 16px;height:auto;min-height:0}
+ body.is-product .pdp-menu-toggle{display:flex;grid-column:1;grid-row:1;width:40px;height:40px;align-items:flex-start;justify-content:center;flex-direction:column;gap:5px}
+ body.is-product .pdp-menu-toggle span{width:21px;height:2px;background:#14171E}
+ body.is-product .mark{grid-column:2;grid-row:1;justify-self:center}
+ body.is-product .brand-logo{width:112px}
+ body.is-product .pdp-search-toggle{display:flex;grid-column:3;grid-row:1;align-items:center;justify-content:center;width:40px;height:40px}
+ body.is-product .pdp-bag{position:relative;display:flex;grid-column:4;grid-row:1;align-items:center;justify-content:center;width:40px;height:40px}
+ body.is-product .pdp-bag .hdr-n{right:0;top:0}
+ body.is-product .hdr-tools,body.is-product .hdr-row{display:none}
+ body.is-product.pdp-menu-open .hdr-row,body.is-product.pdp-search-open .hdr-row{display:flex;grid-column:1 / -1;grid-row:2;width:100%;flex-direction:column;align-items:stretch}
+ body.is-product.pdp-menu-open .nav{display:flex;width:100%;flex-wrap:wrap;gap:20px;margin:0;padding:14px 0}
+ body.is-product.pdp-menu-open .hdr-right{display:none}
+ body.is-product.pdp-search-open .nav{display:none}
+ body.is-product.pdp-search-open .hdr-right{display:flex;width:100%;padding:10px 0}
+ body.is-product.pdp-search-open .hdr-right .orders,body.is-product.pdp-search-open .hdr-right .bag-pill{display:none}
+ .product-page{padding:20px 18px 44px}
+ .product-page .crumb{font-size:12px}
+ .product-page .pdp{margin-top:18px;gap:24px}
+ .product-page .gallery{padding:0;background:transparent;border-radius:0}
+ .product-page .gallery-plate{aspect-ratio:1/1.1;border-radius:15px}
+ .gallery-arrow{width:40px;height:40px}
+ .gallery-dots{display:flex;justify-content:center;gap:8px;margin:10px 0 2px}
+ .gallery-dots button{width:8px;height:8px;background:#d8dadd;border-radius:50%}
+ .gallery-dots button.is-on{background:#C92332}
+ .gallery-thumbs{gap:8px;margin-top:12px}
+ .gallery-thumb>span{height:74px}
+ .gallery-thumb small{font-size:10px;line-height:12px}
+ .product-page .gallery-foot{padding:14px 0 0}
+ .product-page .buy{border-top:1px solid #e8e6e7;padding-top:24px}
+ .product-page .buy-h{font-size:35px;line-height:40px}
+ .product-page .buy-price{font-size:35px;line-height:41px}
+ .product-page .swatches{justify-content:space-between;gap:4px}
+ .product-page .swatch>span{width:50px;height:50px}
+ .product-page .qty-row{flex-direction:column;align-items:stretch}
+ .product-page .stepper{width:150px}
+ .product-page .btn-add{width:100%;height:50px;min-height:50px;flex:none}
+ .product-perks{display:grid;grid-template-columns:1fr;gap:10px}
+ .product-features{grid-template-columns:repeat(4,minmax(0,1fr));padding:14px 0;gap:0;margin-top:26px}
+ .product-features>div{padding:0 7px;flex-direction:column;align-items:flex-start;gap:8px}
+ .feature-icon{width:26px;height:26px}
+ .product-features p{font-size:10px;line-height:13px}
+ .product-features small{font-size:9px;line-height:12px}
+ .product-page .sec-h{font-size:21px;line-height:27px;margin-top:28px}
+ .product-page .benefits{grid-template-columns:1fr;gap:10px}
+ .product-page .tabs-l{gap:24px}
+ .product-page .tabs-help{width:100%;padding-top:16px}
+ .product-mobile-details{display:block;margin-top:24px;border-top:1px solid #e8e6e7}
+ .product-mobile-details details{border-bottom:1px solid #e8e6e7;padding:16px 0}
+ .product-mobile-details summary{font:500 14px/20px Inter;cursor:pointer}
+ .product-mobile-details p{font:400 13px/20px Inter;color:#656976;margin-top:12px}
+}
+
 /* Editorial scenes are separate from the live copy and controls. */
 .hero-home{background:#FCE6E9 url("${img('scene-hero.webp')}") center/cover no-repeat}
 .hero-home:after{display:none}
@@ -2164,7 +2312,7 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp','shop-16.webp','shop-15.webp','shop-14.webp','shop-13.webp']) {
+for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp','shop-16.webp','shop-15.webp','shop-14.webp','shop-13.webp','pdp-16-black.webp','pdp-15-black.webp','pdp-14-graphite.webp','pdp-14-silver.webp','pdp-14-gold.webp','pdp-13-starlight.webp','pdp14-front.webp','pdp14-camera.webp','pdp14-side.webp','pdp16-front.webp']) {
   PICS[n] = img(n);
 }
 
@@ -2182,6 +2330,11 @@ const HELPERS = [
   'const PRODUCTS = ' + JSON.stringify(CATALOGUE) + ';',
   'const PICS = ' + JSON.stringify(PICS) + ';',
   'const shopPhotos = ' + JSON.stringify(shopPhotos) + ';',
+  'const finishImages = ' + JSON.stringify(finishImages) + ';',
+  'const finishColors = ' + JSON.stringify(finishColors) + ';',
+  named('storagePrice', storagePrice),
+  named('linePrice', linePrice),
+  named('productGallery', productGallery),
   'const HOME_FOOTER_LOGO = ' + JSON.stringify(brandLogo('brand-logo home-ftr-brand')) + ';',
   'const money = (n) => "$" + n.toFixed(2);',
   'const byId = (id) => PRODUCTS.find((p) => p.id === id);',
@@ -2216,7 +2369,7 @@ const store = {
   cart: [], favs: [], orders: [],
   cat: initialRoute === 'shop' && initialArg && !['all', 'store'].includes(initialArg) ? initialArg : 'all',
   sort: 'featured', query: '',
-  product: initialProduct, qty: 1, color: initialProduct.colors[0], tab: 'overview',
+  product: initialProduct, qty: 1, color: initialProduct.colors[0], storage: '128GB', galleryIndex: 0, tab: 'overview',
   promo: '', promoMsg: '', discount: 0,
   form: {
     email: 'alex.morgan@example.com',
@@ -2299,6 +2452,8 @@ function closeHomeMenu() {
 
 function paint() {
   closeHomeMenu();
+  document.body.classList.remove('pdp-menu-open', 'pdp-search-open');
+  $('[data-pdp-menu]').setAttribute('aria-expanded', 'false');
   const view = VIEWS[store.route] || VIEWS.shop;
   const state = Object.assign({}, store, {
     results: results(),
@@ -2308,6 +2463,7 @@ function paint() {
   $('#app').innerHTML = view(state);
   document.body.classList.toggle('is-home', store.route === 'home');
   document.body.classList.toggle('is-shop', store.route === 'shop');
+  document.body.classList.toggle('is-product', store.route === 'product');
 
   const catLabel = store.cat === 'all'
     ? 'Shop'
@@ -2336,7 +2492,7 @@ function setStoreRoute(route, arg) {
   }
   if (route === 'product') {
     const p = byId(arg) || PRODUCTS[0];
-    store.product = p; store.qty = 1; store.color = p.colors[0]; store.tab = 'overview';
+    store.product = p; store.qty = 1; store.color = p.colors[0]; store.storage = '128GB'; store.galleryIndex = 0; store.tab = 'overview';
   }
   if (route === 'account') store.viewOrder = null;
 }
@@ -2369,6 +2525,9 @@ window.addEventListener('hashchange', () => {
 });
 
 document.addEventListener('click', (e) => {
+  const productMenu = e.target.closest('[data-pdp-menu]');
+  if (productMenu) { const open = productMenu.getAttribute('aria-expanded') !== 'true'; productMenu.setAttribute('aria-expanded', String(open)); productMenu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); document.body.classList.toggle('pdp-menu-open', open); document.body.classList.remove('pdp-search-open'); return; }
+  if (e.target.closest('[data-pdp-search]')) { document.body.classList.toggle('pdp-search-open'); document.body.classList.remove('pdp-menu-open'); $('[data-pdp-menu]').setAttribute('aria-expanded','false'); if (document.body.classList.contains('pdp-search-open')) $('.search input').focus(); return; }
   const menuButton = e.target.closest('[data-home-menu]');
   if (menuButton) {
     const open = menuButton.getAttribute('aria-expanded') !== 'true';
@@ -2378,7 +2537,7 @@ document.addEventListener('click', (e) => {
     return;
   }
   if (!e.target.closest('#home-menu')) closeHomeMenu();
-  const t = e.target.closest('[data-go],[data-scroll],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
+  const t = e.target.closest('[data-go],[data-scroll],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-storage],[data-gallery],[data-gallery-step],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
   if (!t) {
     if (!e.target.closest('.sortwrap')) { const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
     return;
@@ -2407,33 +2566,36 @@ document.addEventListener('click', (e) => {
   if (t.hasAttribute('data-sort')) { const m = $('[data-sortmenu]'); if (m) m.hidden = !m.hidden; return; }
   if (d.sortby) { store.sort = d.sortby; paint(); return; }
   if (d.qty) { store.qty = Math.max(1, Math.min(9, store.qty + Number(d.qty))); paint(); return; }
-  if (d.color) { store.color = d.color; paint(); return; }
+  if (d.color) { store.color = d.color; store.galleryIndex = 0; paint(); return; }
+  if (d.storage) { store.storage = d.storage; paint(); return; }
+  if (d.gallery !== undefined) { store.galleryIndex = Number(d.gallery); paint(); return; }
+  if (d.galleryStep) { const n = productGallery(store.product, store.color).length; store.galleryIndex = (store.galleryIndex + Number(d.galleryStep) + n) % n; paint(); return; }
   if (d.tab) { store.tab = d.tab; paint(); return; }
   if (d.add) {
     const p = byId(d.add);
-    const line = store.cart.find((l) => l.id === p.id && l.color === store.color);
+    const line = store.cart.find((l) => l.id === p.id && l.color === store.color && (l.storage || '128GB') === store.storage);
     if (line) line.qty = Math.min(9, line.qty + store.qty);
-    else store.cart.push({ id: p.id, qty: store.qty, color: store.color });
+    else store.cart.push({ id: p.id, qty: store.qty, color: store.color, storage: store.storage });
     persist(); paint();
     const pill = $('.bag-pill');
     if (pill) { pill.classList.add('pop'); setTimeout(() => pill.classList.remove('pop'), 340); }
     toast(p.name + ' added to your bag.', 'View bag', 'bag');
     return;
   }
-  if (d.remove) { store.cart = store.cart.filter((l) => l.id !== d.remove); persist(); paint(); return; }
+  if (d.remove) { store.cart.splice(Number(d.lineIndex), 1); persist(); paint(); return; }
   if (d.save) {
     const p = byId(d.save);
     if (!store.favs.includes(p.id)) store.favs = store.favs.concat(p.id);
-    store.cart = store.cart.filter((l) => l.id !== d.save);
+    store.cart.splice(Number(d.lineIndex), 1);
     persist(); paint();
     toast(p.name + ' saved for later.');
     return;
   }
   if (d.lineQty) {
-    const line = store.cart.find((l) => l.id === d.lineQty);
+    const line = store.cart[Number(d.lineIndex)];
     if (line) {
       line.qty += Number(d.d);
-      if (line.qty < 1) store.cart = store.cart.filter((l) => l.id !== d.lineQty);
+      if (line.qty < 1) store.cart.splice(Number(d.lineIndex), 1);
       if (line.qty > 9) line.qty = 9;
       persist(); paint();
     }
@@ -2448,7 +2610,7 @@ document.addEventListener('click', (e) => {
   }
   if (t.hasAttribute('data-apply')) {
     const code = (store.promo || '').trim().toUpperCase();
-    const sub = store.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
+    const sub = store.cart.reduce((n, l) => n + linePrice(l) * l.qty, 0);
     if (code === 'KAPAYA10') {
       store.discount = Math.round(sub * 10) / 100;
       store.promoMsg = 'KAPAYA10 applied. 10% off.';
@@ -2520,7 +2682,7 @@ document.addEventListener('submit', (e) => {
   }
   if (!store.cart.length) { go('bag'); return; }
 
-  const subtotal = store.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
+  const subtotal = store.cart.reduce((n, l) => n + linePrice(l) * l.qty, 0);
   const total = Math.round((subtotal - store.discount) * 100) / 100;
   const digits = (f.card || '').replace(/\D/g, '');
 
