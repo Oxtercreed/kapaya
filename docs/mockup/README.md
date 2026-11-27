@@ -5,11 +5,12 @@ page: Inter is inlined as base64 woff2, clean iPhone photography is inlined as
 base64 WebP, and the client-side router renders every screen without a build
 step, server or network request.
 
-The first screen is a majestic, footerless **landing page**. The shop lives
+The first screen is a luxury editorial **landing page** with its own understated brand footer. The shop lives
 behind its CTA at `#/shop`; product, bag, checkout and confirmed routes use the
 same hash router. The shared hero places transparent cut-outs directly on the
 `#FCE6E9` panel and lets them bleed past its clipped edge no image tile of
-their own.
+their own. On the landing route, all coloured sections are full-width and square,
+with layered device shadows, a radial glow and a sticky frosted section nav.
 
 ```
 docs/mockup/
@@ -29,7 +30,7 @@ docs/mockup/
 
 | route | screen |
 |---|---|
-| first load / `#/home` | editorial landing page, no footer |
+| first load / `#/home` | editorial landing page, sticky anchor nav, trust strip, brand footer |
 | `#/shop` | four-iPhone catalogue, filters, search, sort and service strip |
 | `#/product/<id>` | gallery, colour + quantity, benefits, specs and reviews |
 | `#/bag` | line quantities, remove/save, free-shipping threshold, recommendations |
@@ -47,11 +48,13 @@ card buttons; desktop keeps the measured card.
 
 The five **red** Figma screens were the measured starting point: palette, type
 scale, 64 / 1312 grid, 304 × 326 cards, and the 824 + 32 + 456 split. The
-landing page, logo-only landing header, edge-bleeding hero, left-only hero copy,
-iPhone-only catalogue and Kapaya brand identity are deliberate divergences from
-those frames; see `NOTES-red.md` and `HANDOFF.md`. On the landing route the
-header shows only the Kapaya logo and a right-aligned `Start shopping` CTA; the
-shop and other routes keep the full measured header. The shop hero shows only
+landing page, sticky frosted landing header, full-width square sections,
+edge-bleeding hero, left-only hero copy, iPhone-only catalogue and Kapaya brand
+identity are deliberate divergences from those frames; see `NOTES-red.md` and
+`HANDOFF.md`. On the landing route the header shows the Kapaya logo, four centred
+section anchors and a right-aligned `Start shopping` CTA. No cart, search or
+account controls appear there; the shop and other routes keep the full measured
+header. The shop hero shows only
 its left eyebrow, headline, description and CTA; the right collection/price/note
 column is gone. All U+2014 em dashes are gone from the generated copy, title,
 metadata and build logs; en dashes and minus signs remain for numeric ranges and

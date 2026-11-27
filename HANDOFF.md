@@ -153,7 +153,7 @@ the intended design difference, not a regression.
 
 ## 5. Behaviour that must keep working (`node tools/deep.cjs`)
 
-landing opens first with the footer hidden and a working shop CTA · sort menu
+landing opens first with the shared route footer hidden, a dedicated brand footer and a working shop CTA · sort menu
 opens → cheapest first is "iPhone 13" · favourite survives a reload · search
 `16` yields 1 card and keeps focus · Pro nav reads "2 iPhones" · clearing the
 email then paying shows "Check the highlighted fields" · fixing it and paying
@@ -309,13 +309,25 @@ Implemented in this branch:
    title, metadata, build logs, comments and docs. En dashes in numeric ranges
    and minus signs remain because they are different characters. `deep.cjs`
    asserts no U+2014 character in the rendered document.
-10. **Landing-page header.** On `body.is-home`, the header shows only the Kapaya
-    logo and a right-aligned `Start shopping` CTA in the bag pill's place. Nav,
-    search, orders, bag and mobile icons are hidden; shop and other routes keep
-    the full measured header. `deep.cjs` and `mobile.cjs` assert the logo-only
-    header, CTA and full header restoration after entering the shop. No
-    reference re-baseline was needed because the measured frames open at
+10. **Editorial landing header.** On `body.is-home`, a sticky frosted header
+    shows the Kapaya logo, four centred section anchors and a right-aligned
+    `Start shopping` CTA. No cart, search, orders, bag or account controls are
+    visible. The anchors smooth-scroll without changing the route; shop and
+    other routes keep the full measured header. `deep.cjs` and `mobile.cjs`
+    assert the header, CTA and full header restoration after entering the shop.
+    No reference re-baseline was needed because the measured frames open at
     `#/shop`, where the header is unchanged.
+11. **Luxury landing refresh.** The announcement bar has a centred vertical
+    divider. The hero, dark display, blush finish, mint choice and red CTA
+    sections are 100% viewport-wide with square 90-degree edges. Hero devices
+    have a radial lighting glow and three ambient shadow layers. The trust
+    strip has four crimson 1.5px stroke icons, and `12-Month Warranty` with its
+    buyer-trust line replaces `Clean presentation`. A minimalist brand footer
+    with quick links, Apple Pay, Visa and Mastercard badges, and copyright
+    details follows the red CTA. Typography and palette are unchanged, and only
+    that one trust-strip line of existing copy changed. `deep.cjs` asserts the
+    full-bleed geometry, frosted nav, anchor scrolling, hero depth, trust icons
+    and footer. All five regression references remain at 0.0000 %.
 
 ## 8. Preview
 

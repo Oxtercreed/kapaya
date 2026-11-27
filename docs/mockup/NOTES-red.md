@@ -87,7 +87,7 @@ runtime, no network, no external assets. `.fonts/` holds the woff2 sources;
 `assets/` holds the iPhone cut-outs.
 
 The five frames above were the measured starting point. The app now adds a
-footerless landing page, hash routing, an edge-bleeding hero, an iPhone-only
+editorial landing page with a brand footer, hash routing, an edge-bleeding hero, an iPhone-only
 catalogue, My orders, order detail, the help center, empty/search states and a
 phone layout, all built from the same tokens so the store reads as one product.
 
@@ -111,7 +111,7 @@ from 2.6 % to 3.4 %.
 
 ## Deliberate divergence
 
-The first load is a footerless editorial landing page. The shared Shop/landing
+The first load is a luxury editorial landing page with a dedicated brand footer. The shared Shop/landing
 hero uses transparent iPhone cut-outs directly on `#FCE6E9`, bleeding past the
 panel's clipped edge instead of sitting in a 270 × 240 rounded tile. The
 catalogue is now **four iPhones only** iPhone 16 Pro, iPhone 15, iPhone 14 Pro
@@ -126,12 +126,17 @@ product" links hidden. The desktop card remains the measured 304 × 326 plate.
 
 The shop hero is now left-only: the right-hand "THE COLLECTION", price and note
 block has been removed from every hero variant, while the transparent iPhone
-cut-outs still bleed off the panel. On the landing route the header is reduced
-to the Kapaya logo and a right-aligned `Start shopping` CTA; shop and other
-routes keep the full measured header. All U+2014 em dashes are gone from the
-generated copy, title, metadata and build logs.
+cut-outs still bleed off the panel. On the landing route the header is a sticky frosted grid with the Kapaya logo,
+four centred section anchors and a right-aligned `Start shopping` CTA; no cart,
+search or account controls appear. The anchors smooth-scroll to their sections.
+Shop and other routes keep the full measured header. All coloured landing
+sections span the viewport with square 90-degree edges, and the hero hardware
+uses a radial glow with layered ambient shadows. The trust strip has crimson
+1.5px stroke icons, with `12-Month Warranty` replacing the old second column,
+and a minimalist brand footer follows the red CTA. All U+2014 em dashes are gone
+from the generated copy, title, metadata and build logs.
 
-This is not a fidelity target. After the landing/hero, logo-only header,
+This is not a fidelity target. After the landing/hero, editorial anchor header,
 left-only hero, no-U+2014, iPhone-only and Kapaya-brand changes, raw Figma JPEG
 MAE is **6.1999 / 5.7722 /
 3.5064 / 2.3351 / 3.1021 %**. All five `tools/ref/*.png` regression references

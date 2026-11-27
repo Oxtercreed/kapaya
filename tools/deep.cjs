@@ -50,32 +50,81 @@ const { launch, APP } = require('./lib.cjs');
   }
   console.log('em dash removed:', !dash.title && !dash.body && !dash.html);
 
-  // 1. landing opens first, footerless, with a logo-only header and working Start shopping CTA
-  const landing = await p.evaluate(() => ({
-    home: !!document.querySelector('.home'),
-    footerHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
-    logo: !!document.querySelector('.hdr .mark .brand-logo'),
-    cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
-    ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
-    chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
-    visibleHeaderChildren: Array.from(document.querySelectorAll('.hdr > *'))
-      .filter((el) => getComputedStyle(el).display !== 'none').length,
-  }));
-  if (!landing.home || !landing.footerHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 2) {
-    throw new Error('landing header assertion failed: ' + JSON.stringify(landing));
+  // 1. landing opens first with the luxury editorial chrome and full-bleed architecture.
+  const landing = await p.evaluate(() => {
+    const h = getComputedStyle(document.querySelector('.hdr'));
+    const fullBleed = ['.hero-home', '#the-edit', '#finishes', '#generations', '.home-close'].every((sel) => {
+      const el = document.querySelector(sel);
+      const r = el.getBoundingClientRect();
+      const c = getComputedStyle(el);
+      return Math.abs(r.left) < 1 && Math.abs(r.width - innerWidth) < 1 && parseFloat(c.borderTopLeftRadius) === 0;
+    });
+    const art = document.querySelector('.hero-home .hero-art');
+    const phone = document.querySelector('.hero-home .hero-phone');
+    return {
+      home: !!document.querySelector('.home'),
+      sharedFooterHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+      logo: !!document.querySelector('.hdr .mark .brand-logo'),
+      cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
+      ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
+      chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
+      visibleHeaderChildren: Array.from(document.querySelectorAll('.hdr > *'))
+        .filter((el) => getComputedStyle(el).display !== 'none').length,
+      nav: Array.from(document.querySelectorAll('.home-nav a')).map((a) => a.textContent.trim()),
+      announcementDivider: getComputedStyle(document.querySelector('.band-div')).display !== 'none',
+      frosted: h.position === 'sticky' && /blur\(12px\)/.test(h.backdropFilter || h.webkitBackdropFilter || '') && h.backgroundColor.startsWith('rgba'),
+      hairline: parseFloat(h.borderBottomWidth) === 1,
+      fullBleed,
+      heroDepth: {
+        glow: /radial-gradient/.test(getComputedStyle(art, '::before').backgroundImage),
+        shadows: (getComputedStyle(phone).filter.match(/drop-shadow/g) || []).length,
+      },
+      valueIcons: document.querySelectorAll('.home-value-ico').length,
+      warranty: document.querySelector('.home-value:nth-child(2) h3')?.textContent.trim(),
+      oldTrustCopy: /Clean presentation/.test(document.body.innerText),
+      homeFooter: !!document.querySelector('.home-ftr'),
+      footerLinks: Array.from(document.querySelectorAll('.home-ftr-col a')).map((a) => a.textContent.trim()),
+      payments: Array.from(document.querySelectorAll('.pay-method')).map((el) => el.getAttribute('aria-label')),
+      copyright: document.querySelector('.home-ftr-bottom')?.textContent.includes('© 2026 Kapaya'),
+    };
+  });
+  const navOk = JSON.stringify(landing.nav) === JSON.stringify(['The Edit', 'Finishes', 'Generations', 'Why Kapaya']);
+  const footerOk = JSON.stringify(landing.footerLinks) === JSON.stringify(['Shop', 'Warranty', 'Returns', 'Contact']);
+  const paymentsOk = JSON.stringify(landing.payments) === JSON.stringify(['Apple Pay', 'Visa', 'Mastercard']);
+  if (!landing.home || !landing.sharedFooterHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 3 || !navOk || !landing.announcementDivider || !landing.frosted || !landing.hairline || !landing.fullBleed || !landing.heroDepth.glow || landing.heroDepth.shadows < 3 || landing.valueIcons !== 4 || landing.warranty !== '12-Month Warranty' || landing.oldTrustCopy || !landing.homeFooter || !footerOk || !paymentsOk || !landing.copyright) {
+    throw new Error('luxury landing assertion failed: ' + JSON.stringify(landing));
   }
-  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden, '| logo-only header:', landing.visibleHeaderChildren === 2, '| CTA:', landing.cta);
+  console.log('landing opens first:', landing.home, '| frosted sticky nav:', landing.frosted, '| centred links:', landing.nav.length, '| CTA:', landing.cta);
+  console.log('full-bleed sections:', landing.fullBleed, '| hero glow:', landing.heroDepth.glow, '| ambient shadows:', landing.heroDepth.shadows);
+  console.log('trust icons:', landing.valueIcons, '| warranty:', landing.warranty, '| brand footer:', landing.homeFooter);
+
+  const initialHash = await p.evaluate(() => location.hash);
+  await p.click('.home-nav a[data-scroll="finishes"]');
+  await new Promise((r) => setTimeout(r, 1100));
+  const navScroll = await p.evaluate(() => ({
+    hash: location.hash,
+    home: !!document.querySelector('.home'),
+    targetTop: Math.round(document.querySelector('#finishes').getBoundingClientRect().top),
+    headerHeight: document.querySelector('.hdr').offsetHeight,
+    y: Math.round(scrollY),
+  }));
+  if (navScroll.hash !== initialHash || !navScroll.home || navScroll.y < 100 || Math.abs(navScroll.targetTop - navScroll.headerHeight) > 3) {
+    throw new Error('landing anchor scroll assertion failed: ' + JSON.stringify({ initialHash, ...navScroll }));
+  }
+  console.log('anchor smooth-scroll:', navScroll.y > 100, '| target offset:', navScroll.targetTop, '| route unchanged:', navScroll.hash === initialHash);
+
   await p.click('.home-shop-pill');
   await new Promise((r) => setTimeout(r, 250));
   console.log('header CTA reaches catalogue:', !!(await p.$('.cards')));
   const shopHeader = await p.evaluate(() => ({
     full: getComputedStyle(document.querySelector('.hdr-row')).display !== 'none',
     homeCtaHidden: getComputedStyle(document.querySelector('.home-shop-pill')).display === 'none',
+    homeNavHidden: getComputedStyle(document.querySelector('.home-nav')).display === 'none',
   }));
-  if (!shopHeader.full || !shopHeader.homeCtaHidden) {
+  if (!shopHeader.full || !shopHeader.homeCtaHidden || !shopHeader.homeNavHidden) {
     throw new Error('shop header restoration assertion failed: ' + JSON.stringify(shopHeader));
   }
-  console.log('shop header restored:', shopHeader.full, '| home CTA hidden:', shopHeader.homeCtaHidden);
+  console.log('shop header restored:', shopHeader.full, '| home CTA hidden:', shopHeader.homeCtaHidden, '| home nav hidden:', shopHeader.homeNavHidden);
 
   // 2. sort menu
   await p.click('[data-sort]');

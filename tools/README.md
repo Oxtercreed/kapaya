@@ -18,8 +18,8 @@ SwiftShader runtime into git-ignored derived folders.
 |---|---|
 | `node frames.cjs` | loads the app, clicks through all five screens, writes `/tmp/red/fr-0N-*.png` at 1440×1200, prints `errors: none` |
 | `node diff.cjs` | MAE of those shots against `ref/*.png`. All five references were deliberately re-baselined after the iPhone-only and Kapaya-brand changes, and `01-shop.png` was re-baselined again for the left-only hero, so a clean run prints **0.0000 % on all five**. `--figma` scores the original raw Figma JPEG crops and reports the intentional design difference: 6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 % |
-| `node mobile.cjs` | 390×844 @2x walk through every route; asserts the footerless landing, logo-only header CTA, left-only hero and compact two-column buttonless cards; prints `OVERFLOW` if anything is wider than the viewport |
-| `node deep.cjs` | brand identity, left-only hero, no em dash, logo-only landing header and nine interaction assertions: landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
+| `node mobile.cjs` | 390×844 @2x walk through every route; asserts the dedicated landing footer, centred anchor nav, sticky header CTA, left-only hero and compact two-column buttonless cards; prints `OVERFLOW` if anything is wider than the viewport |
+| `node deep.cjs` | brand identity, left-only hero, no em dash, luxury landing structure (full-bleed sections, frosted nav, smooth anchors, hero depth, trust icons, footer) and nine interaction assertions: landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
 
 All five `ref/*.png` files are deliberate regression baselines of the current
 iPhone-only, Kapaya-branded, left-only-hero design. All five were re-baselined

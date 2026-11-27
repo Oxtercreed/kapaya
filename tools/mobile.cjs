@@ -19,23 +19,28 @@ const fs = require('fs');
     if (w.doc > w.win + 1) console.log('OVERFLOW', label, w.doc, '>', w.win);
   };
 
-  // First load is the landing page. It has no footer and its CTA opens the shop.
+  // First load is the landing page, with its own brand footer and a working shop CTA.
   await shot('00-home');
   await overflowing('home');
   const landing = await p.evaluate(() => ({
     home: !!document.querySelector('.home'),
-    footerHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+    sharedFooterHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+    homeFooter: !!document.querySelector('.home-ftr'),
     logo: !!document.querySelector('.hdr .mark .brand-logo'),
     cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
     ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
     chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
     visibleHeaderChildren: Array.from(document.querySelectorAll('.hdr > *'))
       .filter((el) => getComputedStyle(el).display !== 'none').length,
+    nav: Array.from(document.querySelectorAll('.home-nav a')).map((a) => a.textContent.trim()),
+    announcementDivider: getComputedStyle(document.querySelector('.band-div')).display !== 'none',
+    valueColumns: getComputedStyle(document.querySelector('.home-values')).gridTemplateColumns.split(' ').length,
   }));
-  if (!landing.home || !landing.footerHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 2) {
+  const navOk = JSON.stringify(landing.nav) === JSON.stringify(['The Edit', 'Finishes', 'Generations', 'Why Kapaya']);
+  if (!landing.home || !landing.sharedFooterHidden || !landing.homeFooter || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 3 || !navOk || !landing.announcementDivider || landing.valueColumns !== 2) {
     throw new Error('mobile landing header assertion failed: ' + JSON.stringify(landing));
   }
-  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden, '| logo-only header:', landing.visibleHeaderChildren === 2, '| CTA:', landing.cta);
+  console.log('landing opens first:', landing.home, '| brand footer:', landing.homeFooter, '| centred links:', landing.nav.length, '| CTA:', landing.cta);
   await p.click('.home-shop-pill');
   await new Promise((r) => setTimeout(r, 300));
   const shopHeader = await p.evaluate(() => ({

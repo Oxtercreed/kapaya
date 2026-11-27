@@ -23,15 +23,16 @@ The Figma source file is
 
 A clickable store that began as a measured reproduction of the **red** frames
 (`8:2` Shop, `8:92` Product, `8:161` Bag, `8:240` Checkout, `8:342` Confirmed),
-then deliberately diverged. The first load is now a majestic footerless landing
-page, the shop sits behind its CTA at `#/shop`, the hero uses edge-bleeding
-cut-outs instead of a white tile, and the catalogue is four iPhone generations.
+then deliberately diverged. The first load is now a luxury editorial landing
+page with a dedicated brand footer, the shop sits behind its CTA at `#/shop`, the
+hero uses edge-bleeding cut-outs instead of a white tile, and the catalogue is
+four iPhone generations.
 The measured desktop card geometry and the bag/checkout/confirmed grid still
 come from the frames:
 
 | Screen | What works |
 |---|---|
-| Home | footerless editorial landing page, full-bleed product moments, shop CTA |
+| Home | luxury editorial landing page, sticky anchor nav, full-bleed product moments, trust strip, brand footer |
 | Shop | category filter, live search with an empty state, sort menu, save items |
 | Product | colour choice, quantity stepper, add to bag, specs and reviews tabs |
 | Bag | line quantities, remove, save for later, free-shipping threshold, recommendations |
@@ -75,7 +76,7 @@ bash tools/fetch-chromium.sh       # once per clone (Chromium, git-ignored)
 cd tools && npm install
 node frames.cjs && node diff.cjs   # 0.00 / 0.00 / 0.00 / 0.00 / 0.00 %
 node mobile.cjs                    # landing + 390 px walk, no overflow
-node deep.cjs                      # nine interaction assertions
+node deep.cjs                      # brand, landing and interaction assertions
 ```
 
 The catalogue is now **four iPhones only**: iPhone 16 Pro ($1099), iPhone 15
@@ -85,9 +86,11 @@ set and reviews. The red frames' original earbuds/headphones/watch/mouse
 catalogue and its copy are deliberately no longer binding. This is a design
 divergence, documented in `NOTES-red.md` and `HANDOFF.md`.
 
-The landing page opens first with no footer, a logo-only header with a
-`Start shopping` button on the right, and a hero that keeps only its left-side
-eyebrow, headline, description and CTA. The shop and other store
+The landing page opens first with a centred announcement bar, a sticky frosted
+header carrying the logo, four section anchors and `Start shopping`, and a
+full-bleed hero that keeps only its left-side eyebrow, headline, description and
+CTA. Every coloured landing section spans the viewport with square edges, and an
+understated brand footer follows the final red CTA. The shop and other store
 routes use hash links. All five `tools/ref/*.png` regression references were
 re-baselined on purpose after the brand change; `tools/ref/01-shop.png` was
 re-baselined again after the hero cleanup. Use `node diff.cjs --figma` to see
