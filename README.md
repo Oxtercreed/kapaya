@@ -45,7 +45,9 @@ State lives in `localStorage` (`kapaya.state`), so the bag, saved items and orde
 survive a reload, and a checkout adds a real order you can open from **My orders**.
 
 Layout is responsive: 1440 px desktop to a 390 px phone, with the same tokens
-throughout. On phones the header folds to the Kapaya logo, an account icon, a
+throughout. Below 768 px the landing editorial sections stack text above centred,
+uncropped product art with 56 / 24 px padding; the desktop layout is unchanged.
+On phones the header folds to the Kapaya logo, an account icon, a
 search row, a scrolling nav and a bag pill; product cards become compact two-column
 invitations with only image, name and price, and no card buttons. The measured
 desktop card remains unchanged.

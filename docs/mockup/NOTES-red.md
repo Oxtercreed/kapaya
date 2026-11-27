@@ -123,6 +123,9 @@ explicitly no longer binding.
 On phones (`≤640`) the catalogue cards are deliberately smaller: a two-column
 grid of image + name + price only, with badges, ratings, hearts and "View
 product" links hidden. The desktop card remains the measured 304 × 326 plate.
+Below 768 px the landing moments use a separate mobile-only stack: compact
+56 / 24 px padding, text at full width, and centred uncropped product art in
+the normal flow. The desktop split layout is untouched.
 
 The shop hero is now left-only: the right-hand "THE COLLECTION", price and note
 block has been removed from every hero variant, while the transparent iPhone

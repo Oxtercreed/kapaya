@@ -328,6 +328,16 @@ Implemented in this branch:
     that one trust-strip line of existing copy changed. `deep.cjs` asserts the
     full-bleed geometry, frosted nav, anchor scrolling, hero depth, trust icons
     and footer. All five regression references remain at 0.0000 %.
+12. **Mobile landing responsiveness.** A final `@media (max-width:767px)` layer
+    turns the three editorial moments into single-column flex stacks: copy at
+    the top, centred phone art below at 85% width / 320px maximum and in normal
+    flow, with 56px vertical and 24px horizontal padding and no fixed section
+    height. The sticky header uses 10px vertical padding, a 6px / 12px anchor
+    strip, and a compact top row. The hero watermark scales to 64px and the
+    hero phones sit centred below the CTA without cropping. Desktop and
+    768px-plus layouts remain unchanged. `mobile.cjs` asserts the stack, compact
+    chrome, uncropped artwork and no horizontal overflow; `deep.cjs` asserts the
+    desktop moment layout is intact.
 
 ## 8. Preview
 

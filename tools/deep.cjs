@@ -75,6 +75,11 @@ const { launch, APP } = require('./lib.cjs');
       frosted: h.position === 'sticky' && /blur\(12px\)/.test(h.backdropFilter || h.webkitBackdropFilter || '') && h.backgroundColor.startsWith('rgba'),
       hairline: parseFloat(h.borderBottomWidth) === 1,
       fullBleed,
+      desktopMomentLayout: (() => {
+        const sec = document.querySelector('#the-edit');
+        return getComputedStyle(sec).display === 'grid' &&
+          getComputedStyle(sec.querySelector('.home-moment-art')).position === 'absolute';
+      })(),
       heroDepth: {
         glow: /radial-gradient/.test(getComputedStyle(art, '::before').backgroundImage),
         shadows: (getComputedStyle(phone).filter.match(/drop-shadow/g) || []).length,
@@ -91,11 +96,11 @@ const { launch, APP } = require('./lib.cjs');
   const navOk = JSON.stringify(landing.nav) === JSON.stringify(['The Edit', 'Finishes', 'Generations', 'Why Kapaya']);
   const footerOk = JSON.stringify(landing.footerLinks) === JSON.stringify(['Shop', 'Warranty', 'Returns', 'Contact']);
   const paymentsOk = JSON.stringify(landing.payments) === JSON.stringify(['Apple Pay', 'Visa', 'Mastercard']);
-  if (!landing.home || !landing.sharedFooterHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 3 || !navOk || !landing.announcementDivider || !landing.frosted || !landing.hairline || !landing.fullBleed || !landing.heroDepth.glow || landing.heroDepth.shadows < 3 || landing.valueIcons !== 4 || landing.warranty !== '12-Month Warranty' || landing.oldTrustCopy || !landing.homeFooter || !footerOk || !paymentsOk || !landing.copyright) {
+  if (!landing.home || !landing.sharedFooterHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 3 || !navOk || !landing.announcementDivider || !landing.frosted || !landing.hairline || !landing.fullBleed || !landing.desktopMomentLayout || !landing.heroDepth.glow || landing.heroDepth.shadows < 3 || landing.valueIcons !== 4 || landing.warranty !== '12-Month Warranty' || landing.oldTrustCopy || !landing.homeFooter || !footerOk || !paymentsOk || !landing.copyright) {
     throw new Error('luxury landing assertion failed: ' + JSON.stringify(landing));
   }
   console.log('landing opens first:', landing.home, '| frosted sticky nav:', landing.frosted, '| centred links:', landing.nav.length, '| CTA:', landing.cta);
-  console.log('full-bleed sections:', landing.fullBleed, '| hero glow:', landing.heroDepth.glow, '| ambient shadows:', landing.heroDepth.shadows);
+  console.log('full-bleed sections:', landing.fullBleed, '| desktop moments intact:', landing.desktopMomentLayout, '| hero glow:', landing.heroDepth.glow, '| ambient shadows:', landing.heroDepth.shadows);
   console.log('trust icons:', landing.valueIcons, '| warranty:', landing.warranty, '| brand footer:', landing.homeFooter);
 
   const initialHash = await p.evaluate(() => location.hash);

@@ -42,7 +42,9 @@ State lives in `localStorage` (`kapaya.state`), so bag, saved items, form values
 and orders survive a reload. The catalogue is four iPhone generations 16 Pro,
 15, 14 Pro and 13 with Pro, Standard and Classic categories. On phones the
 cards collapse to a compact two-column image + name + price invitation with no
-card buttons; desktop keeps the measured card.
+card buttons; desktop keeps the measured card. Below 768 px the landing moments
+become compact single-column stacks with text first, centred uncropped phones
+below, a slim two-row sticky header and a scaled hero watermark.
 
 ## Design origin
 
