@@ -5,10 +5,13 @@ const {launch,APP}=require('./lib.cjs');
  await p.goto(APP+'#/checkout',{waitUntil:'networkidle0'});await p.reload({waitUntil:'networkidle0'});
  for(const width of [320,390,767,1440]){
   await p.setViewport({width,height:844});
-  const state=await p.evaluate(()=>({fits:document.documentElement.scrollWidth<=innerWidth+1, noSteps:!document.querySelector('.steps'), shipping:!!document.querySelector('[name=first]')&&!!document.querySelector('[name=last]')&&!!document.querySelector('[name=city]'),noContact:!document.querySelector('[name=email]'),demo:document.querySelector('.checkout-page').innerText.includes('Demo')}));
+  const state=await p.evaluate(()=>({fits:document.documentElement.scrollWidth<=innerWidth+1, noSteps:!document.querySelector('.steps'), shipping:!!document.querySelector('[name=first]')&&!!document.querySelector('[name=last]')&&!!document.querySelector('[name=city]'),noContact:!document.querySelector('[name=email]'),noPromo:!document.querySelector('.checkout-page [data-promo]'),demo:document.querySelector('.checkout-page').innerText.includes('Demo')}));
   if(Object.values(state).some(x=>!x))throw Error('checkout '+width+' '+JSON.stringify(state));
  }
- await p.setViewport({width:390,height:844});await p.click('[data-mobile-route="chat"]');
+ await p.setViewport({width:390,height:844});await p.$eval('.btn-pay', e=>e.click());
+ if (!await p.$('.orders-page .order-status') || !await p.$('.orders-page .order-items') || await p.$('.done-hero') || !p.url().endsWith('#/account')) throw Error('checkout to orders');
+ await p.reload({waitUntil:'networkidle0'});if(!await p.$('.orders-page .order-items'))throw Error('order did not persist');
+ await p.click('[data-mobile-route="chat"]');
  if(!await p.$eval('[data-mobile-route="chat"]',e=>e.getAttribute('aria-current')==='page'))throw Error('chat active');
  await p.type('#chat-message','<b>hello</b>');await p.$eval('[data-chat-form]',e=>e.requestSubmit());
  if(await p.$eval('.chat-sent',e=>e.textContent)!=='<b>hello</b>' || await p.$('.chat-sent b'))throw Error('chat escaping');

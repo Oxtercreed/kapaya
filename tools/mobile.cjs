@@ -141,7 +141,7 @@ const fs = require('fs');
   await new Promise((r) => setTimeout(r, 300));
   await shot('07-account');
   await overflowing('account');
-  await p.evaluate(() => document.querySelector('[data-view]').click());
+  await p.evaluate(() => { location.hash = '#/orders'; });
   await new Promise((r) => setTimeout(r, 300));
   await shot('08-order');
   await overflowing('order');

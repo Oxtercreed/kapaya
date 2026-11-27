@@ -192,10 +192,11 @@ const { launch, APP } = require('./lib.cjs');
   await p.type('.fld-i[name="first"]', 'Alex');
   await p.click('.btn-pay');
   await new Promise((r) => setTimeout(r, 400));
-  console.log('reached confirmed:', !!(await p.$('.done-hero')));
+  if (!(await p.$('.orders-page .order-row'))) throw new Error('checkout did not reach orders');
+  console.log('reached orders:', true);
 
   // 8. back to shop
-  await p.evaluate(() => { document.querySelector('.done-actions .btn-plain').click(); });
+  await p.evaluate(() => { document.querySelector('.orders-page .continue').click(); });
   await new Promise((r) => setTimeout(r, 250));
   console.log('back to shop:', await p.$eval('.hero-h', (e) => e.textContent.trim().slice(0, 12)));
   console.log('errors:', errs.length ? errs.join(' | ') : 'none');

@@ -12,7 +12,7 @@ const {launch,APP}=require('./lib.cjs');
   if(await p.$eval('.desktop-chat',e=>getComputedStyle(e).display==='none'))throw Error('desktop chat '+route);
  }
  await p.click('.desktop-chat');if(!await p.$('.chat-panel'))throw Error('desktop chat click');
- await p.goto(APP+'#/account');await new Promise(r=>setTimeout(r,100));let account=await p.$eval('.acct',e=>e.innerText);
+ await p.goto(APP+'#/account');await new Promise(r=>setTimeout(r,100));let account=await p.$eval('.orders-page',e=>e.textContent);
  if(!account.includes('B&D LABS')||!account.includes('b&dlabs@gmail.com')||!account.includes('Tanzania'))throw Error('account identity');
  await p.goto(APP+'#/home');await new Promise(r=>setTimeout(r,100));if(!await p.$('a[href="mailto:b%26dlabs@gmail.com"]'))throw Error('contact link');
  for(const width of [320,390,767,1440]){
