@@ -292,6 +292,11 @@ That surfaces as `https://8080-{sandboxId}.e2b.app/`. Bind to `0.0.0.0`, never
 `127.0.0.1`, or the proxied preview cannot reach it. A stale server may already
 be running on 8080 from the previous session — check before starting another.
 
+For a full-screen public preview, Vercel project **`volta-kapaya`** deploys this
+branch with root directory `docs/mockup` and no build/install step. Production
+URL: <https://volta-kapaya.vercel.app/>. Deployment `dpl_EjMjiHTvvGRUSBJaKPoMAsYCSYmL`
+is the first deployment from commit `579642c`.
+
 ## 9. Git
 
 This session's branch is **`arena/f802f442-kapaya`**, branched from `08bce96`
