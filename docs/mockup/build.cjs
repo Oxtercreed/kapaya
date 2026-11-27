@@ -265,7 +265,6 @@ const plate = (p, cls = '') =>
    image plate, no radius, no second background: it overhangs the clipped edge. */
 const heroBand = (variant) => {
   const isHome = variant === 'home';
-  const from = money(Math.min.apply(null, PRODUCTS.map((p) => p.price)));
   return `
 <section class="hero${isHome ? ' hero-home' : ''}">
   <div class="hero-l">
@@ -273,12 +272,6 @@ const heroBand = (variant) => {
     <h1 class="hero-h">Only iPhone.<br>Every era.</h1>
     <p class="hero-p">Four generations, one clean edit. Find the one that fits your everyday.</p>
     <a class="btn-dark" data-go="shop">${isHome ? 'Enter the shop' : 'Shop the collection'} <span class="arw">→</span></a>
-  </div>
-  <div class="hero-m">
-    <p class="eyebrow">THE COLLECTION</p>
-    <h2 class="hero-mh">Every generation,<br>considered.</h2>
-    <p class="hero-price">From ${from}</p>
-    <p class="hero-note">Curated iPhones · Nothing else</p>
   </div>
   <a class="hero-art" data-go="shop" aria-label="Shop the iPhone collection">
     <img class="hero-phone hero-phone-back" src="${img('iphone-15-blue-back.webp')}" alt="">
@@ -1046,13 +1039,6 @@ img{display:block;max-width:100%}
 }
 .btn-dark:hover{background:#22262F}
 .btn-dark.sm{height:44px;padding:0 24px}
-.hero-m{
-  position:absolute;left:571px;top:0;width:318px;height:100%;
-  display:flex;flex-direction:column;justify-content:center;z-index:2;
-}
-.hero-mh{font:500 26px/30px Inter,sans-serif;letter-spacing:-.015em;margin-top:12px}
-.hero-price{font:600 22px/27px Inter,sans-serif;margin-top:22px}
-.hero-note{font:400 13px/16px Inter,sans-serif;color:#6B5F62;margin-top:24px}
 .hero-art{
   position:absolute;right:-44px;top:-22px;width:430px;height:362px;
   display:block;z-index:1;background:none;border-radius:0;
@@ -1196,7 +1182,6 @@ body.is-home .ftr{display:none}
 .hero-home .hero-h{font:600 72px/78px Inter,sans-serif;letter-spacing:-.04em;margin-top:22px}
 .hero-home .hero-p{max-width:430px;font:400 17px/24px Inter,sans-serif;margin-top:24px}
 .hero-home .btn-dark{margin-top:26px;height:50px;padding:0 30px;border-radius:25px}
-.hero-home .hero-m{display:none}
 .hero-home .hero-art{right:-70px;top:-24px;width:610px;height:570px}
 .hero-home .hero-phone-back{height:500px;left:40px;top:34px;transform:rotate(-13deg)}
 .hero-home .hero-phone-front{height:555px;right:-22px;top:-18px;transform:rotate(9deg)}
@@ -1621,7 +1606,6 @@ body.is-home .ftr{display:none}
   .ftr-in{padding:0 28px}
   .hero{min-height:560px;height:auto;flex-direction:column;align-items:flex-start;padding:28px 24px;gap:20px}
   .hero-l{padding-left:0;padding-top:0;width:min(100%,520px)}
-  .hero-m{position:relative;left:auto;top:auto;width:auto;height:auto;display:block;padding-left:0}
   .hero-art{right:-90px;top:auto;bottom:-70px;width:430px;height:430px}
   .hero-phone-back{height:370px;left:10px;top:24px}
   .hero-phone-front{height:420px;right:0;top:-8px}
@@ -1699,7 +1683,6 @@ body.is-home .ftr{display:none}
   .sortwrap{order:2;margin-left:auto}
   .sort{height:42px;padding:0 18px;font-size:13.5px}
   .hero{min-height:430px;padding:24px 22px;gap:18px;border-radius:22px}
-  .hero-m{display:none}
   .hero-h{font-size:30px;line-height:38px}
   .hero-art{right:-130px;bottom:-70px;width:340px;height:360px}
   .hero-phone-back{height:310px;left:0;top:22px}

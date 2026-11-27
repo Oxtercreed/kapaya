@@ -85,9 +85,10 @@ set and reviews. The red frames' original earbuds/headphones/watch/mouse
 catalogue and its copy are deliberately no longer binding — this is a design
 divergence, documented in `NOTES-red.md` and `HANDOFF.md`.
 
-The landing page opens first with no footer. The shop and other store routes use
-hash links, and all five `tools/ref/*.png` regression references were
-re-baselined on purpose after the catalogue and Kapaya brand changes. Use
-`node diff.cjs --figma` to see the intentional difference from the original
-Figma frames:
-6.3390 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %.
+The landing page opens first with no footer, and the hero keeps only its
+left-side eyebrow, headline, description and CTA. The shop and other store
+routes use hash links. All five `tools/ref/*.png` regression references were
+re-baselined on purpose after the brand change; `tools/ref/01-shop.png` was
+re-baselined again after the hero cleanup. Use `node diff.cjs --figma` to see
+the intentional difference from the original Figma frames:
+6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %.

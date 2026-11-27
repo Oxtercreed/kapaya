@@ -55,8 +55,9 @@ node deep.cjs                     # 9 assertions (see §5)
 ```
 
 `diff.cjs --figma` scores against the original raw Figma JPEG crops. After the
-iPhone-only and Kapaya-brand divergence it reports **6.3390 / 5.7722 /
-3.5064 / 2.3351 / 3.1021 %**; JPEG luminance noise adds roughly 0.1 pt. **Use the default mode**
+iPhone-only, Kapaya-brand and left-only-hero divergence it reports **6.1999 /
+5.7722 / 3.5064 / 2.3351 / 3.1021 %**; JPEG luminance noise adds roughly
+0.1 pt. **Use the default mode**
 for regression: all five `tools/ref/*.png` files were re-baselined on purpose to
 the intentional new design, so a clean run is all zeros. The Figma-era numbers
 in §4 are historical.
@@ -132,10 +133,11 @@ was **deleting four invented products** (a lamp, sleep buds, a laptop stand, a
 tracker) — the frame says "4 products" in one row, and eight pushed the grid to
 a second row and moved Shop from 2.6 % to 3.4 %.
 
-After the landing/hero, iPhone-catalogue and Kapaya-brand divergence, all five
-`tools/ref/*.png` images were deliberately re-baselined to the new renders.
+After the landing/hero, iPhone-catalogue, Kapaya-brand and left-only-hero
+divergence, all five `tools/ref/*.png` images were deliberately re-baselined to
+the new renders.
 `node diff.cjs` now prints 0.0000 % on every screen; `node diff.cjs --figma`
-prints 6.3390 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %. Those larger numbers are
+prints 6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %. Those larger numbers are
 the intended design difference, not a regression.
 
 **Known approximations** (documented in `NOTES-red.md`, do not "fix" blindly):
@@ -283,8 +285,8 @@ Implemented in this branch:
    grid of roughly 226 px invitations showing image + name + price. Badges,
    ratings, kind, hearts and "View product" links are hidden; the plate itself
    remains clickable. The measured desktop card is untouched, so no desktop
-   reference needed another re-baseline. The mobile hero note is hidden on
-   phones so the cut-out does not collide with the copy.
+   reference needed another re-baseline. The right-hand hero copy is now gone
+   at every width, so the cut-out does not collide with the copy.
 7. **Kapaya brand identity.** The supplied orange split-ring mark and black
    `Kapaya` wordmark were rebuilt as resolution-independent vector geometry.
    The header and footer use inline SVG, the favicon is an inlined monogram, and
@@ -293,8 +295,16 @@ Implemented in this branch:
    lockup/mark files live in `docs/mockup/assets/`. Because the header, footer
    and copy appear across all screens, all five `tools/ref/*.png` references
    were deliberately re-baselined again; default `node diff.cjs` prints
-   0.0000 % on all five and current `--figma` divergence is 6.3390 / 5.7722 /
-   3.5064 / 2.3351 / 3.1021 %.
+   0.0000 % on all five. At that stage `--figma` divergence was 6.3390 /
+   5.7722 / 3.5064 / 2.3351 / 3.1021 %.
+8. **Left-only hero.** Removed the right-hand `THE COLLECTION` / price / note
+   column from every hero variant. The left eyebrow, headline, description and
+   CTA remain, along with the edge-bleeding transparent iPhone cut-outs.
+   `deep.cjs` and `mobile.cjs` assert the left-only hero. Because only the shop
+   regression frame contains the desktop hero, `tools/ref/01-shop.png` was
+   deliberately re-baselined again on purpose; the other four references are
+   unchanged. Default `node diff.cjs` is 0.0000 % on all five and current
+   `--figma` divergence is 6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %.
 
 ## 8. Preview
 
@@ -312,11 +322,10 @@ be running on 8080 from the previous session — check before starting another.
 For a full-screen public preview, Vercel project **`kapaya-storefront`** deploys this
 branch with root directory `docs/mockup` and `true` build/install commands. The
 verified production URL is <https://volta-kapaya.vercel.app/> — Vercel kept the
-original production alias after the project rename. Deployment
-`dpl_2djsuVQ8M1jLiG6DAJqwTAJmHVsZ` is READY/PROMOTED from commit `db5fc99` and
-serves the Kapaya-branded site. New project-name aliases are SSO-protected, so
-use the production alias for a public preview. GitHub auto-deploys are disabled;
-create a production deployment manually after each committed UI batch.
+original production alias after the project rename. New project-name aliases are
+SSO-protected, so use the production alias for a public preview. GitHub
+auto-deploys are disabled; create a production deployment manually after each
+committed UI batch so the URL serves the current branch.
 
 ## 9. Git
 

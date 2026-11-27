@@ -124,14 +124,19 @@ On phones (`≤640`) the catalogue cards are deliberately smaller: a two-column
 grid of image + name + price only, with badges, ratings, hearts and "View
 product" links hidden. The desktop card remains the measured 304 × 326 plate.
 
-This is not a fidelity target. After the landing/hero, iPhone-only and
-Kapaya-brand changes, raw Figma JPEG MAE is **6.3390 / 5.7722 / 3.5064 /
-2.3351 / 3.1021 %**. All five
-`tools/ref/*.png` regression references were replaced with the intentional new
-renders, so default `node diff.cjs` prints 0.0000 % on every screen. The
-Shop-only re-baseline after the landing/hero step was 4.7872 % against the
-lossless crop (4.8861 % against the raw JPEG); the catalogue change moved the
-other four references too.
+The shop hero is now left-only: the right-hand "THE COLLECTION", price and note
+block has been removed from every hero variant, while the transparent iPhone
+cut-outs still bleed off the panel.
+
+This is not a fidelity target. After the landing/hero, left-only hero,
+iPhone-only and Kapaya-brand changes, raw Figma JPEG MAE is **6.1999 / 5.7722 /
+3.5064 / 2.3351 / 3.1021 %**. All five `tools/ref/*.png` regression references
+were replaced with the intentional new renders after the brand change, and
+`01-shop.png` was deliberately re-baselined again for the hero cleanup, so
+default `node diff.cjs` prints 0.0000 % on every screen. The Shop-only
+re-baseline after the landing/hero step was 4.7872 % against the lossless crop
+(4.8861 % against the raw JPEG); the catalogue change moved the other four
+references too.
 
 ## Known approximations
 

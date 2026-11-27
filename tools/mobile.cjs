@@ -32,6 +32,15 @@ const fs = require('fs');
 
   await shot('01-shop');
   await overflowing('shop');
+  const heroClean = await p.evaluate(() => ({
+    left: !!document.querySelector('.hero-l .hero-h'),
+    art: !!document.querySelector('.hero-art'),
+    right: document.querySelectorAll('.hero .hero-m').length,
+  }));
+  if (!heroClean.left || !heroClean.art || heroClean.right) {
+    throw new Error('mobile hero cleanup assertion failed: ' + JSON.stringify(heroClean));
+  }
+  console.log('hero left-only:', !heroClean.right, '| left copy:', heroClean.left, '| artwork:', heroClean.art);
   const cardState = await p.evaluate(() => {
     const card = document.querySelector('.card');
     const cards = document.querySelector('.cards');

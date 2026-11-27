@@ -47,11 +47,14 @@ card buttons; desktop keeps the measured card.
 
 The five **red** Figma screens were the measured starting point: palette, type
 scale, 64 / 1312 grid, 304 × 326 cards, and the 824 + 32 + 456 split. The
-landing page, edge-bleeding hero, iPhone-only catalogue and Kapaya brand
-identity are deliberate divergences from those frames; see `NOTES-red.md` and
-`HANDOFF.md`. All five regression references were re-baselined again after the
-brand identity change. The tools folder keeps both a zero-drift regression
-baseline and `--figma` divergence scores against the original crops.
+landing page, edge-bleeding hero, left-only hero copy, iPhone-only catalogue and
+Kapaya brand identity are deliberate divergences from those frames; see
+`NOTES-red.md` and `HANDOFF.md`. The shop hero now shows only its left eyebrow,
+headline, description and CTA; the right collection/price/note column is gone.
+All five regression references were re-baselined after the brand change, and
+`01-shop.png` was deliberately re-baselined again after the hero cleanup. The
+tools folder keeps both a zero-drift regression baseline and `--figma`
+divergence scores against the original crops.
 
 To change anything, edit `build.cjs` and run `node build.cjs`, then verify with
 the headless probes in `tools/`.

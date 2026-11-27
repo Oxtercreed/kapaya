@@ -1,4 +1,4 @@
-// Brand and behavioural assertions across the whole store.
+// Brand, hero and behavioural assertions across the whole store.
 const { launch, APP } = require('./lib.cjs');
 
 (async () => {
@@ -23,6 +23,21 @@ const { launch, APP } = require('./lib.cjs');
     throw new Error('brand identity assertion failed: ' + JSON.stringify(brand));
   }
   console.log('brand:', brand.title, '| logo:', brand.logo, '| footer logo:', brand.footerLogo, '| favicon:', brand.favicon, '| old visible:', brand.oldVisible);
+
+  // 0b. Hero keeps left-hand copy and artwork only; the right information column is gone.
+  const hero = await p.evaluate(() => {
+    const band = document.querySelector('.hero');
+    return {
+      left: !!band?.querySelector('.hero-l .hero-h'),
+      art: !!band?.querySelector('.hero-art'),
+      right: band?.querySelectorAll('.hero-m').length || 0,
+      oldCopy: /THE COLLECTION|Every generation,|From \$599|Curated iPhones/.test(band?.innerText || ''),
+    };
+  });
+  if (!hero.left || !hero.art || hero.right || hero.oldCopy) {
+    throw new Error('hero cleanup assertion failed: ' + JSON.stringify(hero));
+  }
+  console.log('hero: left copy:', hero.left, '| artwork:', hero.art, '| right info:', hero.right, '| old copy:', hero.oldCopy);
 
   // 1. landing opens first, footerless, with a working shop CTA
   const landing = await p.evaluate(() => ({

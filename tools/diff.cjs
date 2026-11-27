@@ -7,10 +7,11 @@
 //                               only good for spot-checks)
 //
 // All five tools/ref/*.png files were deliberately re-baselined to the
-// landing/hero + iPhone-only + Kapaya-branded design, so a clean default run
-// prints 0.0000 % on every screen. Use --figma to measure the intentional divergence against
-// the original raw Figma JPEG crops (6.3390 / 5.7722 / 3.5064 / 2.3351 /
-// 3.1021 %).
+// landing/hero + iPhone-only + Kapaya-branded design; 01-shop.png was
+// re-baselined again after the right-hand hero copy was removed. A clean
+// default run prints 0.0000 % on every screen. Use --figma to measure the
+// intentional divergence against the original raw Figma JPEG crops
+// (6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %).
 const { execSync } = require('child_process');
 const path = require('path');
 const { OUT } = require('./lib.cjs');
