@@ -24,7 +24,7 @@ const fs = require('fs');
   await overflowing('home');
   const landing = await p.evaluate(() => ({
     home: !!document.querySelector('.home'),
-    toggle: getComputedStyle(document.querySelector('.home-menu-toggle')).display !== 'none',
+    toggle: getComputedStyle(document.querySelector('.mobile-menu-button')).display !== 'none',
     navHidden: getComputedStyle(document.querySelector('.home-nav')).display === 'none',
     desktopCtaHidden: getComputedStyle(document.querySelector('.home-shop-pill')).display === 'none',
     chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
@@ -38,25 +38,25 @@ const fs = require('fs');
     noOverflow: document.documentElement.scrollWidth <= innerWidth + 1,
   }));
   if (Object.values(landing).some((v) => !v)) throw new Error('mobile landing failed: ' + JSON.stringify(landing));
-  await p.click('.home-menu-toggle');
+  await p.click('.mobile-menu-button');
   const menu = await p.evaluate(() => ({
-    expanded: document.querySelector('.home-menu-toggle').getAttribute('aria-expanded') === 'true',
-    links: Array.from(document.querySelectorAll('.home-nav a[data-scroll]')).map((a) => a.textContent.trim()),
-    cta: getComputedStyle(document.querySelector('.home-menu-shop')).display !== 'none',
+    expanded: document.querySelector('.mobile-menu-button').getAttribute('aria-expanded') === 'true',
+    links: Array.from(document.querySelectorAll('.mobile-home-links a[data-scroll]')).map((a) => a.textContent.trim()),
+    cta: getComputedStyle(document.querySelector('.mobile-menu-cta')).display !== 'none',
   }));
   if (!menu.expanded || !menu.cta || JSON.stringify(menu.links) !== JSON.stringify(['The Edit', 'Finishes', 'Generations', 'Why Kapaya'])) throw new Error('mobile menu failed: ' + JSON.stringify(menu));
   await p.keyboard.press('Escape');
-  if (await p.$eval('.home-menu-toggle', (el) => el.getAttribute('aria-expanded')) !== 'false') throw new Error('Escape did not close menu');
-  await p.click('.home-menu-toggle');
-  await p.click('.home-nav a[data-scroll="finishes"]');
-  if (await p.$eval('.home-menu-toggle', (el) => el.getAttribute('aria-expanded')) !== 'false') throw new Error('navigation did not close menu');
-  await p.click('.home-menu-toggle');
-  await p.click('.home-menu-shop');
+  if (await p.$eval('.mobile-menu-button', (el) => el.getAttribute('aria-expanded')) !== 'false') throw new Error('Escape did not close menu');
+  await p.click('.mobile-menu-button');
+  await p.click('.mobile-home-links a[data-scroll="finishes"]');
+  if (await p.$eval('.mobile-menu-button', (el) => el.getAttribute('aria-expanded')) !== 'false') throw new Error('navigation did not close menu');
+  await p.click('.mobile-menu-button');
+  await p.click('.mobile-menu-cta');
   await new Promise((r) => setTimeout(r, 300));
   console.log('mobile menu, editorial scenes, and no overflow:', true);
 
   const shopHeader = await p.evaluate(() => ({
-    full: getComputedStyle(document.querySelector('.hdr-row')).display !== 'none',
+    full: getComputedStyle(document.querySelector('.mobile-chrome')).display !== 'none' && getComputedStyle(document.querySelector('.mobile-bottom')).position === 'fixed',
     homeCtaHidden: getComputedStyle(document.querySelector('.home-shop-pill')).display === 'none',
   }));
   if (!shopHeader.full || !shopHeader.homeCtaHidden) {
@@ -79,14 +79,37 @@ const fs = require('fs');
     const card = document.querySelector('.card');
     const cards = document.querySelector('.cards');
     const hidden = ['.card-link', '.heart', '.card-kind', '.card-rate', '.badge']
-      .every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none');
+      .every((sel) => getComputedStyle(document.querySelector(sel)).display !== 'none');
     return {
       height: Math.round(card.getBoundingClientRect().height),
       columns: getComputedStyle(cards).gridTemplateColumns.split(' ').length,
-      trimmed: hidden,
+      complete: hidden,
     };
   });
-  console.log('mobile cards:', cardState.height + 'px', '| columns:', cardState.columns, '| trimmed:', cardState.trimmed);
+  if (cardState.columns !== 2 || !cardState.complete) throw new Error('mobile cards failed: ' + JSON.stringify(cardState));
+  console.log('mobile cards:', cardState.height + 'px', '| columns:', cardState.columns, '| full details:', cardState.complete);
+
+  await p.click('.mobile-search-button');
+  await p.type('.mobile-search input', '14');
+  await p.keyboard.press('Enter');
+  if (await p.$$eval('.card', (els) => els.length) !== 1) throw new Error('mobile search failed');
+  await p.click('.mobile-bottom [data-mobile-route="shop"]');
+  await p.$eval('.card .heart', (el) => el.scrollIntoView({block:'center',behavior:'instant'}));
+  await new Promise((r) => setTimeout(r, 150));
+  await p.click('.card .heart');
+  if (!await p.$eval('.card .heart', (el) => el.classList.contains('is-on'))) throw new Error('mobile favourite failed');
+  for (const width of [320, 390, 767]) {
+    await p.setViewport({ width, height: 844, deviceScaleFactor: 1 });
+    const layout = await p.evaluate(() => ({
+      fits: document.documentElement.scrollWidth <= innerWidth + 1,
+      dock: getComputedStyle(document.querySelector('.mobile-bottom')).position === 'fixed',
+      header: getComputedStyle(document.querySelector('.mobile-chrome')).display !== 'none',
+      buttons: Array.from(document.querySelectorAll('.shop-page .card-foot')).every((el) => el.scrollWidth <= el.clientWidth + 1),
+    }));
+    if (Object.values(layout).some((v) => !v)) throw new Error('mobile viewport ' + width + ': ' + JSON.stringify(layout));
+  }
+  await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2 });
+  console.log('mobile search, favourites and viewport sizes verified');
 
   await p.evaluate(() => document.querySelector('.cards .card-plate, .card-plate').click());
   await new Promise((r) => setTimeout(r, 300));
@@ -99,7 +122,7 @@ const fs = require('fs');
   await p.reload({ waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 300));
   await shot('03-shop-filled');
-  await p.evaluate(() => document.querySelector('.bag-pill').click());
+  await p.click('.mobile-bag');
   await new Promise((r) => setTimeout(r, 300));
   await shot('04-bag');
   await overflowing('bag');
@@ -113,7 +136,7 @@ const fs = require('fs');
   await shot('06-confirmed');
   await overflowing('confirmed');
 
-  await p.evaluate(() => document.querySelector('.orders')?.click() || document.querySelector('.hdr-ico').click());
+  await p.click('.mobile-bottom [data-mobile-route="account"]');
   await new Promise((r) => setTimeout(r, 300));
   await shot('07-account');
   await overflowing('account');

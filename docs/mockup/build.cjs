@@ -199,6 +199,18 @@ const chrome = () => `
   <span>Free shipping on orders $100+</span>
 </div>
 <header class="hdr">
+  <div class="mobile-chrome">
+    <a class="mobile-logo" data-go="home" aria-label="Kapaya home">${brandLogo()}</a>
+    <button class="mobile-search-button" data-mobile-search-toggle aria-label="Search iPhones" aria-expanded="false" aria-controls="mobile-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></svg></button>
+    <button class="mobile-bag" data-go="bag" aria-label="Shopping bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b class="hdr-n" data-bagcount>0</b></button>
+    <button class="mobile-menu-button" data-mobile-menu aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <form id="mobile-search" class="mobile-search" data-mobile-search hidden><input type="search" placeholder="Search iPhones…" aria-label="Search iPhones"><button type="submit">Search</button></form>
+    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden>
+      <div class="mobile-home-links"><a href="#the-edit" data-scroll="the-edit">The Edit</a><a href="#finishes" data-scroll="finishes">Finishes</a><a href="#generations" data-scroll="generations">Generations</a><a href="#why-kapaya" data-scroll="why-kapaya">Why Kapaya</a></div>
+      <div class="mobile-store-links"><a data-go="shop">All iPhones</a><a data-go="shop" data-arg="pro">Pro</a><a data-go="shop" data-arg="standard">Standard</a><a data-go="shop" data-arg="classic">Classic</a></div>
+      <a data-go="account">My orders</a><a data-go="help">Help &amp; support</a><a class="mobile-menu-cta" data-go="shop">Start shopping <span>→</span></a>
+    </nav>
+  </div>
   <a class="mark" data-go="home" aria-label="Kapaya home">${brandLogo()}</a>
   <button class="home-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="home-menu" data-home-menu><span></span><span></span></button>
   <nav id="home-menu" class="home-nav" aria-label="Landing sections">
@@ -2300,6 +2312,68 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
   .home-ftr{padding:36px 24px 24px}
 }
 
+/* Shared mobile navigation and compact storefront. */
+.mobile-chrome,.mobile-bottom{display:none}
+@media(max-width:767px){
+ body{padding-bottom:calc(70px + env(safe-area-inset-bottom));overflow-x:hidden}
+ body .band,body.is-home .band,body.is-product .band{height:28px;flex:0 0 28px;display:flex;flex-direction:row;justify-content:center;padding:0 8px;font:500 11px/1 Inter;white-space:nowrap}
+ body .band>span:first-child,body .band-div{display:none!important}
+ body .hdr,body.is-home .hdr,body.is-product .hdr{display:block;position:sticky;top:0;z-index:50;height:auto;min-height:0;flex:0 0 auto;padding:0;background:rgba(255,255,255,.96);border-bottom:1px solid #eceaeb;box-shadow:none;backdrop-filter:blur(12px)}
+ body .hdr> :not(.mobile-chrome){display:none!important}
+ .mobile-chrome{display:grid;grid-template-columns:minmax(0,1fr) 42px 42px 42px;align-items:center;padding:8px 16px;gap:3px}
+ .mobile-logo{display:flex;align-items:center}.mobile-logo .brand-logo{width:120px}
+ .mobile-search-button,.mobile-bag,.mobile-menu-button{position:relative;display:flex;width:42px;height:42px;align-items:center;justify-content:center}
+ .mobile-search-button svg,.mobile-bag svg,.mobile-menu-button svg{width:24px;height:24px}
+ .mobile-bag .hdr-n{right:1px;top:0;background:#14171E}
+ .mobile-search,.mobile-menu{grid-column:1 / -1;width:100%}
+ .mobile-search[hidden],.mobile-menu[hidden]{display:none!important}
+ .mobile-search{display:flex;gap:8px;padding:10px 0 6px}
+ .mobile-search input{flex:1;min-width:0;height:42px;border:0;border-radius:22px;background:#f5f3f3;padding:0 16px;font:400 14px Inter}
+ .mobile-search button{padding:0 16px;background:#14171E;border-radius:22px;color:white;font-weight:600}
+ .mobile-menu{padding:8px 0 12px}
+ .mobile-menu>div{display:flex;flex-direction:column}
+ .mobile-menu a{display:block;padding:12px 2px;border-bottom:1px solid #eceaeb;font:500 14px/1.2 Inter}
+ body.is-home .mobile-store-links,body:not(.is-home) .mobile-home-links{display:none}
+ .mobile-menu .mobile-menu-cta{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:15px 18px;border:0;border-radius:24px;background:#14171E;color:#fff}
+ .mobile-bottom{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;z-index:45;bottom:0;left:0;right:0;padding:7px 0 calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid #e8e6e7;box-shadow:0 -3px 18px rgba(20,23,30,.04)}
+ .mobile-bottom button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;min-height:48px;color:#656976;font:400 11px/1.2 Inter}
+ .mobile-bottom svg{width:23px;height:23px}.mobile-bottom button.is-current{color:#C92332}
+ .toast{bottom:calc(84px + env(safe-area-inset-bottom));max-width:calc(100vw - 24px);white-space:normal}
+ .shop-page{padding:10px 12px 22px}
+ .shop-page .hero-shop{height:230px;min-height:0;display:flex;align-items:flex-start;padding:20px 12px;gap:0;border-radius:14px;background:linear-gradient(90deg,rgba(252,230,233,.98) 0%,rgba(252,230,233,.90) 42%,rgba(252,230,233,.08) 70%),url("${img('shop-hero.webp')}") right center/cover no-repeat #FCE6E9}
+ .shop-page .hero-shop .hero-l{width:65%;max-width:240px;padding:0}
+ .shop-page .hero-shop .eyebrow{font-size:10px}
+ .shop-page .hero-shop .hero-h{font:600 32px/33px Inter;letter-spacing:-.045em;margin-top:10px}
+ .shop-page .hero-shop .hero-p{font:400 12px/17px Inter;margin-top:9px;max-width:210px}
+ .shop-page .hero-shop .btn-dark{height:36px;padding:0 18px;margin-top:12px;font-size:12px}
+ .shop-page .filter-row{margin:10px 0 0;gap:8px}
+ .shop-page .chips{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;scrollbar-width:none}
+ .shop-page .chips::-webkit-scrollbar{display:none}
+ .shop-page .chip{flex:1 0 auto;height:38px;padding:0 14px;font-size:11.5px;border-radius:10px}
+ .shop-page .count{display:none}
+ .shop-page .sortwrap{order:2;margin-left:auto}
+ .shop-page .sort{height:32px;font-size:11px;padding:0 12px}
+ .shop-page .sortmenu{top:37px}
+ .shop-page .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 0}
+ .shop-page .card{padding:8px;border-radius:13px}
+ .shop-page .card-plate{aspect-ratio:1.3;border-radius:9px}
+ .shop-page .plate-bg img{padding:0;object-fit:cover}
+ .shop-page .badge{display:inline-flex;left:5px;top:5px;height:20px;padding:0 6px;font-size:9px;max-width:calc(100% - 40px);overflow:hidden;white-space:nowrap}
+ .shop-page .heart{display:flex;right:6px;top:6px;width:28px;height:28px}
+ .shop-page .heart svg{width:16px;height:16px}
+ .shop-page .card-name{font:600 14px/17px Inter;margin-top:7px}
+ .shop-page .card-kind{display:block;font:400 11px/14px Inter;margin-top:3px}
+ .shop-page .card-rate{display:block;font:400 10.5px/14px Inter;margin-top:5px}
+ .shop-page .card-foot{display:flex;gap:4px;align-items:center;margin-top:auto;padding-top:8px}
+ .shop-page .card-price{font:600 12px/15px Inter;white-space:nowrap}
+ .shop-page .card-link{display:inline-flex;height:30px;gap:5px;padding:0 10px;font:500 11px/1 Inter;white-space:nowrap}
+ .shop-page .service-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;height:auto;padding:12px 4px;margin-top:10px;border-radius:12px}
+ .shop-page .service-strip span{display:flex;justify-content:center;gap:4px;padding:0 5px;height:auto;font:400 9px/13px Inter}
+ .shop-page .service-strip span+span{border-left:1px solid #ebcdd2}
+ .shop-page .service-strip svg{width:20px;height:20px}
+}
+@media(max-width:360px){.shop-page .hero-shop .hero-h{font-size:29px;line-height:30px}.shop-page .card-price{font-size:11px}.shop-page .card-link{padding:0 7px;font-size:10px}.mobile-logo .brand-logo{width:108px}}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -2450,7 +2524,15 @@ function closeHomeMenu() {
   if (nav) nav.classList.remove('is-open');
 }
 
+function closeMobileChrome() {
+  const menu = $('#mobile-menu'), search = $('#mobile-search');
+  if (menu) menu.hidden = true;
+  if (search) search.hidden = true;
+  $$('[data-mobile-menu],[data-mobile-search-toggle]').forEach((el) => el.setAttribute('aria-expanded', 'false'));
+}
+
 function paint() {
+  closeMobileChrome();
   closeHomeMenu();
   document.body.classList.remove('pdp-menu-open', 'pdp-search-open');
   $('[data-pdp-menu]').setAttribute('aria-expanded', 'false');
@@ -2479,6 +2561,8 @@ function paint() {
     el.textContent = el.classList.contains('hdr-n') ? String(count()) : 'Bag (' + count() + ')';
   });
   renderFavs();
+  const mobileRoute = store.route === 'home' ? 'home' : ['account', 'order'].includes(store.route) ? 'account' : store.route === 'help' ? 'more' : 'shop';
+  $$('[data-mobile-route]').forEach((el) => { const active = el.dataset.mobileRoute === mobileRoute; el.classList.toggle('is-current', active); if (active) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); });
 
   const si = $('.search input');
   if (si && document.activeElement !== si) si.value = store.query;
@@ -2525,6 +2609,21 @@ window.addEventListener('hashchange', () => {
 });
 
 document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-mobile-menu]')) {
+    const menu = $('#mobile-menu'), open = menu.hidden;
+    closeMobileChrome(); menu.hidden = !open;
+    $$('[data-mobile-menu]').forEach((el) => el.setAttribute('aria-expanded', String(open)));
+    if (open && e.target.closest('.mobile-bottom')) $('.hdr').scrollIntoView({block:'start',behavior:'smooth'});
+    return;
+  }
+  if (e.target.closest('[data-mobile-search-toggle]')) {
+    const search = $('#mobile-search'), open = search.hidden;
+    closeMobileChrome(); search.hidden = !open;
+    $('[data-mobile-search-toggle]').setAttribute('aria-expanded', String(open));
+    if (open) $('input', search).focus();
+    return;
+  }
+  if (!e.target.closest('.mobile-chrome')) closeMobileChrome();
   const productMenu = e.target.closest('[data-pdp-menu]');
   if (productMenu) { const open = productMenu.getAttribute('aria-expanded') !== 'true'; productMenu.setAttribute('aria-expanded', String(open)); productMenu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); document.body.classList.toggle('pdp-menu-open', open); document.body.classList.remove('pdp-search-open'); return; }
   if (e.target.closest('[data-pdp-search]')) { document.body.classList.toggle('pdp-search-open'); document.body.classList.remove('pdp-menu-open'); $('[data-pdp-menu]').setAttribute('aria-expanded','false'); if (document.body.classList.contains('pdp-search-open')) $('.search input').focus(); return; }
@@ -2547,6 +2646,7 @@ document.addEventListener('click', (e) => {
   if (d.scroll) {
     e.preventDefault();
     closeHomeMenu();
+    closeMobileChrome();
     const target = document.getElementById(d.scroll);
     if (target) {
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2651,6 +2751,7 @@ document.addEventListener('input', (e) => {
 });
 
 document.addEventListener('submit', (e) => {
+  if (e.target.matches('[data-mobile-search]')) { e.preventDefault(); store.query = $('input', e.target).value.trim(); go('shop', 'all'); return; }
   if (e.target.matches('[data-search]')) {
     e.preventDefault();
     const i = $('.search input');
@@ -2707,7 +2808,7 @@ document.addEventListener('submit', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeHomeMenu(); const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
+  if (e.key === 'Escape') { closeMobileChrome(); closeHomeMenu(); const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
 });
 
 if (!store.orders.length) {
@@ -2743,6 +2844,12 @@ const SHELL = [
   '<body>',
   chrome(),
   '<div id="app"></div>',
+  `<nav class="mobile-bottom" aria-label="Mobile navigation">
+    <button data-go="home" data-mobile-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></button>
+    <button data-go="shop" data-mobile-route="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M10 19h4"/></svg><span>Shop</span></button>
+    <button data-go="account" data-mobile-route="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="m12 2 9 5v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"/></svg><span>Orders</span></button>
+    <button data-mobile-menu data-mobile-route="more" aria-label="More navigation options" aria-expanded="false" aria-controls="mobile-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>More</span></button>
+  </nav>`,
   '<div class="toast" id="toast" role="status" aria-live="polite"></div>',
   '<script>',
   HELPERS,
