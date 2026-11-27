@@ -30,10 +30,11 @@ const fs = require('fs');
     chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
     sticky: getComputedStyle(document.querySelector('.hdr')).position === 'sticky',
     sections: ['#the-edit', '#finishes', '#generations'].every((sel) => {
-      const section = document.querySelector(sel), copy = section.querySelector('.home-moment-copy'), art = section.querySelector('.home-moment-art');
-      return getComputedStyle(section).flexDirection === 'column' && art.getBoundingClientRect().top >= copy.getBoundingClientRect().bottom - 1 && getComputedStyle(art).backgroundImage.includes('data:image/webp');
+      const section = document.querySelector(sel), art = section.querySelector('.home-moment-art');
+      const background = getComputedStyle(section).backgroundImage;
+      return getComputedStyle(art).display === 'none' && background.includes('linear-gradient') && background.includes('data:image/webp');
     }),
-    heroScene: getComputedStyle(document.querySelector('.hero-home .hero-art')).backgroundImage.includes('data:image/webp'),
+    heroScene: getComputedStyle(document.querySelector('.hero-home')).backgroundImage.includes('data:image/webp') && getComputedStyle(document.querySelector('.hero-home')).backgroundImage.includes('linear-gradient') && getComputedStyle(document.querySelector('.hero-home .hero-art')).display === 'none',
     noOverflow: document.documentElement.scrollWidth <= innerWidth + 1,
   }));
   if (Object.values(landing).some((v) => !v)) throw new Error('mobile landing failed: ' + JSON.stringify(landing));

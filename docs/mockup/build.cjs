@@ -2073,18 +2073,18 @@ body.is-home .ftr{display:none}
     position:relative;left:auto;right:auto;top:auto;
     width:48%;height:100%;transform:none;
   }
-  .hero-home,.home-moment-dark,.home-moment-blush,.home-moment-pair{background-image:none}
-  .hero-home{padding-bottom:0}
-  .hero-home .hero-art{display:block;width:calc(100% + 48px);max-width:none;height:260px;
-    margin:28px -24px 0;background:url("${img('scene-hero.webp')}") 72% center/cover no-repeat}
-  .hero-home .hero-art:before,.hero-home .hero-art:after,.hero-home .hero-art img{display:none}
-  .home-moment,.home-moment.full{padding-bottom:0}
-  .home-moment-art,.home-art-left,.home-art-right,.home-art-pair{display:block;width:calc(100% + 48px);
-    max-width:none;height:260px;margin:0 -24px;align-self:auto;background-size:cover;background-repeat:no-repeat}
-  .home-moment-art img{display:none}
-  .home-art-left{background-image:url("${img('scene-display.webp')}");background-position:25% center}
-  .home-art-right{background-image:url("${img('scene-finish.webp')}");background-position:75% center}
-  .home-art-pair{background-image:url("${img('scene-choice.webp')}");background-position:25% center}
+  /* Keep the scene and copy in one continuous composition on small screens. */
+  .hero-home{padding-bottom:250px;
+    background:linear-gradient(to bottom,rgba(252,230,233,.98) 0%,rgba(252,230,233,.94) 38%,rgba(252,230,233,.25) 65%,rgba(252,230,233,0) 85%),
+      url("${img('scene-hero.webp')}") 72% bottom / auto 75% no-repeat #FCE6E9}
+  .hero-home .hero-art,.home-moment-art{display:none}
+  .home-moment,.home-moment.full{padding-bottom:250px}
+  .home-moment-dark{background:linear-gradient(to bottom,rgba(20,23,30,.98) 0%,rgba(20,23,30,.94) 38%,rgba(20,23,30,.3) 68%,rgba(20,23,30,0) 88%),
+      url("${img('scene-display.webp')}") 25% bottom / auto 75% no-repeat #14171E}
+  .home-moment-blush{background:linear-gradient(to bottom,rgba(252,230,233,.98) 0%,rgba(252,230,233,.94) 38%,rgba(252,230,233,.25) 68%,rgba(252,230,233,0) 88%),
+      url("${img('scene-finish.webp')}") 75% bottom / auto 75% no-repeat #FCE6E9}
+  .home-moment-pair{background:linear-gradient(to bottom,rgba(216,242,231,.98) 0%,rgba(216,242,231,.94) 38%,rgba(216,242,231,.25) 68%,rgba(216,242,231,0) 88%),
+      url("${img('scene-choice.webp')}") 25% bottom / auto 75% no-repeat #D8F2E7}
   .home-values{width:100%}
   .home-value{min-height:0;padding:24px 16px 28px}
   .home-close{
