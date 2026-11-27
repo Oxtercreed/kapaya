@@ -128,6 +128,15 @@ const { launch, APP } = require('./lib.cjs');
   }
   console.log('shop header restored:', shopHeader.full, '| home CTA hidden:', shopHeader.homeCtaHidden, '| home nav hidden:', shopHeader.homeNavHidden);
 
+  const shopVisual = await p.evaluate(() => ({
+    hero: getComputedStyle(document.querySelector('.hero-shop')).backgroundImage.includes('data:image/webp'),
+    photos: Array.from(document.querySelectorAll('.shop-page .card-img')).map((img) => img.naturalWidth),
+    prices: Array.from(document.querySelectorAll('.shop-page .card-price')).map((el) => el.textContent.trim()),
+    footer: getComputedStyle(document.querySelector('.shop-footer')).display !== 'none',
+  }));
+  if (!shopVisual.hero || shopVisual.photos.length !== 4 || shopVisual.photos.some((n) => n < 3840) || JSON.stringify(shopVisual.prices) !== JSON.stringify(['From $1,099', 'From $799', 'From $899', 'From $599']) || !shopVisual.footer) throw new Error('shop visuals assertion failed: ' + JSON.stringify(shopVisual));
+  console.log('shop hero and 4K-sized imagery:', shopVisual.hero, shopVisual.photos, '| prices preserved:', shopVisual.prices.join(', '));
+
   // 2. sort menu
   await p.click('[data-sort]');
   const open = await p.$eval('[data-sortmenu]', (e) => !e.hidden);

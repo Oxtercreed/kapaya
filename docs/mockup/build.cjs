@@ -276,12 +276,12 @@ const plate = (p, cls = '') =>
 const heroBand = (variant) => {
   const isHome = variant === 'home';
   return `
-<section class="hero${isHome ? ' hero-home' : ''}">
+<section class="hero${isHome ? ' hero-home' : ' hero-shop'}">
   <div class="hero-l">
     <p class="eyebrow">ONE ICON. EVERY GENERATION.</p>
     <h1 class="hero-h">Only iPhone.<br>Every era.</h1>
     <p class="hero-p">Four generations, one clean edit. Find the one that fits your everyday.</p>
-    <a class="btn-dark" data-go="shop">${isHome ? 'Enter the shop' : 'Shop the collection'} <span class="arw">→</span></a>
+    <a class="btn-dark" ${isHome ? 'data-go="shop"' : 'data-scroll="shop-products"'}>${isHome ? 'Enter the shop' : 'Shop iPhones'} <span class="arw">→</span></a>
   </div>
   <a class="hero-art" data-go="shop" aria-label="Shop the iPhone collection">
     <img class="hero-phone hero-phone-back" src="${img('iphone-15-blue-back.webp')}" alt="">
@@ -402,13 +402,12 @@ const home = () => `
 const shop = (state) => {
   const items = state.results;
   return `
-<main class="page">
+<main class="page shop-page">
   ${state.query ? '' : heroBand('shop')}
 
-  <h2 class="sec-h">Find your next iPhone</h2>
-  <p class="sec-p">Four generations. One clean edit.</p>
+  ${state.query ? `<h2 class="sec-h">Find your next iPhone</h2><p class="sec-p">Four generations. One clean edit.</p>` : ''}
 
-  <div class="filter-row">
+  <div id="shop-products" class="filter-row">
     <div class="chips">
       ${['all', 'Pro', 'Standard', 'Classic'].map((c) => {
         const on = c === 'all' ? state.cat === 'all' : state.cat.toLowerCase() === c.toLowerCase();
@@ -435,9 +434,9 @@ const shop = (state) => {
       </div>`}
 
   <div class="service-strip">
-    <span>Free shipping over $100</span>
-    <span>30-day easy returns</span>
-    <span>Secure checkout, always</span>
+    <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 7h13v10H2zM15 10h4l3 3v4h-7zM3 4h7M1 10h5"/><circle cx="6" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>Free shipping over $100</span>
+    <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-2L3 7m0-4v4h4M4 17a9 9 0 0 0 15 2l2-2m0 4v-4h-4"/></svg>30-day easy returns</span>
+    <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 4v6c0 5-3.5 8-9 10-5.5-2-9-5-9-10V6zM8 12l3 3 5-6"/></svg>12-month warranty &amp; secure checkout</span>
   </div>
 </main>`;
 };
@@ -445,11 +444,13 @@ const shop = (state) => {
 const heartSvg = (s = 15) =>
   `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="#14171E" stroke-width="1.8"><path d="M12 20s-7.4-4.6-7.4-9.9A4.4 4.4 0 0 1 12 7.2a4.4 4.4 0 0 1 7.4 2.9c0 5.3-7.4 9.9-7.4 9.9Z"/></svg>`;
 
+const shopPhotos = { 'iphone-16-pro': 'shop-16.webp', 'iphone-15': 'shop-15.webp', 'iphone-14-pro': 'shop-14.webp', 'iphone-13': 'shop-13.webp' };
+
 const card = (p) => `
 <article class="card">
   <a class="card-plate" data-go="product" data-arg="${p.id}">
     ${p.plate
-      ? `<span class="plate-bg${p.crop ? ' is-crop' : ''}"><img class="card-img" src="${img(p.plate)}" alt="${p.name}"></span>`
+      ? `<span class="plate-bg${p.crop ? ' is-crop' : ''}"><img class="card-img" src="${img(shopPhotos[p.id] || p.plate)}" alt="${p.name}"></span>`
       : plate(p, 'card-img')}
     ${p.crop ? '' : `<span class="badge">${p.tag}</span>`}
     <button class="heart${p.crop ? ' on-crop' : ''}" data-fav="${p.id}" aria-label="Save ${p.name}">
@@ -460,8 +461,8 @@ const card = (p) => `
   <p class="card-kind">${p.kind}</p>
   <p class="card-rate"><span class="star">★</span> ${p.rate} · ${p.reviews} reviews</p>
   <div class="card-foot">
-    <span class="card-price">${money(p.price)}</span>
-    <a class="card-link" data-go="product" data-arg="${p.id}">View product <span class="arw">→</span></a>
+    <span class="card-price">From $${p.price.toLocaleString('en-US')}</span>
+    <a class="card-link" data-go="product" data-arg="${p.id}">Select <span class="arw">→</span></a>
   </div>
 </article>`;
 
@@ -1964,6 +1965,63 @@ body.is-home .ftr{display:none}
   .home-ftr-bottom{flex-direction:column;align-items:flex-start;gap:8px;margin-top:28px}
 }
 
+/* Shop reference layout. Landing and the other store routes remain unchanged. */
+body.is-shop .band-div{display:block}
+.shop-page{padding-top:10px;padding-bottom:12px}
+.hero-shop{height:368px;border-radius:18px;background:#FCE6E9 url("${img('shop-hero.webp')}") center top/cover no-repeat}
+.hero-shop .hero-l{width:520px;padding-left:38px;padding-top:0}
+.hero-shop .hero-h{font-size:72px;line-height:74px;letter-spacing:-.045em;margin-top:16px}
+.hero-shop .hero-p{font-size:18px;line-height:26px;max-width:450px;margin-top:16px;color:#535863}
+.hero-shop .btn-dark{height:48px;padding:0 28px;margin-top:18px;border-radius:24px}
+.hero-shop .hero-art{display:none}
+.shop-page .filter-row{margin:16px 14px 0;scroll-margin-top:110px}
+.shop-page .chips{gap:16px}
+.shop-page .cards{gap:16px;margin:12px 14px 0}
+.shop-page .card{padding:12px 12px 14px}
+.shop-page .card-plate{aspect-ratio:280/190}
+.shop-page .plate-bg img{padding:0;object-fit:cover}
+.shop-page .heart{right:14px;top:14px}
+.shop-page .card-kind{margin-top:4px}
+.shop-page .card-rate{margin-top:10px;color:#656976}
+.shop-page .card-foot{padding-top:10px}
+.shop-page .card-link{display:inline-flex;align-items:center;gap:12px;background:#14171E;color:#fff;border-radius:24px;height:40px;padding:0 22px;font-weight:500}
+.shop-page .card-link:hover{background:#333740;color:#fff}
+.shop-page .service-strip{margin-top:16px;height:58px}
+.shop-page .service-strip span{display:flex;align-items:center;justify-content:center;gap:14px;flex:1;height:32px}
+.shop-page .service-strip span+span{border-left:1px solid #ebcdd2}
+.shop-page .service-strip svg{width:27px;height:27px;fill:none;stroke:#C92332;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.shop-footer{display:none;background:#fff;border-top:1px solid #E8E6E7}
+body.is-shop .ftr{display:none}
+body.is-shop .shop-footer{display:block;margin-top:auto}
+.shop-footer-in{max-width:1440px;margin:auto;padding:16px 64px;display:flex;align-items:center;gap:48px}
+.shop-footer-logo{width:112px}
+.shop-footer nav{display:flex;align-items:center;gap:32px;font-size:12px;color:#656976}
+.shop-footer nav a:hover{color:#C92332}
+.shop-pay{margin-left:auto;display:flex;gap:12px;align-items:center}
+.shop-pay>span{height:29px;min-width:48px;border:1px solid #DCDCDD;border-radius:5px;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:700}
+.shop-visa{color:#14398b;font-style:italic}
+.shop-master i{display:block;width:16px;height:16px;border-radius:50%;background:#eb001b}
+.shop-master i+i{background:#f79e1b;margin-left:-5px;opacity:.9}
+.shop-footer p{font-size:12px;color:#656976;white-space:nowrap}
+@media(max-width:960px){.shop-footer-in{flex-wrap:wrap;gap:20px;padding:20px 24px}.shop-pay{margin-left:0}.shop-page .service-strip{height:auto}.shop-page .service-strip span+span{border-left:0}}
+@media(max-width:640px){
+ .shop-page{padding:16px 18px 30px}
+ .hero-shop{min-height:470px;padding:28px 22px 210px;background:linear-gradient(to bottom,rgba(252,230,233,.98) 0%,rgba(252,230,233,.92) 42%,rgba(252,230,233,.08) 75%),url("${img('shop-hero.webp')}") 72% bottom/auto 70% no-repeat #FCE6E9}
+ .hero-shop .hero-l{width:100%;padding:0}
+ .hero-shop .hero-h{font-size:42px;line-height:45px}
+ .hero-shop .hero-p{font-size:15px;line-height:22px;margin-top:14px}
+ .shop-page .filter-row{margin:18px 0 0}
+ .shop-page .chips{gap:10px}
+ .shop-page .cards{gap:12px;margin:16px 0 0}
+ .shop-page .card{padding:8px 8px 12px}
+ .shop-page .card-link{display:none}
+ .shop-page .card-plate{aspect-ratio:1/1}
+ .shop-page .card-foot{margin-top:8px;padding-top:0}
+ .shop-page .service-strip{padding:16px;gap:12px}
+ .shop-page .service-strip span{justify-content:flex-start;width:100%}
+ .shop-footer nav{flex-wrap:wrap;gap:18px}
+}
+
 /* Editorial scenes are separate from the live copy and controls. */
 .hero-home{background:#FCE6E9 url("${img('scene-hero.webp')}") center/cover no-repeat}
 .hero-home:after{display:none}
@@ -2106,7 +2164,7 @@ body.is-home .ftr{display:none}
    concatenation, never a template literal, so their `${}` survives intact. */
 
 const PICS = {};
-for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp']) {
+for (const n of ['iphone-16-pro-front.webp','iphone-15-blue-back.webp','iphone-14-pro-purple.webp','iphone-13-midnight.webp','shop-16.webp','shop-15.webp','shop-14.webp','shop-13.webp']) {
   PICS[n] = img(n);
 }
 
@@ -2123,6 +2181,7 @@ const named = (name, fn) => 'const ' + name + ' = ' + fn.toString() + ';';
 const HELPERS = [
   'const PRODUCTS = ' + JSON.stringify(CATALOGUE) + ';',
   'const PICS = ' + JSON.stringify(PICS) + ';',
+  'const shopPhotos = ' + JSON.stringify(shopPhotos) + ';',
   'const HOME_FOOTER_LOGO = ' + JSON.stringify(brandLogo('brand-logo home-ftr-brand')) + ';',
   'const money = (n) => "$" + n.toFixed(2);',
   'const byId = (id) => PRODUCTS.find((p) => p.id === id);',
@@ -2248,6 +2307,7 @@ function paint() {
   });
   $('#app').innerHTML = view(state);
   document.body.classList.toggle('is-home', store.route === 'home');
+  document.body.classList.toggle('is-shop', store.route === 'shop');
 
   const catLabel = store.cat === 'all'
     ? 'Shop'
@@ -2522,6 +2582,7 @@ const SHELL = [
   chrome(),
   '<div id="app"></div>',
   footer(),
+  `<footer class="shop-footer"><div class="shop-footer-in">${brandLogo('brand-logo shop-footer-logo')}<nav aria-label="Shop footer"><a data-go="help">About</a><a data-go="help">Support</a><a data-go="help">Shipping</a><a data-go="help">Returns</a><a data-go="help">Privacy</a></nav><div class="shop-pay"><span aria-label="Apple Pay"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M16.4 1.4c0 1.1-.4 2.2-1.1 3-.9.9-2.2 1.7-3.4 1.6-.1-1.1.4-2.2 1.1-3 .8-.9 2.2-1.5 3.4-1.6zM20.8 17.2c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.2-3.7 3.2-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.7.9c-1.6 0-2.8-1.6-3.7-3-2.5-4-2.8-8.6-1.2-11.1 1.1-1.7 2.8-2.8 4.5-2.8 1.7 0 2.7.9 4.1.9 1.3 0 2.2-.9 4.1-.9 1.5 0 3 .8 4.1 2.2-3.6 2-3 7.2.6 8.9z"/></svg> Pay</span><span class="shop-visa">VISA</span><span class="shop-master" aria-label="Mastercard"><i></i><i></i></span></div><p>Good tech. Better everyday.</p></div></footer>`,
   '<div class="toast" id="toast" role="status" aria-live="polite"></div>',
   '<script>',
   HELPERS,
