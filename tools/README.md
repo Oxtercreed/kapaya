@@ -1,4 +1,4 @@
-# tools — probes for the storefront
+# tools: probes for the storefront
 
 Headless-Chromium checks that keep `docs/mockup/index.html` honest. They are the
 only way changes were ever validated in this project; run them after every edit
@@ -18,8 +18,8 @@ SwiftShader runtime into git-ignored derived folders.
 |---|---|
 | `node frames.cjs` | loads the app, clicks through all five screens, writes `/tmp/red/fr-0N-*.png` at 1440×1200, prints `errors: none` |
 | `node diff.cjs` | MAE of those shots against `ref/*.png`. All five references were deliberately re-baselined after the iPhone-only and Kapaya-brand changes, and `01-shop.png` was re-baselined again for the left-only hero, so a clean run prints **0.0000 % on all five**. `--figma` scores the original raw Figma JPEG crops and reports the intentional design difference: 6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 % |
-| `node mobile.cjs` | 390×844 @2x walk through every route; asserts the footerless landing, left-only hero and compact two-column buttonless cards; prints `OVERFLOW` if anything is wider than the viewport |
-| `node deep.cjs` | brand identity, left-only hero and nine interaction assertions — landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
+| `node mobile.cjs` | 390×844 @2x walk through every route; asserts the footerless landing, logo-only header CTA, left-only hero and compact two-column buttonless cards; prints `OVERFLOW` if anything is wider than the viewport |
+| `node deep.cjs` | brand identity, left-only hero, no em dash, logo-only landing header and nine interaction assertions: landing/footer/CTA, sort, favourite persistence, live search, nav filter, checkout validation, pay → confirmed, back to shop |
 
 All five `ref/*.png` files are deliberate regression baselines of the current
 iPhone-only, Kapaya-branded, left-only-hero design. All five were re-baselined
@@ -39,6 +39,6 @@ rendering matches; a different Chrome release can move the MAE numbers.
 
 Not tracked: `.chromium/` (browser and runtime libraries) and `node_modules/`.
 
-`fetch-fonts.sh` is a fallback only — `docs/mockup/.fonts/` is committed, so the
+`fetch-fonts.sh` is a fallback only `docs/mockup/.fonts/` is committed, so the
 build reproduces byte-for-byte. The npm copy of Inter renders ~0.4 % differently
 from the files in the repo; do not substitute it.

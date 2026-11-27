@@ -1,24 +1,24 @@
-# HANDOFF — Kapaya storefront mockup
+# HANDOFF: Kapaya storefront mockup
 
 Everything a fresh session needs: what the project is, what has been built, the
 rules that broke us, and what to do next (including the request that was in
 flight when this session ended).
 
-Read this top to bottom once, then work from the repo — the repo is the source
+Read this top to bottom once, then work from the repo the repo is the source
 of truth, this file is the map.
 
 ---
 
 ## 1. What this project is
 
-A clickable **Kapaya** storefront mockup — *good tech, better everyday* — shipped
+A clickable **Kapaya** storefront mockup *good tech, better everyday* shipped
 as **one self-contained HTML file** with no build step at runtime, no network
 and no external assets. All CSS, JS, Inter (base64 woff2) and all photography
 (base64 JPEG) live inside `docs/mockup/index.html`.
 
 | Path | What it is |
 |---|---|
-| `docs/mockup/index.html` | **The deliverable.** ~300 KB, generated — never hand-edit |
+| `docs/mockup/index.html` | **The deliverable.** ~300 KB, generated never hand-edit |
 | `docs/mockup/build.cjs` | The generator: `PRODUCTS`, `PICS`, `CSS`, the eight `view` functions, `RUNTIME`, `SHELL` |
 | `docs/mockup/NOTES-red.md` | The measurements the design came from: frame ids, palette, grid, type scale, fidelity table |
 | `docs/mockup/red/ref/*.jpg` | 1:1 crops of the five Figma frames (source of truth for the design) |
@@ -30,7 +30,7 @@ and no external assets. All CSS, JS, Inter (base64 woff2) and all photography
 | `README.md` | The public-facing project page |
 
 Figma source: `zoygvtfjWN92VUiWAsSMOL`, page 1, second row. Screens: Shop
-`8:2`, Product `8:92`, Bag `8:161`, Checkout `8:240`, Confirmed `8:342` —
+`8:2`, Product `8:92`, Bag `8:161`, Checkout `8:240`, Confirmed `8:342`
 all 1440×1200, at y = 967, x = 751 / 2231 / 3711 / 5191 / 6671.
 
 ## 2. Rebuild + verify (do this every time you touch anything)
@@ -41,7 +41,7 @@ bash tools/fetch-chromium.sh      # once per clone: npm-hosted Chromium 109 + ru
 cd tools && npm install           # once per clone
 ```
 
-`docs/mockup/.fonts/*.woff2` (100 KB) **is tracked** — a fresh clone rebuilds
+`docs/mockup/.fonts/*.woff2` (100 KB) **is tracked** a fresh clone rebuilds
 `index.html` byte-for-byte. Do not swap in a different Inter release: the npm
 `@fontsource/inter` copy renders ~0.4 % differently and moves every number.
 `tools/fetch-fonts.sh` only exists as a last resort.
@@ -70,7 +70,7 @@ move the MAE numbers. Puppeteer is only ever launched with `--no-sandbox`,
 `--disable-dev-shm-usage`, `--font-render-hinting=none`, and an
 `LD_LIBRARY_PATH` containing the Chromium and `@achingbrain/nss` libraries.
 
-## 3. The design system (already exact — do not re-derive)
+## 3. The design system (already exact do not re-derive)
 
 **Palette:** field `#FAF9F9` · white · ink `#14171E` · body `#656976` · hairline
 `#E8E6E7` · border `#DCDCDD` · accent `#C92332` · accentInk `#96151F` · hero
@@ -111,9 +111,9 @@ prefilled card `•••• •••• •••• 4242`, exp `08 / 29`, cvc
 
 **Frame copy still used:** "Good tech. Better everyday." / "Free shipping on
 orders $100+" / "A little more to love" / "Thanks, Alex. You're all set." /
-"Good support comes with every order." The frames' catalogue copy — including
+"Good support comes with every order." The frames' catalogue copy including
 "LESS NOISE. MORE YOU.", "Your everyday, upgraded." and "Find your next
-everyday essential" — is **no longer binding**; the landing and iPhone-only
+everyday essential" is **no longer binding**; the landing and iPhone-only
 copy deliberately replaces it. See §7a.
 
 ## 4. Fidelity, where it stands
@@ -130,7 +130,7 @@ Historical Figma-era baseline, before the deliberate divergence:
 
 Session start was 3.40 / 2.56 / 4.43 / 2.83 / 2.85 %. The big historical move
 was **deleting four invented products** (a lamp, sleep buds, a laptop stand, a
-tracker) — the frame says "4 products" in one row, and eight pushed the grid to
+tracker) the frame says "4 products" in one row, and eight pushed the grid to
 a second row and moved Shop from 2.6 % to 3.4 %.
 
 After the landing/hero, iPhone-catalogue, Kapaya-brand and left-only-hero
@@ -146,7 +146,7 @@ the intended design difference, not a regression.
   and heart button**. Badges are kept; the baked heart is veiled with a
   feathered disc of plate colour (`.plate-bg.is-crop::after`) so the working
   control can sit there. Frame 01 draws hearts on cards 3 (filled) and 4
-  (outline) only; ours draws a white disc on all four — a handful of pixels.
+  (outline) only; ours draws a white disc on all four a handful of pixels.
 - The frame's typeface is Inter-ish but not Inter; glyph widths land within a
   pixel or two and never exactly.
 - `.three` (city/postal/country) is derived, not measured field-by-field.
@@ -162,37 +162,37 @@ reaches the confirmed screen · the confirmed CTA returns to the shop ·
 must report two compact card columns with the extra card information and card
 buttons hidden.
 
-## 6. Decided against — do not retry
+## 6. Decided against do not retry
 
 - **Keep the catalogue iPhone-only.** Do not re-add the frame's earbuds,
   headphones, watch, mouse or any invented products. The four-product grid
   remains, but the products are four iPhone generations.
-- **Do not diff against `app-0N-*.png`** — wrong cart state. Use `frames.cjs`.
+- **Do not diff against `app-0N-*.png`** wrong cart state. Use `frames.cjs`.
 - **Port 5173 is a dead vite server.** The app is served from
   `docs/mockup/` (see §8).
-- Clearing a form input with `e.value=''` **does not** trigger validation —
+- Clearing a form input with `e.value=''` **does not** trigger validation
   click, Ctrl+A, Backspace.
 - `KEEP` in `build.cjs` is a **whitelist**: a new product field must be added
   there or the views silently fall back to defaults.
 - Scoping summary-card overrides to `.co-side` (padding 24/28/26, sum-line /
   rule / tax / button margins down) regressed Checkout from 2.14 % to 2.60 %.
   The global summary rhythm is right.
-- `.card-name{margin-top:2px}` makes Shop worse — the card-text offset is
+- `.card-name{margin-top:2px}` makes Shop worse the card-text offset is
   plate-crop geometry, not margin. `.pay-fields` margin-top 12 makes the
   payment row worse; 3 is correct. `.done-grid` margin-top 14 overshoots by
   2 px; 12 is correct. `.ship-h` at 19 px is too wide; 18 px / 23 line-height
   with `-.004em` is the match.
-- Don't reuse `card1.jpg` as a PDP hero or a recommended tile — `card*.jpg`
+- Don't reuse `card1.jpg` as a PDP hero or a recommended tile `card*.jpg`
   bake in the badge and heart; only the `.plate-bg.is-crop::after` veil works.
 - Grid children need `min-width:0`. Header order must stay `.mark` +
   `.hdr-tools` + `.hdr-row`.
 - `fn.toString()` views need `named()`; the click delegate uses
   `t.hasAttribute(...)`; single-column `txt:` pixel probes are unreliable
-  (1 px warm-grey edges are AA) — probe strips/rows with a `n[y]>2` run counter.
+  (1 px warm-grey edges are AA) probe strips/rows with a `n[y]>2` run counter.
 - In-app iframes have no network: **everything must stay inlined base64**.
 - Python patches: always `assert old in s` before writing.
 
-## 7. Historical brief — implemented
+## 7. Historical brief implemented
 
 The following request was in flight when the fidelity work ended. It has now
 been implemented on this branch; reproduced verbatim for context:
@@ -211,11 +211,11 @@ been implemented on this branch; reproduced verbatim for context:
 > that makes the home page as a landing page and lets gooo
 
 Attached: a two-band reference strip (`docs/mockup/red/next/hero-band-reference.png`,
-840×455) — a **PRADA "COMING SOON"** band on a pale-green field with a dark-red
+840×455) a **PRADA "COMING SOON"** band on a pale-green field with a dark-red
 ink splash bleeding off the band's left edge and no separate photo box, and a
 **"Show up ready for the first day back & beyond"** band on flat pink with a
 model cut out of her own background standing on the band, button-underlined
-link bottom-left. The point: **the hero artwork has no card of its own — it
+link bottom-left. The point: **the hero artwork has no card of its own it
 sits on the hero panel's own background and bleeds off its edge.**
 
 How to read that as work on this repo:
@@ -224,32 +224,32 @@ How to read that as work on this repo:
    (different generations/versions), each with clean, consistent cut-out
    photography on the plate field colour. `KEEP` (§6) must carry any new
    product field. Counts in the UI follow automatically (`4 products` if four
-   models). The frames' copy in §3 stops being binding for the catalogue —
+   models). The frames' copy in §3 stops being binding for the catalogue
    say so in `NOTES-red.md` and `README.md` rather than silently drifting.
 2. **Hero: artwork on the panel, not in a tile.** Today `.hero-r` is a
    270×240 rounded `<img>` card at x940 (`herotile.jpg`). It must become a
    cut-out that sits directly on `#FCE6E9`, no radius, no white box, no
-   background — ideally bleeding past the panel's right edge
+   background ideally bleeding past the panel's right edge
    (`.hero{overflow:hidden}` is already there, so overhanging the panel is the
    trick). Keep the 1312×318 panel, the 64 px margins and the eyebrow /
    h1 / paragraph / dark-button stack intact.
 3. **Smaller product cards on mobile, and no buttons on them.** Drop the
    "View product →" link and thin the card down to *image + name + price* on
    phones (the card becomes an invitation, not a spec sheet). Keep the desktop
-   card as measured — the frames are binding there. Do it in the `≤640` block,
+   card as measured the frames are binding there. Do it in the `≤640` block,
    and check `mobile.cjs` for OVERFLOW afterwards.
 4. **A landing page that opens first, and no footer on it.** A new `home`
    route rendered at `store.route = 'home'` on first load; majestic and
-   editorial, in the existing tokens (§3) — the hero band from item 2 is the
+   editorial, in the existing tokens (§3) the hero band from item 2 is the
    obvious centrepiece, then two or three full-bleed product moments, a value
    strip, and a closing invitation into the shop. **No footer on that route**
-   (the footer is currently emitted in `SHELL`, outside `#app` — so it has to
+   (the footer is currently emitted in `SHELL`, outside `#app` so it has to
    become conditional on the route in `paint()`, or move inside the views).
    The shop lives on at `#/shop`, reachable from the landing page's CTAs.
 
 Sequencing that keeps the baseline honest: do 4 and 2 together (they share the
 hero), then 1, then 3. After each step run `node frames.cjs && node diff.cjs`
-and expect the **Shop number to move** — the design is being changed on purpose
+and expect the **Shop number to move** the design is being changed on purpose
 now, so if a number regresses, re-baseline `tools/ref/01-shop.png` deliberately
 (and note it) instead of hunting a phantom regression. The other four screens
 should stay at their numbers unless their products changed.
@@ -305,6 +305,17 @@ Implemented in this branch:
    deliberately re-baselined again on purpose; the other four references are
    unchanged. Default `node diff.cjs` is 0.0000 % on all five and current
    `--figma` divergence is 6.1999 / 5.7722 / 3.5064 / 2.3351 / 3.1021 %.
+9. **Typography cleanup.** Removed every U+2014 em dash from generated copy,
+   title, metadata, build logs, comments and docs. En dashes in numeric ranges
+   and minus signs remain because they are different characters. `deep.cjs`
+   asserts no U+2014 character in the rendered document.
+10. **Landing-page header.** On `body.is-home`, the header shows only the Kapaya
+    logo and a right-aligned `Start shopping` CTA in the bag pill's place. Nav,
+    search, orders, bag and mobile icons are hidden; shop and other routes keep
+    the full measured header. `deep.cjs` and `mobile.cjs` assert the logo-only
+    header, CTA and full header restoration after entering the shop. No
+    reference re-baseline was needed because the measured frames open at
+    `#/shop`, where the header is unchanged.
 
 ## 8. Preview
 
@@ -317,11 +328,11 @@ cd docs/mockup && python3 -m http.server 8080 --bind 0.0.0.0
 
 That surfaces as `https://8080-{sandboxId}.e2b.app/`. Bind to `0.0.0.0`, never
 `127.0.0.1`, or the proxied preview cannot reach it. A stale server may already
-be running on 8080 from the previous session — check before starting another.
+be running on 8080 from the previous session, check before starting another.
 
 For a full-screen public preview, Vercel project **`kapaya-storefront`** deploys this
 branch with root directory `docs/mockup` and `true` build/install commands. The
-verified production URL is <https://volta-kapaya.vercel.app/> — Vercel kept the
+verified production URL is <https://volta-kapaya.vercel.app/>; Vercel kept the
 original production alias after the project rename. New project-name aliases are
 SSO-protected, so use the production alias for a public preview. GitHub
 auto-deploys are disabled; create a production deployment manually after each

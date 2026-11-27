@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Builds docs/mockup/index.html — an interactive mockup of the Kapaya store.
+ * Builds docs/mockup/index.html an interactive mockup of the Kapaya store.
  *
  * One screen at a time, real navigation between them, cart/quantity/filter/
  * search state that actually works. The store screens come from the RED frame
- * set in the Figma file (zoygvtfjWN92VUiWAsSMOL — 8:2, 8:92, 8:161, 8:240,
+ * set in the Figma file (zoygvtfjWN92VUiWAsSMOL 8:2, 8:92, 8:161, 8:240,
  * 8:342), reproduced from measurements of a 1:1 render: same palette, same
  * type scale, same 64/1312 grid, same 824+32+456 split. The landing page and
  * edge-bleeding hero are a deliberate divergence. See NOTES-red.md.
@@ -221,6 +221,7 @@ const chrome = () => `
       <a class="bag-pill" data-go="bag"><span data-bagcount>Bag (0)</span></a>
     </div>
   </div>
+  <a class="home-shop-pill" data-go="shop">Start shopping</a>
 </header>`;
 
 const footer = () => `
@@ -280,7 +281,7 @@ const heroBand = (variant) => {
 </section>`;
 };
 
-/* Landing page — editorial, route-first, and deliberately footerless. */
+/* Landing page editorial, route-first, and deliberately footerless. */
 const home = () => `
 <main class="home">
   ${heroBand('home')}
@@ -291,7 +292,7 @@ const home = () => `
       <h2 class="home-intro-h">Good tech, distilled<br>to one icon.</h2>
       <p class="home-intro-p">Kapaya now does one thing: the iPhone. From the newest Pro to the generation that still feels just right, every device is presented without noise.</p>
     </div>
-    <span class="home-intro-index">01 — 04</span>
+    <span class="home-intro-index">01 / 04</span>
   </section>
 
   <section class="home-moment home-moment-dark full">
@@ -326,7 +327,7 @@ const home = () => `
     <div class="home-moment-copy home-copy-right">
       <p class="home-kicker">03 / THE CHOICE</p>
       <h2 class="home-moment-h">One family.<br>Your era.</h2>
-      <p class="home-moment-p">Choose the camera, finish and generation that match your everyday. No accessory aisles, no spec-sheet maze — just the phone.</p>
+      <p class="home-moment-p">Choose the camera, finish and generation that match your everyday. No accessory aisles, no spec-sheet maze. Just the phone.</p>
       <a class="home-link" data-go="shop">Compare the edit <span class="arw">→</span></a>
     </div>
   </section>
@@ -348,7 +349,7 @@ const home = () => `
   </section>
 </main>`;
 
-/* Shop — hero, filters, grid, service strip  (frame 8:2) */
+/* Shop hero, filters, grid, service strip  (frame 8:2) */
 const shop = (state) => {
   const items = state.results;
   return `
@@ -415,7 +416,7 @@ const card = (p) => `
   </div>
 </article>`;
 
-/* Product — gallery, buy box, benefits, tabs  (frame 8:92) */
+/* Product gallery, buy box, benefits, tabs  (frame 8:92) */
 const product = (state) => {
   const p = state.product;
   return `
@@ -527,7 +528,7 @@ const bag = (state) => {
   ${count === 0
     ? `<div class="empty big">
          <p class="empty-h">Your bag is empty.</p>
-         <p class="empty-p">Four iPhone generations are waiting — pick the era that feels like yours.</p>
+         <p class="empty-p">Four iPhone generations are waiting. Pick the era that feels like yours.</p>
          <button class="btn-dark sm" data-go="shop">Shop all iPhones <span class="arw">→</span></button>
        </div>`
     : `<div class="bag-grid">
@@ -803,7 +804,7 @@ const confirmed = (state) => {
 </main>`;
 };
 
-/* Account / My orders — same system, new screen */
+/* Account / My orders same system, new screen */
 const account = (state) => `
 <main class="page">
   <p class="crumb"><span class="cur">My orders</span></p>
@@ -863,7 +864,7 @@ const account = (state) => `
   </div>
 </main>`;
 
-/* Order detail — the confirmed frame re-read for a past order */
+/* Order detail the confirmed frame re-read for a past order */
 const orderDetail = (state) => {
   const o = state.order;
   return `
@@ -1010,12 +1011,16 @@ img{display:block;max-width:100%}
 .search input::-webkit-search-cancel-button{cursor:pointer}
 .orders{font:500 14px/1 Inter,sans-serif;white-space:nowrap}
 .orders:hover{color:#C92332}
-.bag-pill{
+.bag-pill,.home-shop-pill{
   height:46px;min-width:126px;padding:0 26px;border-radius:23px;background:#14171E;color:#fff;
   font:600 14px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;
-  transition:transform .12s ease,background .12s ease;
+  white-space:nowrap;transition:transform .12s ease,background .12s ease;
 }
-.bag-pill:hover{background:#22262F}
+.bag-pill:hover,.home-shop-pill:hover{background:#22262F}
+.home-shop-pill{display:none}
+body.is-home .hdr{justify-content:space-between}
+body.is-home .hdr-tools,body.is-home .hdr-row{display:none}
+body.is-home .home-shop-pill{display:flex;margin-left:auto}
 .bag-pill.pop{animation:pop .32s ease}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
 
@@ -1023,7 +1028,7 @@ img{display:block;max-width:100%}
 .page{flex:1 0 auto;width:100%;max-width:1440px;margin:0 auto;padding:33px 64px 88px}
 @media (max-width:1440px){.hdr{padding:0 64px}}
 
-/* hero — cut-outs sit directly on the panel and bleed past its clipped edge */
+/* hero cut-outs sit directly on the panel and bleed past its clipped edge */
 .hero{
   height:318px;border-radius:28px;background:#FCE6E9;
   display:flex;align-items:center;position:relative;overflow:hidden;
@@ -1666,7 +1671,8 @@ body.is-home .ftr{display:none}
   .hdr-right{order:2;margin-left:auto;gap:14px}
   .search{width:auto;flex:1;min-width:0;height:42px}
   .orders{display:none}
-  .bag-pill{height:42px;min-width:0;padding:0 18px;font-size:13px}
+  .bag-pill,.home-shop-pill{height:42px;min-width:0;padding:0 18px;font-size:13px}
+  body.is-home .hdr{padding-bottom:12px}
   /* phones: image + name + price, two compact invitations per row */
   .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
   .card{padding:8px 8px 12px;border-radius:14px}
@@ -2051,7 +2057,7 @@ document.addEventListener('click', (e) => {
     const sub = store.cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
     if (code === 'KAPAYA10') {
       store.discount = Math.round(sub * 10) / 100;
-      store.promoMsg = 'KAPAYA10 applied — 10% off.';
+      store.promoMsg = 'KAPAYA10 applied. 10% off.';
     } else if (!code) {
       store.discount = 0; store.promoMsg = '';
     } else {
@@ -2112,7 +2118,7 @@ document.addEventListener('submit', (e) => {
     bad.forEach((n) => { const el = $('.fld-i[name="' + n + '"]'); if (el) el.classList.add('err'); });
     if (err) {
       err.hidden = false;
-      err.textContent = 'Check the highlighted fields — we need them to deliver your order.';
+      err.textContent = 'Check the highlighted fields. We need them to deliver your order.';
     }
     const first = $('.fld-i.err');
     if (first) first.focus();
@@ -2168,11 +2174,11 @@ const SHELL = [
   '<head>',
   '<meta charset="utf-8">',
   '<meta name="viewport" content="width=device-width, initial-scale=1">',
-  '<meta name="description" content="Kapaya — an interactive, iPhone-only storefront mockup.">',
+  '<meta name="description" content="Kapaya is an interactive, iPhone-only storefront mockup.">',
   '<meta name="application-name" content="Kapaya">',
   `<meta name="theme-color" content="${BRAND_CREAM}">`,
   `<link rel="icon" type="image/svg+xml" href="${favicon}">`,
-  '<title>Kapaya — good tech, better everyday</title>',
+  '<title>Kapaya: good tech, better everyday</title>',
   '<style>',
   [400, 500, 600, 700].map((w) => font(w, `inter-latin-${w}-normal.woff2`)).join('\n'),
   CSS,
@@ -2192,4 +2198,4 @@ const SHELL = [
 ].join('\n');
 
 fs.writeFileSync(path.join(ROOT, 'index.html'), SHELL);
-console.log(`index.html — ${(fs.statSync(path.join(ROOT, 'index.html')).size / 1024).toFixed(0)} KB`);
+console.log(`index.html: ${(fs.statSync(path.join(ROOT, 'index.html')).size / 1024).toFixed(0)} KB`);

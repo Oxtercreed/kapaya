@@ -3,7 +3,7 @@
 // a header + top row of screens, the frame name below each one, wrapped in rows.
 //
 // Run: Figma → Plugins → Development → Import plugin from manifest…  (manifest.json)
-//      then select nothing and run it. Safe to run twice — it rebuilds its own section.
+//      then select nothing and run it. Safe to run twice. It rebuilds its own section.
 
 const SCREENS = [
   { num: '05', name: 'Login', file: '05-login', note: 'Sign in, socials, guest path' },
@@ -17,7 +17,7 @@ const SCREENS = [
   { num: '13', name: 'Chat', file: '13-chat', note: 'Talk to the studio' },
 ]
 
-// geometry — mirrors the desktop rail (72px gutters, 120px between frames)
+// geometry: mirrors the desktop rail (72px gutters, 120px between frames)
 const PHONE_W = 390
 const PHONE_H = 844
 const PER_ROW = 5
@@ -111,7 +111,7 @@ async function main() {
 
   const sub = addText(
     section,
-    'The Figma file defines desktop only — these nine frames extend the same system down to a 390 px phone.',
+    'The Figma file defines desktop only. These nine frames extend the same system down to a 390 px phone.',
     { font: SANS, size: 15, color: BODY, x: GUTTER, y: 92 },
   )
   sub.resize(620, sub.height)
@@ -151,7 +151,7 @@ async function main() {
   }
 
   figma.viewport.scrollAndZoomIntoView([section])
-  figma.notify(`Kapaya — ${SCREENS.length} mobile frames added`)
+  figma.notify(`Kapaya: ${SCREENS.length} mobile frames added`)
   figma.closePlugin()
 }
 

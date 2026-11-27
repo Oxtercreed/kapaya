@@ -1,4 +1,4 @@
-// Brand, hero and behavioural assertions across the whole store.
+// Brand, hero, dash, header and behavioural assertions across the whole store.
 const { launch, APP } = require('./lib.cjs');
 
 (async () => {
@@ -39,15 +39,43 @@ const { launch, APP } = require('./lib.cjs');
   }
   console.log('hero: left copy:', hero.left, '| artwork:', hero.art, '| right info:', hero.right, '| old copy:', hero.oldCopy);
 
-  // 1. landing opens first, footerless, with a working shop CTA
+  // 0c. No em dash remains anywhere in the rendered document.
+  const dash = await p.evaluate(() => ({
+    title: /\u2014/.test(document.title),
+    body: /\u2014/.test(document.body.innerText),
+    html: /\u2014/.test(document.documentElement.outerHTML),
+  }));
+  if (dash.title || dash.body || dash.html) {
+    throw new Error('em dash assertion failed: ' + JSON.stringify(dash));
+  }
+  console.log('em dash removed:', !dash.title && !dash.body && !dash.html);
+
+  // 1. landing opens first, footerless, with a logo-only header and working Start shopping CTA
   const landing = await p.evaluate(() => ({
     home: !!document.querySelector('.home'),
     footerHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+    logo: !!document.querySelector('.hdr .mark .brand-logo'),
+    cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
+    ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
+    chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
+    visibleHeaderChildren: Array.from(document.querySelectorAll('.hdr > *'))
+      .filter((el) => getComputedStyle(el).display !== 'none').length,
   }));
-  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden);
-  await p.click('.home [data-go="shop"]');
+  if (!landing.home || !landing.footerHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 2) {
+    throw new Error('landing header assertion failed: ' + JSON.stringify(landing));
+  }
+  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden, '| logo-only header:', landing.visibleHeaderChildren === 2, '| CTA:', landing.cta);
+  await p.click('.home-shop-pill');
   await new Promise((r) => setTimeout(r, 250));
-  console.log('shop CTA reaches catalogue:', !!(await p.$('.cards')));
+  console.log('header CTA reaches catalogue:', !!(await p.$('.cards')));
+  const shopHeader = await p.evaluate(() => ({
+    full: getComputedStyle(document.querySelector('.hdr-row')).display !== 'none',
+    homeCtaHidden: getComputedStyle(document.querySelector('.home-shop-pill')).display === 'none',
+  }));
+  if (!shopHeader.full || !shopHeader.homeCtaHidden) {
+    throw new Error('shop header restoration assertion failed: ' + JSON.stringify(shopHeader));
+  }
+  console.log('shop header restored:', shopHeader.full, '| home CTA hidden:', shopHeader.homeCtaHidden);
 
   // 2. sort menu
   await p.click('[data-sort]');

@@ -1,6 +1,6 @@
-# Kapaya — storefront mockup
+# Kapaya: storefront mockup
 
-**Open `index.html`** — that is the whole deliverable. It is one self-contained
+**Open `index.html`** that is the whole deliverable. It is one self-contained
 page: Inter is inlined as base64 woff2, clean iPhone photography is inlined as
 base64 WebP, and the client-side router renders every screen without a build
 step, server or network request.
@@ -8,7 +8,7 @@ step, server or network request.
 The first screen is a majestic, footerless **landing page**. The shop lives
 behind its CTA at `#/shop`; product, bag, checkout and confirmed routes use the
 same hash router. The shared hero places transparent cut-outs directly on the
-`#FCE6E9` panel and lets them bleed past its clipped edge — no image tile of
+`#FCE6E9` panel and lets them bleed past its clipped edge no image tile of
 their own.
 
 ```
@@ -38,8 +38,8 @@ docs/mockup/
 | `#/account`, `#/orders`, `#/help` | order history, order detail and help center |
 
 State lives in `localStorage` (`kapaya.state`), so bag, saved items, form values
-and orders survive a reload. The catalogue is four iPhone generations — 16 Pro,
-15, 14 Pro and 13 — with Pro, Standard and Classic categories. On phones the
+and orders survive a reload. The catalogue is four iPhone generations 16 Pro,
+15, 14 Pro and 13 with Pro, Standard and Classic categories. On phones the
 cards collapse to a compact two-column image + name + price invitation with no
 card buttons; desktop keeps the measured card.
 
@@ -47,14 +47,18 @@ card buttons; desktop keeps the measured card.
 
 The five **red** Figma screens were the measured starting point: palette, type
 scale, 64 / 1312 grid, 304 × 326 cards, and the 824 + 32 + 456 split. The
-landing page, edge-bleeding hero, left-only hero copy, iPhone-only catalogue and
-Kapaya brand identity are deliberate divergences from those frames; see
-`NOTES-red.md` and `HANDOFF.md`. The shop hero now shows only its left eyebrow,
-headline, description and CTA; the right collection/price/note column is gone.
-All five regression references were re-baselined after the brand change, and
-`01-shop.png` was deliberately re-baselined again after the hero cleanup. The
-tools folder keeps both a zero-drift regression baseline and `--figma`
-divergence scores against the original crops.
+landing page, logo-only landing header, edge-bleeding hero, left-only hero copy,
+iPhone-only catalogue and Kapaya brand identity are deliberate divergences from
+those frames; see `NOTES-red.md` and `HANDOFF.md`. On the landing route the
+header shows only the Kapaya logo and a right-aligned `Start shopping` CTA; the
+shop and other routes keep the full measured header. The shop hero shows only
+its left eyebrow, headline, description and CTA; the right collection/price/note
+column is gone. All U+2014 em dashes are gone from the generated copy, title,
+metadata and build logs; en dashes and minus signs remain for numeric ranges and
+discounts. All five regression references were re-baselined after the brand
+change, and `01-shop.png` was deliberately re-baselined again after the hero
+cleanup. The tools folder keeps both a zero-drift regression baseline and
+`--figma` divergence scores against the original crops.
 
 To change anything, edit `build.cjs` and run `node build.cjs`, then verify with
 the headless probes in `tools/`.

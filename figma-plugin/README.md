@@ -6,7 +6,7 @@ note under each one.
 
 ## Why a plugin
 
-The Figma connection in this session is read-only (metadata, nodes, comments, exports) — there is
+The Figma connection in this session is read-only (metadata, nodes, comments, exports) there is
 no endpoint that creates or edits nodes, so nothing can be pushed into the file directly. This
 plugin is the supported way to add content from outside: Figma runs it inside the file with full
 write access, and it needs no network.
@@ -29,11 +29,11 @@ A transparent section frame named **`Mobile · 390`**:
 |---|---|
 | Screens | 05 Login · 06 Home · 07 Shop · 08 Product details · 09 Shopping bag · 10 Checkout · 11 Order confirmed · 12 Account · 13 Chat |
 | Frame size | 390 × 844 (real CSS pixels), 28 px corner radius, `#F8F8FC` field |
-| Arrangement | 5 per row, wraps to a second row — 72 px outer margin, 88 px between frames, 132 px between rows |
+| Arrangement | 5 per row, wraps to a second row 72 px outer margin, 88 px between frames, 132 px between rows |
 | Under each frame | `05 · Login` in Inter SemiBold 17, plus a 13 px note |
 | Section header | `MOBILE · 390` kicker, 44 px title, 15 px description |
 | Placed | 360 px below the lowest desktop frame, left-aligned with the rail |
-| Assets | Nine 2× screenshots (780 px wide) inlined as base64 — nothing to upload, no network |
+| Assets | Nine 2× screenshots (780 px wide) inlined as base64 nothing to upload, no network |
 
 Screens are flat images, so treat them as high-fidelity mockups: you can move, scale and export
 them, but their internals are not editable layers. If you want any of them rebuilt as live Figma
@@ -55,7 +55,7 @@ cd .. && zip -rq kapaya-mobile.zip manifest.json code.js   # from figma-plugin/
 
 | Path | What it is |
 |---|---|
-| `kapaya-mobile.zip` | The importable plugin — this is the download you need |
+| `kapaya-mobile.zip` | The importable plugin this is the download you need |
 | `kapaya-mobile/manifest.json` | Plugin manifest (`api 1.0.0`, no network access) |
 | `kapaya-mobile/code.js` | Built plugin, images inlined |
 | `kapaya-mobile/src/code.js` | Source |

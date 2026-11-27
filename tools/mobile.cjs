@@ -25,10 +25,27 @@ const fs = require('fs');
   const landing = await p.evaluate(() => ({
     home: !!document.querySelector('.home'),
     footerHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+    logo: !!document.querySelector('.hdr .mark .brand-logo'),
+    cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
+    ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
+    chromeHidden: ['.hdr-tools', '.hdr-row'].every((sel) => getComputedStyle(document.querySelector(sel)).display === 'none'),
+    visibleHeaderChildren: Array.from(document.querySelectorAll('.hdr > *'))
+      .filter((el) => getComputedStyle(el).display !== 'none').length,
   }));
-  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden);
-  await p.click('.home [data-go="shop"]');
+  if (!landing.home || !landing.footerHidden || !landing.logo || landing.cta !== 'Start shopping' || !landing.ctaVisible || !landing.chromeHidden || landing.visibleHeaderChildren !== 2) {
+    throw new Error('mobile landing header assertion failed: ' + JSON.stringify(landing));
+  }
+  console.log('landing opens first:', landing.home, '| footer hidden:', landing.footerHidden, '| logo-only header:', landing.visibleHeaderChildren === 2, '| CTA:', landing.cta);
+  await p.click('.home-shop-pill');
   await new Promise((r) => setTimeout(r, 300));
+  const shopHeader = await p.evaluate(() => ({
+    full: getComputedStyle(document.querySelector('.hdr-row')).display !== 'none',
+    homeCtaHidden: getComputedStyle(document.querySelector('.home-shop-pill')).display === 'none',
+  }));
+  if (!shopHeader.full || !shopHeader.homeCtaHidden) {
+    throw new Error('mobile shop header restoration assertion failed: ' + JSON.stringify(shopHeader));
+  }
+  console.log('shop header restored:', shopHeader.full, '| home CTA hidden:', shopHeader.homeCtaHidden);
 
   await shot('01-shop');
   await overflowing('shop');

@@ -7,7 +7,7 @@ open it and the whole store works.
 
 | Path | What it is |
 |---|---|
-| [`docs/mockup/index.html`](docs/mockup/index.html) | The storefront — every screen, live, with media and Inter inlined |
+| [`docs/mockup/index.html`](docs/mockup/index.html) | The storefront: every screen, live, with media and Inter inlined |
 | [`docs/mockup/build.cjs`](docs/mockup/build.cjs) | The generator that writes that file (`node docs/mockup/build.cjs`) |
 | [`docs/mockup/NOTES-red.md`](docs/mockup/NOTES-red.md) | The measurements it was built from: frame ids, palette, grid, type scale |
 | [`docs/mockup/assets/`](docs/mockup/assets/README.md) | Clean transparent iPhone cut-outs, Kapaya 4K/vector brand assets |
@@ -41,7 +41,7 @@ come from the frames:
 | Help center | shipping, warranty, payment answers |
 
 State lives in `localStorage` (`kapaya.state`), so the bag, saved items and orders
-survive a reload — and a checkout adds a real order you can open from **My orders**.
+survive a reload, and a checkout adds a real order you can open from **My orders**.
 
 Layout is responsive: 1440 px desktop to a 390 px phone, with the same tokens
 throughout. On phones the header folds to the Kapaya logo, an account icon, a
@@ -82,11 +82,12 @@ The catalogue is now **four iPhones only**: iPhone 16 Pro ($1099), iPhone 15
 ($799), iPhone 14 Pro ($899) and iPhone 13 ($599). Categories are Pro, Standard
 and Classic; every product has its own clean cut-out, detail copy, specification
 set and reviews. The red frames' original earbuds/headphones/watch/mouse
-catalogue and its copy are deliberately no longer binding — this is a design
+catalogue and its copy are deliberately no longer binding. This is a design
 divergence, documented in `NOTES-red.md` and `HANDOFF.md`.
 
-The landing page opens first with no footer, and the hero keeps only its
-left-side eyebrow, headline, description and CTA. The shop and other store
+The landing page opens first with no footer, a logo-only header with a
+`Start shopping` button on the right, and a hero that keeps only its left-side
+eyebrow, headline, description and CTA. The shop and other store
 routes use hash links. All five `tools/ref/*.png` regression references were
 re-baselined on purpose after the brand change; `tools/ref/01-shop.png` was
 re-baselined again after the hero cleanup. Use `node diff.cjs --figma` to see

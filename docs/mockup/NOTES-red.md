@@ -1,4 +1,4 @@
-# Red screens — measurement notes
+# Red screens: measurement notes
 
 Source: Figma file `zoygvtfjWN92VUiWAsSMOL` ("Untitled"), page 1, second row.
 
@@ -15,7 +15,7 @@ All five frames are **1440 × 1200**, laid out in a row at `y = 967`,
 
 `red/ref/*.jpg` are 1:1 crops of those frames, taken from the Figma canvas
 render. `red/img/*.jpg` are the product photographs cropped out of the same
-render — the originals are Figma image fills behind signed URLs that this
+render the originals are Figma image fills behind signed URLs that this
 sandbox cannot fetch, so these are the highest-resolution copies obtainable.
 
 The red-screen palette below is the historical Figma measurement. The current
@@ -71,7 +71,7 @@ Inter throughout, **no negative letter-spacing** (verified against the render).
 | product meta / body | 13–14 / 400 |
 | micro label (table headers, form labels) | 11–11.5 / 500 |
 
-The confirmed-screen headline is **36 px**, not 40 — it is the only place the
+The confirmed-screen headline is **36 px**, not 40 it is the only place the
 reference breaks the page-heading size.
 
 ## Rebuilding
@@ -114,8 +114,8 @@ from 2.6 % to 3.4 %.
 The first load is a footerless editorial landing page. The shared Shop/landing
 hero uses transparent iPhone cut-outs directly on `#FCE6E9`, bleeding past the
 panel's clipped edge instead of sitting in a 270 × 240 rounded tile. The
-catalogue is now **four iPhones only** — iPhone 16 Pro, iPhone 15, iPhone 14 Pro
-and iPhone 13 — with clean consistent WebP cut-outs and categories Pro,
+catalogue is now **four iPhones only** iPhone 16 Pro, iPhone 15, iPhone 14 Pro
+and iPhone 13 with clean consistent WebP cut-outs and categories Pro,
 Standard and Classic. The frames' catalogue copy (including "LESS NOISE. MORE
 YOU.", "Your everyday, upgraded." and "Find your next everyday essential") is
 explicitly no longer binding.
@@ -126,10 +126,14 @@ product" links hidden. The desktop card remains the measured 304 × 326 plate.
 
 The shop hero is now left-only: the right-hand "THE COLLECTION", price and note
 block has been removed from every hero variant, while the transparent iPhone
-cut-outs still bleed off the panel.
+cut-outs still bleed off the panel. On the landing route the header is reduced
+to the Kapaya logo and a right-aligned `Start shopping` CTA; shop and other
+routes keep the full measured header. All U+2014 em dashes are gone from the
+generated copy, title, metadata and build logs.
 
-This is not a fidelity target. After the landing/hero, left-only hero,
-iPhone-only and Kapaya-brand changes, raw Figma JPEG MAE is **6.1999 / 5.7722 /
+This is not a fidelity target. After the landing/hero, logo-only header,
+left-only hero, no-U+2014, iPhone-only and Kapaya-brand changes, raw Figma JPEG
+MAE is **6.1999 / 5.7722 /
 3.5064 / 2.3351 / 3.1021 %**. All five `tools/ref/*.png` regression references
 were replaced with the intentional new renders after the brand change, and
 `01-shop.png` was deliberately re-baselined again for the hero cleanup, so

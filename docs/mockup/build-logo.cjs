@@ -47,7 +47,7 @@ fs.writeFileSync(path.join(ASSETS, 'kapaya-mark.svg'), markSvg());
   execFileSync('convert', [png, '-fuzz', '0%', '-transparent', '#FFFFFF', png]);
   const cream = path.join(ASSETS, 'kapaya-logo-4k-cream.png');
   execFileSync('convert', ['-size', '3840x2160', `xc:${BRAND_CREAM}`, png, '-composite', '-strip', cream]);
-  console.log('Kapaya brand assets — logo.svg, mark.svg, logo-4k.png + cream export (3840×2160)');
+  console.log('Kapaya brand assets: logo.svg, mark.svg, logo-4k.png + cream export (3840×2160)');
 })().catch((e) => {
   console.error(e);
   process.exitCode = 1;
