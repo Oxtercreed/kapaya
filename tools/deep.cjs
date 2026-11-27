@@ -15,7 +15,7 @@ const { launch, APP } = require('./lib.cjs');
   const brand = await p.evaluate(() => ({
     title: document.title,
     logo: !!document.querySelector('.mark .brand-logo'),
-    footerLogo: !!document.querySelector('.ftr-mark .brand-logo'),
+    footerLogo: !!document.querySelector('.home-ftr .brand-logo'),
     favicon: (document.querySelector('link[rel="icon"]')?.getAttribute('href') || '').startsWith('data:image/svg+xml'),
     oldVisible: /VOLTA/i.test(document.body.innerText),
   }));
@@ -63,7 +63,7 @@ const { launch, APP } = require('./lib.cjs');
     const phone = document.querySelector('.hero-home .hero-phone');
     return {
       home: !!document.querySelector('.home'),
-      sharedFooterHidden: getComputedStyle(document.querySelector('.ftr')).display === 'none',
+      sharedFooterHidden: !document.querySelector('.ftr'),
       logo: !!document.querySelector('.hdr .mark .brand-logo'),
       cta: document.querySelector('.home-shop-pill')?.textContent.trim(),
       ctaVisible: getComputedStyle(document.querySelector('.home-shop-pill')).display !== 'none',
@@ -132,10 +132,16 @@ const { launch, APP } = require('./lib.cjs');
     hero: getComputedStyle(document.querySelector('.hero-shop')).backgroundImage.includes('data:image/webp'),
     photos: Array.from(document.querySelectorAll('.shop-page .card-img')).map((img) => img.naturalWidth),
     prices: Array.from(document.querySelectorAll('.shop-page .card-price')).map((el) => el.textContent.trim()),
-    footer: getComputedStyle(document.querySelector('.shop-footer')).display !== 'none',
+    footerRemoved: !document.querySelector('footer'),
   }));
-  if (!shopVisual.hero || shopVisual.photos.length !== 4 || shopVisual.photos.some((n) => n < 3840) || JSON.stringify(shopVisual.prices) !== JSON.stringify(['From $1,099', 'From $799', 'From $899', 'From $599']) || !shopVisual.footer) throw new Error('shop visuals assertion failed: ' + JSON.stringify(shopVisual));
+  if (!shopVisual.hero || shopVisual.photos.length !== 4 || shopVisual.photos.some((n) => n < 3840) || JSON.stringify(shopVisual.prices) !== JSON.stringify(['From $1,099', 'From $799', 'From $899', 'From $599']) || !shopVisual.footerRemoved) throw new Error('shop visuals assertion failed: ' + JSON.stringify(shopVisual));
   console.log('shop hero and 4K-sized imagery:', shopVisual.hero, shopVisual.photos, '| prices preserved:', shopVisual.prices.join(', '));
+
+  for (const route of ['product/iphone-16-pro', 'bag', 'checkout', 'confirmed', 'account', 'help']) {
+    await p.goto(APP + '#/' + route, { waitUntil: 'networkidle0' });
+    if (await p.$('footer')) throw new Error('footer remains on ' + route);
+  }
+  await p.goto(APP + '#/shop', { waitUntil: 'networkidle0' });
 
   // 2. sort menu
   await p.click('[data-sort]');

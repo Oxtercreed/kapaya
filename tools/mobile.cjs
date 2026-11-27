@@ -121,7 +121,7 @@ const fs = require('fs');
   await new Promise((r) => setTimeout(r, 300));
   await shot('08-order');
   await overflowing('order');
-  await p.evaluate(() => document.querySelector('.ftr-l').click());
+  await p.evaluate(() => { location.hash = '#/help'; });
   await new Promise((r) => setTimeout(r, 300));
   await shot('09-help');
   await overflowing('help');

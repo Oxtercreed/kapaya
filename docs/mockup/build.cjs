@@ -2581,8 +2581,6 @@ const SHELL = [
   '<body>',
   chrome(),
   '<div id="app"></div>',
-  footer(),
-  `<footer class="shop-footer"><div class="shop-footer-in">${brandLogo('brand-logo shop-footer-logo')}<nav aria-label="Shop footer"><a data-go="help">About</a><a data-go="help">Support</a><a data-go="help">Shipping</a><a data-go="help">Returns</a><a data-go="help">Privacy</a></nav><div class="shop-pay"><span aria-label="Apple Pay"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M16.4 1.4c0 1.1-.4 2.2-1.1 3-.9.9-2.2 1.7-3.4 1.6-.1-1.1.4-2.2 1.1-3 .8-.9 2.2-1.5 3.4-1.6zM20.8 17.2c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.2-3.7 3.2-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.7.9c-1.6 0-2.8-1.6-3.7-3-2.5-4-2.8-8.6-1.2-11.1 1.1-1.7 2.8-2.8 4.5-2.8 1.7 0 2.7.9 4.1.9 1.3 0 2.2-.9 4.1-.9 1.5 0 3 .8 4.1 2.2-3.6 2-3 7.2.6 8.9z"/></svg> Pay</span><span class="shop-visa">VISA</span><span class="shop-master" aria-label="Mastercard"><i></i><i></i></span></div><p>Good tech. Better everyday.</p></div></footer>`,
   '<div class="toast" id="toast" role="status" aria-live="polite"></div>',
   '<script>',
   HELPERS,
