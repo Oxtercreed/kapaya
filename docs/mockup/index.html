@@ -1257,6 +1257,8 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
   .home-ftr{padding:36px 24px 24px}
 }
 
+.confirmed-details{grid-template-columns:minmax(0,1fr);max-width:860px}
+
 /* Compact orders overview */
 .orders-list{max-width:860px;margin-top:26px}
 .orders-page .order-row{padding:24px 28px;margin-bottom:14px}
@@ -2109,6 +2111,58 @@ const checkout = (state) => {
   </form>
 </main>`;
 };
+const confirmed = (state) => {
+  const o = state.order;
+  const total = o.total;
+  return `
+<main class="page">
+  <section class="done-hero">
+    <span class="done-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B6B4A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5 9.5 17.5 19.5 6.5"/></svg></span>
+    <div class="done-l">
+      <p class="done-eyebrow">ORDER ${o.id} · ${o.date}</p>
+      <h1 class="done-h">Thanks, ${o.first}. You’re all set.</h1>
+      <p class="done-p">Your demo order total is ${money(total)}. No payment was processed.</p>
+      <div class="done-actions">
+        <button class="btn-red btn-details" data-go="account">View order details</button>
+        <button class="btn-plain" data-go="shop">Continue shopping</button>
+      </div>
+    </div>
+    <div class="done-r">
+      <p class="done-est">Estimated delivery</p>
+      <p class="done-date">To be confirmed</p>
+      <p class="done-ship">Free standard shipping</p>
+    </div>
+  </section>
+
+  <div class="done-grid confirmed-details">
+    <div class="done-col">
+      <div class="info-card">
+        <div class="info-col">
+          <h3 class="info-h">Delivering to</h3>
+          <p class="info-b">${o.first} ${o.last}</p>
+          <p class="info-p">${o.street ? o.street + '<br>' : ''}${o.postal ? o.postal + ' ' : ''}${o.city}${o.country ? '<br>' + o.country : ''}</p>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-col">
+          <h3 class="info-h">Payment details</h3>
+          <p class="info-b">Visa ending in ${o.last4}</p>
+          <p class="info-p">${money(total)} demo total · Tax included</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="support">
+    <div>
+      <p class="support-h">Good support comes with every order.</p>
+      <p class="support-p">Questions about delivery or returns? I’m here to help.</p>
+    </div>
+    <a class="btn-plain sm" data-go="help">Visit help center <span class="arw">→</span></a>
+  </div>
+</main>`;
+};
 const account = (state) => `
 <main class="page orders-page">
   <div class="bag-head">
@@ -2235,10 +2289,10 @@ const chat = (state) => `
     <div class="chat-foot">Need more information? <a data-go="help">Visit the help center →</a></div>
   </section>
 </main>`;
-const VIEWS = { home, shop, product, bag, checkout, account, order: orderDetail, help, chat };
+const VIEWS = { home, shop, product, bag, checkout, confirmed, account, order: orderDetail, help, chat };
 
 const initialParts = location.hash.replace(/^#\/?/, '').split('/');
-const initialRoute = initialParts[0] === 'orders' ? 'order' : initialParts[0] === 'confirmed' ? 'account' : initialParts[0];
+const initialRoute = initialParts[0] === 'orders' ? 'order' : initialParts[0];
 const initialArg = initialParts[1] || null;
 const initialProduct = byId(initialArg) || PRODUCTS[0];
 let expectedHash = location.hash || '#/home';
@@ -2408,7 +2462,7 @@ window.addEventListener('hashchange', () => {
   if (location.hash === expectedHash) return;
   expectedHash = location.hash;
   const parts = location.hash.replace(/^#\/?/, '').split('/');
-  const route = parts[0] === 'orders' ? 'order' : parts[0] === 'confirmed' ? 'account' : parts[0];
+  const route = parts[0] === 'orders' ? 'order' : parts[0];
   if (!VIEWS[route]) return;
   setStoreRoute(route, parts[1] || null);
   paint();
@@ -2625,7 +2679,7 @@ document.addEventListener('submit', (e) => {
   store.cart = [];
   store.discount = 0; store.promo = ''; store.promoMsg = '';
   persist();
-  go('account');
+  go('confirmed');
 });
 
 document.addEventListener('keydown', (e) => {

@@ -9,7 +9,9 @@ const {launch,APP}=require('./lib.cjs');
   if(Object.values(state).some(x=>!x))throw Error('checkout '+width+' '+JSON.stringify(state));
  }
  await p.setViewport({width:390,height:844});await p.$eval('.btn-pay', e=>e.click());
- if (!await p.$('.orders-page .order-status') || !await p.$('.orders-page .order-items') || await p.$('.done-hero') || !p.url().endsWith('#/account')) throw Error('checkout to orders');
+ if (!await p.$('.done-hero') || await p.$('.track-card, .way-card') || !p.url().endsWith('#/confirmed')) throw Error('checkout confirmation');
+ await p.$eval('.done-actions [data-go=account]',e=>e.click());
+ if (!await p.$('.orders-page .order-status') || !await p.$('.orders-page .order-items')) throw Error('order sections missing');
  await p.reload({waitUntil:'networkidle0'});if(!await p.$('.orders-page .order-items'))throw Error('order did not persist');
  await p.click('[data-mobile-route="chat"]');
  if(!await p.$eval('[data-mobile-route="chat"]',e=>e.getAttribute('aria-current')==='page'))throw Error('chat active');
