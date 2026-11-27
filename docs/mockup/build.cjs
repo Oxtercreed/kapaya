@@ -617,7 +617,7 @@ const bag = (state) => {
   const also = PRODUCTS.filter((p) => !inBag.includes(p.id)).slice(0, 3);
 
   return `
-<main class="page">
+<main class="page bag-page">
   <p class="crumb"><a data-go="shop">Shop</a><span>/</span><span class="cur">Shopping bag</span></p>
 
   <div class="bag-head">
@@ -642,11 +642,11 @@ const bag = (state) => {
           <div class="bag-cols"><span>PRODUCT</span><span class="c-q">QUANTITY</span><span class="c-t">TOTAL</span></div>
           <div class="bag-row">
             <div class="bag-prod">
-              <div class="bag-thumb">${p.thumb ? `<img src="${img(p.thumb)}" alt="${p.name}">` : art(p.art)}</div>
+              <div class="bag-thumb"><img src="${img(productGallery(p, l.color)[0].image)}" alt="${p.name} in ${l.color}"></div>
               <div class="bag-info">
                 <h3 class="bag-name"><a data-go="product" data-arg="${p.id}">${p.name}</a></h3>
                 ${l.qty > 1 ? `<p class="bag-inline-total">${money(linePrice(l) * l.qty)} total</p>` : ''}
-                <p class="bag-meta">Color: ${l.color}${l.storage ? ` · ${l.storage}` : ''}</p>
+                <p class="bag-meta bag-finish"><span class="bag-finish-dot" style="background:${finishColors[l.color] || '#aaa'}"></span>${l.color} · ${l.storage || '128GB'}</p>
                 <p class="bag-meta">${money(linePrice(l))} each</p>
                 <p class="bag-stock">In stock</p>
                 <button class="bag-save" data-save="${l.id}" data-line-index="${lineIndex}">Save for later</button>
@@ -654,26 +654,26 @@ const bag = (state) => {
             </div>
             <div class="bag-qty">
               <div class="stepper sm">
-                <button class="step" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="-1">−</button>
+                <button class="step" aria-label="Decrease ${p.name} quantity" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="-1">−</button>
                 <span class="step-n">${l.qty}</span>
-                <button class="step" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="1">+</button>
+                <button class="step" aria-label="Increase ${p.name} quantity" data-line-qty="${l.id}" data-line-index="${lineIndex}" data-d="1">+</button>
               </div>
-              <button class="bag-remove" data-remove="${l.id}" data-line-index="${lineIndex}">Remove</button>
             </div>
             <div class="bag-total">${money(linePrice(l) * l.qty)}</div>
+            <button class="bag-remove" aria-label="Remove ${p.name} in ${l.color} from bag" data-remove="${l.id}" data-line-index="${lineIndex}">Remove</button>
           </div>
         </div>`;
       }).join('')}
 
       ${subtotal >= 100
-        ? `<div class="ship-note">
+        ? `<div class="ship-note"><span class="ship-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 5h12v11H2zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><div>
              <p class="ship-h">You’ve unlocked free shipping</p>
              <p class="ship-p">Your next iPhone, delivered at no extra cost.</p>
-           </div>`
-        : `<div class="ship-note">
+           </div></div>`
+        : `<div class="ship-note"><span class="ship-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 5h12v11H2zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><div>
              <p class="ship-h">${money(100 - subtotal)} from free shipping</p>
              <p class="ship-p">Add a little more and standard delivery is on us.</p>
-           </div>`}
+           </div></div>`}
     </div>
 
     <aside class="summary">
@@ -681,16 +681,21 @@ const bag = (state) => {
       <div class="sum-line"><span>Subtotal (${count} item${count === 1 ? '' : 's'})</span><span>${money(subtotal)}</span></div>
       <div class="sum-line"><span>Standard shipping</span><span class="${ship === 0 ? 'green' : ''}">${ship === 0 ? 'Free' : money(ship)}</span></div>
       <div class="sum-rule"></div>
-      <div class="sum-total"><span>Total</span><span>${money(total)}</span></div>
+      ${state.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
+      <div class="sum-total"><span>Total</span><span>${money(total - state.discount)}</span></div>
       <p class="sum-tax">Tax included. No surprises at checkout.</p>
+      <details class="bag-promo" ${state.promoMsg ? 'open' : ''}>
+        <summary>Add a promo code</summary>
+        <div class="promo-row"><input class="promo-input" data-promo aria-label="Promo code" placeholder="Enter code" value="${state.promo.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')}"><button class="promo-btn" type="button" data-apply>Apply</button></div>
+        ${state.promoMsg ? `<p class="promo-msg" role="status">${state.promoMsg}</p>` : ''}
+      </details>
       <button class="btn-red btn-checkout" data-go="checkout">Continue to checkout <span class="arw">→</span></button>
       <p class="sum-secure">Secure payment · Card or Kapaya wallet</p>
-      <p class="sum-promo">Have a promo code? Add it at checkout.</p>
     </aside>
   </div>
 
-  <h2 class="sec-h narrow">A little more to love</h2>
-  <p class="sec-p">Three other generations to consider.</p>
+  <div class="bag-recommend-head"><div><h2 class="sec-h narrow">A little more to love</h2>
+  <p class="sec-p">Complete your setup or compare another era.</p></div><a class="bag-view-all" data-go="shop">View all iPhones <span class="arw">→</span></a></div>
   <div class="also">
     ${also.map((p) => `<article class="also-card">
       <a class="also-plate" data-go="product" data-arg="${p.id}">
@@ -699,7 +704,7 @@ const bag = (state) => {
       <div class="also-body">
         <h3 class="also-name"><a data-go="product" data-arg="${p.id}">${p.name}</a></h3>
         <p class="also-price">${money(p.price)}</p>
-        <a class="also-link" data-go="product" data-arg="${p.id}">Explore product <span class="arw">→</span></a>
+        <div class="also-actions"><button class="also-quick" data-quick-add="${p.id}" aria-label="Quick add ${p.name} to bag">+ Quick add</button><a class="also-link" data-go="product" data-arg="${p.id}" aria-label="Explore ${p.name}">Explore product <span class="arw">→</span></a></div>
       </div>
     </article>`).join('')}
   </div>`}
@@ -794,11 +799,11 @@ const checkout = (state) => {
         <div class="co-rule"></div>
         <p class="ord-l">Promo code</p>
         <div class="promo-row">
-          <input class="promo-input" data-promo placeholder="Enter code" value="${state.promo}">
+          <input class="promo-input" data-promo placeholder="Enter code" value="${state.promo.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')}">
           <button type="button" class="promo-btn" data-apply>Apply</button>
         </div>
         ${state.promoMsg ? `<p class="promo-msg">${state.promoMsg}</p>` : ''}
-        <div class="sum-line"><span>Subtotal</span><span>${money(subtotal - state.discount)}</span></div>
+        <div class="sum-line"><span>Subtotal</span><span>${money(subtotal)}</span></div>
         <div class="sum-line"><span>Shipping</span><span class="${ship === 0 ? 'green' : ''}">${ship === 0 ? 'Free' : money(ship)}</span></div>
         ${state.discount ? `<div class="sum-line"><span>KAPAYA10</span><span class="green">−${money(state.discount)}</span></div>` : ''}
         <div class="sum-rule"></div>
@@ -2311,6 +2316,87 @@ body.is-shop .shop-footer{display:block;margin-top:auto}
   .home-ftr{padding:36px 24px 24px}
 }
 
+/* Bag: clear item controls and an editorial order summary. */
+.bag-page .bag-card{position:relative}
+.bag-page .bag-thumb img{object-fit:cover;padding:0}
+.bag-page .bag-row{position:relative;padding-bottom:45px}
+.bag-page .bag-remove{position:absolute;right:0;bottom:0;min-height:38px;padding:0 16px;margin:0;border:1px solid #f1d7da;border-radius:20px;background:#fff;color:#C92332;font:500 13px/1 Inter,sans-serif}
+.bag-page .bag-remove:hover{background:#fcecee;border-color:#e6aeb5}
+.bag-finish{display:flex;align-items:center;gap:7px}
+.bag-finish-dot{width:11px;height:11px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.08)}
+.bag-page .ship-note{display:flex;align-items:center;gap:16px}
+.ship-icon{width:46px;height:46px;border-radius:50%;display:flex;flex:none;align-items:center;justify-content:center;background:#fff;color:#C92332}
+.ship-icon svg{width:24px;height:24px}
+.bag-page .ship-p{margin-top:5px}
+.bag-promo{background:#f7f6f6;border-radius:14px;padding:14px;margin-top:20px}
+.bag-promo summary{color:#b91d2c;font:600 13px/18px Inter;cursor:pointer}
+.bag-promo .promo-row{gap:8px}
+.bag-promo .promo-input{height:42px;background:#fff;font-size:13px}
+.bag-promo .promo-btn{height:42px;padding:0 16px;font-size:13px}
+.bag-recommend-head{display:flex;align-items:end;justify-content:space-between;gap:12px}
+.bag-view-all{color:#C92332;font:500 13px/18px Inter;white-space:nowrap}
+.also-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:12px}
+.also-actions .also-link{margin:0}
+.also-quick{padding:9px 12px;border-radius:18px;background:#f3f3f3;font:500 12px/1 Inter}
+.also-quick:hover{background:#e8e6e7}
+@media(max-width:960px){
+ .bag-page .bag-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:0 0 48px}
+ .bag-page .bag-prod{grid-row:1 / 3}
+ .bag-page .bag-qty{grid-column:2;grid-row:2;align-items:flex-end;padding:0}
+ .bag-page .bag-total{grid-column:2;grid-row:1;display:block;text-align:right;padding:0}
+ .bag-page .bag-inline-total{display:none}
+ .bag-page .bag-cols{display:none}
+}
+@media(max-width:767px){
+ .bag-page{padding:18px 14px 32px}
+ .bag-page .bag-head{margin-top:13px;gap:8px}
+ .bag-page .page-h{font-size:28px;line-height:34px}
+ .bag-page .page-p{font-size:13px;margin-top:4px}
+ .bag-page .continue{font-size:12px;margin-top:10px}
+ .bag-page .bag-grid{gap:12px;margin-top:18px}
+ .bag-page .bag-main{gap:10px}
+ .bag-page .bag-card{padding:14px;border-radius:16px;box-shadow:0 2px 14px rgba(20,23,30,.035)}
+ .bag-page .bag-row{grid-template-columns:minmax(0,1fr) auto;gap:5px 8px;padding:0 0 44px}
+ .bag-page .bag-prod{gap:12px;min-width:0}
+ .bag-page .bag-thumb{width:76px;height:96px;border-radius:11px}
+ .bag-page .bag-thumb img{object-fit:cover;padding:0}
+ .bag-page .bag-info{min-width:0}
+ .bag-page .bag-name{font-size:15px;line-height:19px}
+ .bag-page .bag-meta{font-size:11px;line-height:15px;margin-top:5px}
+ .bag-page .bag-stock{font-size:11px;margin-top:5px}
+ .bag-page .bag-save{position:absolute;bottom:4px;left:88px;margin:0;min-height:34px;font-size:11px}
+ .bag-page .bag-total{font-size:14px;line-height:19px;white-space:nowrap}
+ .bag-page .bag-qty{justify-content:flex-start}
+ .bag-page .stepper.sm{width:92px;height:34px}
+ .bag-page .stepper.sm .step{width:30px;height:34px}
+ .bag-page .bag-remove{min-height:34px;padding:0 12px;font-size:11px}
+ .bag-page .ship-note{padding:13px;border-radius:14px;gap:12px}
+ .bag-page .ship-icon{width:42px;height:42px}
+ .bag-page .ship-h{font-size:14px;line-height:18px}
+ .bag-page .ship-p{font-size:12px;line-height:16px}
+ .bag-page .summary{padding:20px;border-radius:16px;box-shadow:0 2px 14px rgba(20,23,30,.035)}
+ .bag-page .sum-h{font-size:20px;line-height:25px}
+ .bag-page .sum-line{font-size:13px;margin-top:14px}
+ .bag-page .sum-total span:last-child{font-size:23px}
+ .bag-page .sum-tax{font-size:12px;margin-top:6px}
+ .bag-page .btn-checkout{height:50px;margin-top:14px}
+ .bag-page .sum-secure{font-size:11px;margin-top:13px}
+ .bag-page .sec-h.narrow{font-size:20px;line-height:25px;margin-top:25px}
+ .bag-page .sec-p{font-size:12px;line-height:17px;margin-top:4px}
+ .bag-page .bag-view-all{font-size:11px}
+ .bag-page .also{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+ .bag-page .also-card{grid-template-columns:60px minmax(0,1fr);gap:8px;padding:8px;border-radius:13px}
+ .bag-page .also-plate{width:60px;height:88px;border-radius:9px}
+ .bag-page .also-body{padding:2px 0 0;min-width:0}
+ .bag-page .also-name{font-size:11px;line-height:14px}
+ .bag-page .also-price{font-size:11px;line-height:14px;margin-top:4px}
+ .bag-page .also-actions{gap:5px;padding-top:6px}
+ .bag-page .also-quick{font-size:10px;padding:7px}
+ .bag-page .also-link{font-size:0}
+ .bag-page .also-link .arw{font-size:15px}
+}
+@media(max-width:360px){.bag-page .bag-thumb{width:62px;height:90px}.bag-page .bag-prod{gap:8px}.bag-page .bag-save{left:70px}.bag-page .bag-total{font-size:12px}.bag-page .stepper.sm{width:80px}.bag-page .also-card{grid-template-columns:48px minmax(0,1fr)}.bag-page .also-plate{width:48px;height:78px}}
+
 /* Shared mobile navigation and compact storefront. */
 .mobile-chrome,.mobile-bottom{display:none}
 @media(max-width:767px){
@@ -2530,6 +2616,7 @@ function closeMobileChrome() {
 }
 
 function paint() {
+  if (store.promoMsg === 'KAPAYA10 applied. 10% off.') store.discount = Math.round(store.cart.reduce((n, l) => n + linePrice(l) * l.qty, 0) * 10) / 100;
   closeMobileChrome();
   closeHomeMenu();
   document.body.classList.remove('pdp-menu-open', 'pdp-search-open');
@@ -2634,7 +2721,7 @@ document.addEventListener('click', (e) => {
     return;
   }
   if (!e.target.closest('#home-menu')) closeHomeMenu();
-  const t = e.target.closest('[data-go],[data-scroll],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-color],[data-storage],[data-gallery],[data-gallery-step],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
+  const t = e.target.closest('[data-go],[data-scroll],[data-filter],[data-sort],[data-sortby],[data-clear],[data-qty],[data-add],[data-quick-add],[data-color],[data-storage],[data-gallery],[data-gallery-step],[data-remove],[data-save],[data-line-qty],[data-fav],[data-tab],[data-apply],[data-view],[data-receipt],[data-toast-go]');
   if (!t) {
     if (!e.target.closest('.sortwrap')) { const m = $('[data-sortmenu]'); if (m) m.hidden = true; }
     return;
@@ -2679,6 +2766,14 @@ document.addEventListener('click', (e) => {
     if (pill) { pill.classList.add('pop'); setTimeout(() => pill.classList.remove('pop'), 340); }
     toast(p.name + ' added to your bag.', 'View bag', 'bag');
     return;
+  }
+  if (d.quickAdd) {
+    const p = byId(d.quickAdd);
+    const color = Object.keys(finishImages[p.id])[0];
+    const line = store.cart.find((l) => l.id === p.id && l.color === color && (l.storage || '128GB') === '128GB');
+    if (line) line.qty = Math.min(9, line.qty + 1);
+    else store.cart.push({id:p.id, qty:1, color, storage:'128GB'});
+    persist(); paint(); toast(p.name + ' added to your bag.'); return;
   }
   if (d.remove) { store.cart.splice(Number(d.lineIndex), 1); persist(); paint(); return; }
   if (d.save) {
